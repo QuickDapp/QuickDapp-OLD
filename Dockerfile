@@ -1,0 +1,164 @@
+################################################################################
+#
+# Base
+#
+################################################################################
+
+FROM --platform=linux/amd64 node:20-alpine AS base
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+
+################################################################################
+#
+# Build base
+#
+################################################################################
+
+# Install dependencies only when needed
+FROM base AS build_base
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache libc6-compat python3 make g++ bash git
+RUN ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+
+# Install dependencies based on the preferred package manager
+WORKDIR /app
+COPY . .
+
+# prepare
+RUN yarn global add pnpm
+RUN pnpm i --frozen-lockfile
+RUN pnpm bootstrap
+
+
+################################################################################
+#
+# Web
+#
+################################################################################
+
+FROM build_base as build_base_web
+WORKDIR /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+RUN pnpm build web
+
+FROM base AS web
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+
+RUN yarn global add pnpm
+# for scripts to work
+RUN pnpm add dotenv commander execa
+
+COPY --from=build_base /app/package.json ./package.json
+COPY --from=build_base /app/.env ./.env
+COPY --from=build_base /app/.env.production ./.env.production
+COPY --from=build_base /app/scripts ./scripts
+
+RUN mkdir -p ./node_modules
+COPY --from=build_base /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build_base /app/node_modules/prisma ./node_modules/prisma
+COPY --from=build_base /app/node_modules/@prisma ./node_modules/@prisma
+
+RUN mkdir -p ./.next
+COPY --from=build_base_web --chown=nextjs:nodejs /app/.next/standalone ./.next/standalone
+
+USER nextjs
+EXPOSE 80
+ENV PORT 80
+ENV HOSTNAME "0.0.0.0"
+ENTRYPOINT [ "/usr/local/bin/pnpm" ]
+CMD ["prod", "web"]
+
+################################################################################
+#
+# Worker
+#
+################################################################################
+
+FROM build_base as build_base_worker
+WORKDIR /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+RUN pnpm build worker
+
+FROM base AS worker
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+
+RUN yarn global add pnpm
+# for scripts to work
+RUN pnpm add dotenv commander execa
+
+COPY --from=build_base /app/package.json ./package.json
+COPY --from=build_base /app/.env ./.env
+COPY --from=build_base /app/.env.production ./.env.production
+COPY --from=build_base /app/scripts ./scripts
+
+RUN mkdir -p ./node_modules
+COPY --from=build_base /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build_base /app/node_modules/prisma ./node_modules/prisma
+COPY --from=build_base /app/node_modules/@prisma ./node_modules/@prisma
+
+COPY --from=build_base_worker --chown=nextjs:nodejs /app/build ./build
+
+USER nextjs
+ENTRYPOINT [ "/usr/local/bin/pnpm" ]
+CMD ["prod", "worker"]
+
+################################################################################
+#
+# Combined: worker + web
+#
+################################################################################
+
+FROM build_base as build_base_all
+WORKDIR /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+RUN pnpm build
+
+FROM base AS all
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV SHELL /bin/bash
+
+RUN yarn global add pnpm
+# for scripts to work
+RUN pnpm add dotenv commander execa
+
+COPY --from=build_base /app/package.json ./package.json
+COPY --from=build_base /app/.env ./.env
+COPY --from=build_base /app/.env.production ./.env.production
+COPY --from=build_base /app/scripts ./scripts
+
+RUN mkdir -p ./node_modules
+COPY --from=build_base /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build_base /app/node_modules/prisma ./node_modules/prisma
+COPY --from=build_base /app/node_modules/@prisma ./node_modules/@prisma
+
+RUN mkdir -p ./.next
+COPY --from=build_base_all --chown=nextjs:nodejs /app/.next/standalone ./.next/standalone
+COPY --from=build_base_all --chown=nextjs:nodejs /app/build ./build
+
+USER nextjs
+EXPOSE 80
+ENV PORT 80
+ENV HOSTNAME "0.0.0.0"
+ENTRYPOINT [ "/usr/local/bin/pnpm" ]
+CMD ["prod"]

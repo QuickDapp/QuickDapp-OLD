@@ -1,0 +1,18 @@
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "../styles/utilities.css";
+
+@layer components {
+  .nav {
+    @apply mr-4;
+
+    a {
+      @apply p-1 rounded-md;
+    }
+  }
+
+  .logo_container {
+    @apply svg-inline select-none;
+    font-size: 30px;
+  }
+}

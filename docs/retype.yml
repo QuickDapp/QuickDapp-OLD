@@ -1,0 +1,22 @@
+input: .
+output: .retype
+url: localhost:5000
+branding:
+  title: QuickDapp
+  # label:
+  logo: static/logo.png
+links:
+- text: quickdapp.xyz
+  link: https://quickdapp.xyz
+- text: "@hiddentao"
+  link: https://twitter.com/hiddentao
+favicon: static/favicon.png
+editor:
+  enabled: true
+meta:
+  title: " | QuickDapp"
+footer:
+  copyright: "&copy; Copyright {{ year }} [QuickDapp](https://quickdapp.xyz). All rights reserved."
+  links:
+    - text: quickdapp.xyz
+      link: https://quickdapp.xyz

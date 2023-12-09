@@ -1,0 +1,13 @@
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "../styles/utilities.css";
+
+@layer components {
+  .tokenMeta {
+    @apply text-xs;
+
+    em {
+      @apply italic mr-2 text-slate-400;
+    }
+  }
+}

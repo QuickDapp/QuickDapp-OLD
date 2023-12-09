@@ -1,0 +1,39 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --header-height: 56px;
+  }
+
+  * {
+    box-sizing: border-box;
+    @apply transition-props;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  a,
+  a:link,
+  a:visited {
+    @apply text-anchor;
+
+    &:hover {
+      @apply bg-anchor text-black;
+    }
+
+    &.no-anchor-hover-styles {
+      &:hover {
+        @apply bg-transparent text-current;
+      }
+    }
+  }
+}
+
+[aria-label='Switch Networks'] {
+  @apply !hidden;
+}

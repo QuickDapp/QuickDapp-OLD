@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "incremental": true,
+    "paths": {
+      "@/*": ["../*"]
+    }
+  },
+  "include": ["../../**/*.d.ts", "../../**/*.ts"],
+  "exclude": ["node_modules", "../../src/frontend/**", "../../src/app/**"]
+}

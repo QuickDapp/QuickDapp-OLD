@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Setting {
+  @@map("settings")
+  id    Int     @id @default(autoincrement())
+  key String @unique
+  value String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model User {
+  @@map("users")
+  id    Int     @id @default(autoincrement())
+  wallet String  @unique
+  settings Json?
+  notifications Notification[]
+}
+
+model Notification {
+  @@map("notifications")
+  id    Int     @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+  data Json
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model WorkerJob {
+  @@map("worker_jobs")
+  id    Int     @id @default(autoincrement())
+  type String
+  userId Int
+  data Json
+  due DateTime
+  started DateTime?
+  finished DateTime?
+  removeAt DateTime
+  success Boolean?
+  result Json?
+  cronSchedule String?
+  autoRescheduleOnFailure Boolean @default(false)
+  autoRescheduleOnFailureDelay Int @default(0)
+  removeDelay Int @default(0)
+  rescheduledFromJob Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

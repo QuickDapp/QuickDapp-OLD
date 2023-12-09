@@ -1,0 +1,19 @@
+@tailwind utilities;
+
+@layer utilities {
+  .svg-inline {
+    svg {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  .big-shadow {
+    box-shadow: 0px 0px 26px 21px rgba(0, 0, 0, 0.75);
+  }
+
+  .icon {
+    color: inherit;
+  }
+}
