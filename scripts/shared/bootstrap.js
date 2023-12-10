@@ -37,6 +37,16 @@ const execCommands = async (cliName, cmds) => {
   await cli.parseAsync(process.argv)
 }
 
+const logInfoBlock = async (msg) => {
+  const { default: chalk } = await import('chalk')
+  const lines = ["", ...msg.split("\n"), ""]
+  const maxLength = lines.reduce((a, b) => Math.max(a, b.length), 0) + 8
+  const paddedLines = lines.map(l => {
+    return l.padStart(l.length + 4, " ").padEnd(maxLength, " ")
+  })
+  const paddedMsg = paddedLines.join("\n")
+  console.log(chalk.bgYellowBright.black(paddedMsg))
+}
 
 
 module.exports = async (env) => {
@@ -76,7 +86,7 @@ module.exports = async (env) => {
       )
     }    
 
-    return { rootFolder, $$, get$$, execCommands, runShellScripts }
+    return { rootFolder, $$, get$$, execCommands, runShellScripts, logInfoBlock }
   } catch (err) {
     console.error(err)
     process.exit(1)
