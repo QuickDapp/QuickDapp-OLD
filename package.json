@@ -7,7 +7,7 @@
   "author": "Ramesh Nair <ram@hiddentao.com>",
   "license": "UNLICENSED",
   "scripts": {
-    "bootstrap": "husky install && git submodule update --init --recursive && prisma generate",
+    "bootstrap": "husky install && prisma generate",
     "showdocs": "retype start ./docs",
     "contracts": "./scripts/contracts.js",
     "build": "./scripts/build.js",

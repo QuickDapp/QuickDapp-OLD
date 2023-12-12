@@ -12,10 +12,9 @@
     const contracts$$ = get$$(contractsFolder)
 
     await execCommands('contracts', {
-      init: {
+      setup: {
         desc: 'Initialize the contracts submodule dependency',
         action: async () => {
-          await $$`git submodule update --init --recursive`
           await contracts$$`pnpm install`
           await contracts$$`pnpm setup`
         },

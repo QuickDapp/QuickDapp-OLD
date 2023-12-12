@@ -15,6 +15,8 @@ Roughly speaking, it integrates the following:
 * [Prisma](https://www.prisma.io/) + [Postgres](https://www.postgresql.org/) for database storage.
 * [React-query](https://tanstack.com/query/latestap) + [GraphQL](https://graphql.org/) for AJAX calls.
 * [RainbowKit](rainbowkit.com) + [SIWE](https://login.xyz/) + [Wagmi](https://wagmi.sh/) + [Viem](https://viem.sh/) for all web3 authentication + interaction.
+* Background job scheduling _"worker"_ with support for cron jobs, repeat-on-failure logic, etc.
+* Diamond standard-based upgradeable smart contracts, see [@QuickDapp/contracts](https://github.com/quickDapp/contracts) repository.
 * [Commander](https://www.npmjs.com/package/commander) + [Enquirer](https://www.npmjs.com/package/enquirer) for powerful CLI scripts.
 * [Docker](https://www.docker.com/) build scripts for deploying as containers.
 * [Retype](https://retype.com/) for beautiful, locally-runnable docs.
@@ -25,7 +27,7 @@ Roughly speaking, it integrates the following:
 
 As you can see above, QuickDapp does a lot for you out of the box. 
 
-QuickDapp also comes with a built-in background job scheduling _"worker"_ with support for cron jobs, repeat-on-failure logic, etc. You can deploy the worker process as its own Docker image whilst deploying the Next app to a serverless cloud (e.g Vercel). Or you can combine the two into a single Docker image. All using the readily available build scripts.
+QuickDapp also comes with a built-in , etc. You can deploy the worker process as its own Docker image whilst deploying the Next app to a serverless cloud (e.g Vercel). Or you can combine the two into a single Docker image. All using the readily available build scripts.
 
 Also, the base QuickDapp distribution is itself a ready-made dapp (see [live demo](https://demo.quickdapp.com)) which  lets you deploy and interact with ERC-20 contracts on [Sepolia](https://sepolia.etherscan.io) so that you can see all the elements of a working dapp from the get-go.
 

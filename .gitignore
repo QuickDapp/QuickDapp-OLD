@@ -12,6 +12,9 @@ coverage/
 .next/
 out/
 
+# contracts folder
+contracts/
+
 # production
 build/
 
