@@ -19,6 +19,5 @@ require('./shared/env.js')({
     'generate-types': ['Generate typescript types', `prisma generate`],
     migrate: ['Migrate the database to the latest schema', `pnpm prisma migrate dev`],
     reset: ['Reset the database to an empty state', `pnpm prisma migrate reset --force`],
-    seed: ['Seed the database with test data', `pnpm prisma db seed`],
   },
 })

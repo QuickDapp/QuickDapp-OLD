@@ -1,5 +1,5 @@
 ---
-order: -1
+order: 99
 ---
 
 # Getting started
@@ -7,6 +7,15 @@ order: -1
 This video show you how to get started. If you'd rather read through them then skip to the text below.
 
 **TODO video embed**
+
+## Step 0 - Pre-requisites
+
+Ensure you have the following pre-requisites installed and ready:
+
+* [Node.js](https://nodejs.org/) v20+.
+  * _We recommend using [NVM](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions simultaneously._
+* [PNPM](https://pnpm.io/).
+* [Postgres](https://www.postgresql.org/) 11+ running locally on port 5432, with a default admin user called `postgres`.
 
 ## Step 1 - Source code
 
@@ -18,7 +27,7 @@ If you're feeling brave then feel free to simply fork from the latest `master` b
 
 ## Step 2 - Dependencies
 
-In the project folder, run:
+In the project folder, let's install the dependencies:
 
 ```shell
 pnpm i
@@ -29,6 +38,9 @@ Now, let's bootstrap the project and generate the initial scaffolding:
 ```shell
 pnpm bootstrap
 ```
+
+This installs a Git hook which ensures your future commit messages adhere to the [conventional commits](https://github.com/conventional-changelog/commitlint). It also generates the [Prisma client](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client).
+
 
 ## Step 3 - Postgres database
 
@@ -41,6 +53,12 @@ By default, QuickDapp assumes the existence of a [Postgres](https://www.postgres
 * schema: `public`
 
 Install Postgres on your system and create the `quickdapp` database, ensuring the `postgres` user has full system-level privileged access to it.
+
+Let's get the dev database setup:
+
+```shell
+pnpm dev db migrate
+```
 
 ## Step 4 - Demo contracts deployed locally
 
