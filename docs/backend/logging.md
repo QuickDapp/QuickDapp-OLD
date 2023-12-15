@@ -14,7 +14,7 @@ Each log treshold has a corresponding method with the same name available on a l
 * `warn`
 * `error`
 
-To create a logger which logs to console:
+For example, to create a logger which logs to console:
 
 ```ts
 import { createLog } from '@/backend/logging'
@@ -39,6 +39,10 @@ const child = log.create('sub')
 // will output: 19:36:14.090Z  DEBUG root/sub: test2
 child.debug('test2')
 ```
+
+!!!
+There is always an instantiated `log` property in the [bootstrapped object](./bootstrap.md).
+!!!
 
 ## Datadog cloud
 

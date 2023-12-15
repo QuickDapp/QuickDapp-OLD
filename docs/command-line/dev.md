@@ -23,7 +23,7 @@ This internally runs:
 * Next.js dev server which watches for changes to your web app and reloads automatically.
 * GraphQL code generator which auto-generates Typescript bindings when your GraphQL schema changes.
 
-The website will be accessible at http://localhost:3000.
+The website will be accessible at [http://localhost:3000](http://localhost:3000).
 
 ## Background worker
 

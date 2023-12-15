@@ -4,6 +4,10 @@ order: 100
 
 # Introduction
 
+!!!
+This documentation is built using [Retype](https://retype.com) and can be viewed in the browser using `pnpm showdocs` in the project folder.
+!!!
+
 **QuickDapp** is a highly opinionated framework that helps you quickly build _and_ deploy Web3 dapps, batteries included. 
 
 It is designed to save you a massive amount of time and effort, freeing you up to focus on the parts of your dapp that actually matter.

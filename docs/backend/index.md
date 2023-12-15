@@ -1,5 +1,6 @@
 ---
-order: 99
+icon: cpu
+order: 95
 expanded: true
 ---
 

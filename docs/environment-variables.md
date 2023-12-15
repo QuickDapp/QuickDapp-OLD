@@ -1,14 +1,14 @@
 ---
-order: -3
+order: 97
 ---
 
 # Environment variables
 
 Environment variables are the primary means through which to pass configuration to your app at both build-time and runtime. 
 
-QuickDapp follows the same conventions as [Next.js](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) when it comes to specifying environment variables for your app.
+QuickDapp follows the [Next.js conventions](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) when it comes to specifying environment variables for your app.
 
-The [dotenv](https://www.npmjs.com/package/dotenv) package to load environement varibles from various `.env*` files in the project root folder whilst still allowing for overrides specified directly via the shell/terminal environment itself.
+The [dotenv](https://www.npmjs.com/package/dotenv) loads environement varibles from various `.env*` files in the project root folder whilst still allowing for overrides specified directly via the shell/terminal environment itself.
 
 Environment variables are loaded in order from the following places, with later places taking precendence over earlier ones:
 
@@ -84,7 +84,7 @@ console.log(clientConfig.BASE_URL) // http://localhost:3000
 ```
 
 !!!
-Although client-side variables are defined with the `NEXT_PUBLIC_` prefix, at runtime the prefix gets removed. This is just a form of syntactic sugar to make writing code easier.
+Although client-side variables are defined with the `NEXT_PUBLIC_` prefix, at runtime the prefix gets removed to make your code more readable.
 !!!
 
 ### Server-side
@@ -150,5 +150,4 @@ In `.env.production` we set it to `true`:
 NEXT_PUBLIC_SHOW_COOKIE_BANNER=true
 ```
 
-And that's it!
 
