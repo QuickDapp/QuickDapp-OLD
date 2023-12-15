@@ -1,0 +1,50 @@
+---
+order: 90
+---
+
+# Logging
+
+The backend logging system is built on [bunyan](https://www.npmjs.com/package/bunyan) and is designed for categorised, hierarchical logging with log thresholds.
+
+Each log treshold has a corresponding method with the same name available on a logger instance. The possible log thresholds are:
+
+* `trace`
+* `debug`
+* `info`
+* `warn`
+* `error`
+
+To create a logger which logs to console:
+
+```ts
+import { createLog } from '@/backend/logging'
+
+const log = createLog({
+  name: 'root',
+  logLevel: 'debug'
+})
+
+// will output nothing since minimum log level is "debug"
+log.trace('test') 
+
+// will output: 19:36:13.090Z  DEBUG root: test
+log.debug('test') 
+```
+
+Now a child logger can be created from the `root` logger:
+
+```ts
+const child = log.create('sub')
+
+// will output: 19:36:14.090Z  DEBUG root/sub: test2
+child.debug('test2')
+```
+
+## Datadog cloud
+
+Log messages will be sent to [Datadog](https://datadoghq.eu/) if the following [environment variables](../environment-variables.md) are set:
+
+* `DATADOG_API_KEY`
+* `DATADOG_APPLICATION_KEY`
+
+See [https://github.com/DataDog/datadog-api-client-typescript](https://github.com/DataDog/datadog-api-client-typescript) for information on these parameters.

@@ -19,7 +19,7 @@ This command assumes that the concracts are in the `contracts/` sub-folder and t
 ## Initialize contracts
 
 ```shell
-pnpm contracts setup
+pnpm contracts bootstrap
 ```
 
 This command must be run after the contracts folder has been setup. It will install any dependencies required to build and deploy contracts.

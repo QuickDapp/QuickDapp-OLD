@@ -12,9 +12,10 @@ Roughly speaking, it integrates the following:
 
 * [Typescript](https://www.typescriptlang.org/) + [Next.js](https://nextjs.org/) + [React](https://react.dev/) as the foundation.
 * [TailwindCSS](https://tailwindcss.com/) + [PostCSS](https://postcss.org/) + [shadcn/ui](https://ui.shadcn.com/) for components and styling.
-* [Prisma](https://www.prisma.io/) + [Postgres](https://www.postgresql.org/) for database storage.
+* [Prisma](https://www.prisma.io/) + [PostgreSQL](https://www.postgresql.org/) for database storage.
 * [React-query](https://tanstack.com/query/latestap) + [GraphQL](https://graphql.org/) for AJAX calls.
-* [RainbowKit](rainbowkit.com) + [SIWE](https://login.xyz/) + [Wagmi](https://wagmi.sh/) + [Viem](https://viem.sh/) for all web3 authentication + interaction.
+* [RainbowKit](rainbowkit.com) + [Wagmi](https://wagmi.sh/) + [Viem](https://viem.sh/) for web3 interaction.
+* [NextAuth](https://next-auth.js.org/) + [SIWE](https://login.xyz/) for wallet authentication.
 * Background job scheduling _"worker"_ with support for cron jobs, repeat-on-failure logic, etc.
 * Diamond standard-based upgradeable smart contracts, see [@QuickDapp/contracts](https://github.com/quickDapp/contracts) repository.
 * [Commander](https://www.npmjs.com/package/commander) + [Enquirer](https://www.npmjs.com/package/enquirer) for powerful CLI scripts.

@@ -4,19 +4,18 @@
   try {
     const path = require('path')
     const fs = require('fs')
-    const { setTimeout } = require('node:timers/promises')
-    const { get$$, $$, execCommands, rootFolder, logInfoBlock } = await require('./shared/bootstrap')('production')
+    const { get$$, $$, execCommands, rootFolder, logInfoBlock } = await require('./shared/bootstrap')('development')
 
     const contractsFolder = path.join(rootFolder, 'contracts')
 
     const contracts$$ = get$$(contractsFolder)
 
     await execCommands('contracts', {
-      setup: {
+      bootstrap: {
         desc: 'Initialize the contracts submodule dependency',
         action: async () => {
           await contracts$$`pnpm install`
-          await contracts$$`pnpm setup`
+          await contracts$$`pnpm bootstrap`
         },
       },
       'build-and-upgrade': {

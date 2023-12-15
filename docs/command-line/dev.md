@@ -46,7 +46,6 @@ pnpm dev
 
 ## Database management
 
-
 To migrate the database to the latest schema:
 
 ```shell

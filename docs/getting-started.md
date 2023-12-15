@@ -15,7 +15,7 @@ Ensure you have the following pre-requisites installed and ready:
 * [Node.js](https://nodejs.org/) v20+.
   * _We recommend using [NVM](https://github.com/nvm-sh/nvm) to manage multiple Node.js versions simultaneously._
 * [PNPM](https://pnpm.io/).
-* [Postgres](https://www.postgresql.org/) 11+ running locally on port 5432, with a default admin user called `postgres`.
+* [PostgreSQL](https://www.postgresql.org/) 11+ running locally on port 5432, with a default admin user called `postgres`.
 
 ## Step 1 - Source code
 
@@ -42,9 +42,9 @@ pnpm bootstrap
 This installs a Git hook which ensures your future commit messages adhere to the [conventional commits](https://github.com/conventional-changelog/commitlint). It also generates the [Prisma client](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client).
 
 
-## Step 3 - Postgres database
+## Step 3 - PostgreSQL database
 
-By default, QuickDapp assumes the existence of a [Postgres](https://www.postgresql.org/) database. The default connection parameters (defined in the `.env` file) are:
+By default, QuickDapp assumes the existence of a [PostgreSQL](https://www.postgresql.org/) database. The default connection parameters (defined in the `.env` file) are:
 
 * host: `localhost`
 * port: `5432`
@@ -52,7 +52,7 @@ By default, QuickDapp assumes the existence of a [Postgres](https://www.postgres
 * db: `quickdapp`
 * schema: `public`
 
-Install Postgres on your system and create the `quickdapp` database, ensuring the `postgres` user has full system-level privileged access to it.
+Install PostgreSQL on your system and create the `quickdapp` database, ensuring the `postgres` user has full system-level privileged access to it.
 
 Let's get the dev database setup:
 
