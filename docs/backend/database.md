@@ -18,7 +18,7 @@ DATABASE_URL=postgresql://postgres:@localhost:5432/quickdapp?schema=public
 
 ## Schema
 
-The database schema can be found in `src/backend/prisma/schema.prisma`. A number of built-in table schemas are provided for your convenince:
+A number of [built-in tables](https://github.com/QuickDapp/QuickDapp/tree/master/src/backend/prisma/schema.prisma) are provided for your convenince:
 
 * `Setting` - for any persisted app-level settings as key-value pairs.
 * `User` - for authenticated users - includes a field for storing the user's `wallet` address and any `settings` field which can hold any JSON data.

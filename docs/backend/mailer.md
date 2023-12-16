@@ -4,7 +4,7 @@ order: 60
 
 # Mailer
 
-Sending emails via [Sendgrid](https://sendgrid.com/) is supported out of the box. The mailer code is in `src/backend/mailer/index.ts`.
+Sending emails via [Sendgrid](https://sendgrid.com/) is supported out of the box.
 
 The following [environment variables](../environment-variables.md) must be set for email sending to be enabled:
 
