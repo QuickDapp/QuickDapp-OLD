@@ -1,6 +1,6 @@
 ---
 icon: command-palette
-order: 90
+order: 96
 label: Command-line
 expanded: true
 ---

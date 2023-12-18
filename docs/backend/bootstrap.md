@@ -4,7 +4,7 @@ order: 100
 
 # Bootstrap object
 
-The `src/backend/boostrap/index.ts` file contains code which is executed on every backend API and/or page invocation. This code _bootstraps_ basic backend services and returns a corresponding `BootstrappedApp` object which looks something like:
+The [`src/backend/boostrap/index.ts`](https://github.com/QuickDapp/QuickDapp/tree/master/src/backend/bootstrap/index.ts) file contains code which is executed on every backend API and/or page invocation. This code _bootstraps_ basic backend services and returns a corresponding `BootstrappedApp` object which looks something like:
 
 ```ts
 export interface BootstrappedApp {

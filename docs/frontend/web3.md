@@ -4,19 +4,14 @@ order: 100
 
 # Web3
 
-Web3 wallet discovery, authentication and interaction is facilitated via:
-
-* [RainbowKit](rainbowkit.com)
-* [Wagmi](https://wagmi.sh/)
-* [Viem](https://viem.sh/)
-* [SIWE](https://docs.login.xyz/general-information/siwe-overview)
+Web3 wallet discovery, authentication and interaction is facilitated via [RainbowKit](rainbowkit.com), [Wagmi](https://wagmi.sh/), [Viem](https://viem.sh/) and [SIWE](https://docs.login.xyz/general-information/siwe-overview).
 
 ## Chain configuration
 
 QuickDapp is built for EVM chains. The target EVM chain is specified via the following [environment variables](../environment-variables.md):
 
 * `NEXT_PUBLIC_CHAIN`
-* `NEXT_PUBLIC_CHAIN_RPC_ENDPOINT`
+* `NEXT_PUBLIC_CHAIN_RPC_ENDPOINT`git 
 
 Note that both variables are needed for the chain configuration to work correctly. The backend server and worker processes also rely on these environment variables to know which chain to monitor.
 
@@ -53,4 +48,6 @@ The following high-level contract interaction hooks are [provided](https://githu
 
 You can of course use the Wagmi React hooks to access contract methods if you wish. However, the above hooks incorporate the ABI and address fetching methods above to provide for a more seamless interaction with contracts.
 
-The default QuickDapp distribution (with the built-in ERC-20 demo dapp) utilises all of these hooks, thus providing you with working code examples.
+!!!
+The default QuickDapp dapp (the built-in ERC-20 demo) utilises all of these hooks, providing you with working code examples.
+!!!
