@@ -4,7 +4,7 @@ order: 100
 
 # Web3
 
-Web3 wallet discovery, authentication and interaction is facilitated via [RainbowKit](rainbowkit.com), [Wagmi](https://wagmi.sh/), [Viem](https://viem.sh/) and [SIWE](https://docs.login.xyz/general-information/siwe-overview).
+Web3 wallet discovery, authentication and interaction is facilitated via [RainbowKit](rainbowkit.com), [Wagmi](https://wagmi.sh/), [Viem](https://viem.sh/) and [Sign-in-with-Ethereum](https://docs.login.xyz/general-information/siwe-overview).
 
 ## Chain configuration
 

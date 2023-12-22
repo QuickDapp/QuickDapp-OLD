@@ -5,7 +5,7 @@ import { useGetContractValue } from "@/frontend/hooks"
 import { ContractName } from "@/shared/contracts"
 import { toNumber } from "@/shared/number"
 import { FC } from "react"
-import { PropsWithClassName } from "../utils"
+import { PropsWithClassName } from "../../utils"
 
 export const NumTokens: FC<PropsWithClassName> = ({ className }) => {
   const value = useGetContractValue({ 

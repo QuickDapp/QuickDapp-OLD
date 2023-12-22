@@ -15,11 +15,9 @@ The [`src/shared/graphql/schema.ts`](https://github.com/QuickDapp/QuickDapp/tree
 1. Update the backend [`resolvers.ts`](https://github.com/QuickDapp/QuickDapp/tree/master/src/shared/backend/graphql/resolvers.ts) to ensure the query gets handled in the backend.
 
 
-_Note: When running the dapp in [dev](../command-line/dev.md) mode there is a code generator which watches for changes to `schema.ts`, generating updated Typescript bindings on-the-fly. It's these bindings that are then used within the backend resolvers._
-
-## Test GUI
-
-When the dev server is run, accessing the `/api/graphql` path in the browser will bring up the [Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox). Through this GUI you can enumerate and test all the GraphQL schema definitions, including queries and mutations.
+!!!
+In [dev](../command-line/dev.md) mode a code generator watches for changes to `schema.ts`, generating updated Typescript bindings on-the-fly. These bindings are used by the backend resolvers to accurately resolve query and parameter names.
+!!!
 
 ## Authenticated queries
 
@@ -51,3 +49,6 @@ return {
 ```
 
 
+## Sandbox GUI
+
+When the [dev](../command-line/dev.md) server is run, accessing the `/api/graphql` path in the browser will bring up the [Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox). Through this GUI you can enumerate and test all the GraphQL schema definitions, including queries and mutations.

@@ -6,8 +6,8 @@ import { ContractName } from "@/shared/contracts"
 import { toNumber } from "@/shared/number"
 import { FC, ReactNode, useCallback, useEffect, useMemo } from "react"
 import { zeroAddress } from "viem"
-import { PropsWithClassName, cn } from "../utils"
-import { OnceVisibleInViewport } from "./OnceVisibleInViewport"
+import { PropsWithClassName, cn } from "../../utils"
+import { OnceVisibleInViewport } from "../OnceVisibleInViewport"
 import { SendTokenDialog } from "./SendTokenDialog"
 import styles from './TokenList.module.css'
 

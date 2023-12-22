@@ -12,6 +12,10 @@ The `dev` command is responsible for:
 
 All of these commands operate using the **development** environment configuration as defined via the [environment variables](../environment-variables.md).
 
+!!!
+The servers are spawned as child processes of the CLI command script, with their [stdio](https://blog.logrocket.com/using-stdout-stdin-stderr-node-js/) mapping to the console.
+!!!
+
 ## Next.js
 
 ```shell

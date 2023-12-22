@@ -7,8 +7,8 @@ import { ContractName } from "@/shared/contracts"
 import { BigVal, toNumber } from "@/shared/number"
 import { FC, useCallback, useMemo, useState } from "react"
 import { TransactionReceipt } from "viem"
-import { Dialog, DialogContent, DialogTrigger } from "./Dialog"
-import { ErrorButton } from "./ErrorButton"
+import { Dialog, DialogContent, DialogTrigger } from "../Dialog"
+import { ErrorButton } from "../ErrorButton"
 
 const CreateTokenForm: FC<{ onCreated: () => void }> = ({ onCreated }) => {
   const [name, symbol, decimals] = [

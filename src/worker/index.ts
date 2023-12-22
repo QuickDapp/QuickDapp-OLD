@@ -7,7 +7,7 @@ import { getMulticall3Info } from '@/shared/contracts'
 import { BootstrappedApp, bootstrap } from '@/backend/bootstrap'
 import { ONE_MINUTE, ONE_SECOND, dateBefore } from '@/shared/date'
 import {
-  createCronJob,
+  scheduleCronJob,
   getNextPendingJob,
   getTotalPendingJobs,
   markJobAsFailed,
@@ -19,7 +19,7 @@ import {
 
 const setupDefaultJobs = async (db: any) => {
   // remove old jobs
-  await createCronJob(
+  await scheduleCronJob(
     db,
     {
       type: 'removeOldWorkerJobs',
@@ -31,7 +31,7 @@ const setupDefaultJobs = async (db: any) => {
   )
 
   // poll for new blocks
-  await createCronJob(
+  await scheduleCronJob(
     db,
     {
       type: 'watchChain',

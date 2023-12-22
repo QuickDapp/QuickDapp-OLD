@@ -1,7 +1,7 @@
-import { CreateTokenDialog } from "@/frontend/components/CreateTokenDialog"
+import { CreateTokenDialog } from "@/frontend/components/dapp/CreateTokenDialog"
 import { IfWalletConnected } from "@/frontend/components/IfWalletConnected"
-import { NumTokens } from "@/frontend/components/NumTokens"
-import { TokenList } from "@/frontend/components/TokenList"
+import { NumTokens } from "@/frontend/components/dapp/NumTokens"
+import { TokenList } from "@/frontend/components/dapp/TokenList"
 
 const HomePage = async () => {  
   return (

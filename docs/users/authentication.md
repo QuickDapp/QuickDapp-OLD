@@ -1,21 +1,16 @@
 ---
-icon: clock
-order: -2
-expanded: true
+order: 100
 ---
 
 # Authentication
 
-The database 
+User authentication is built on top of [NextAuth](https://nextauth.com/), with [Sign-in-with-Ethereum (SIWE)](https://docs.login.xyz/) as an authentication mechanism. 
 
-Next.js apps tend to be deployed to serverless environments for scalability and efficiency reasons. As such, there is no persistent server, meaning there is no way to run a backend process which persists beyond the lifetime of an incoming request.
+The flow:
 
-For this reason, QuickDapp bundles a background worker process that runs in parallel to the Next.js server process, so that you can schedule long-running persistent background jobs at any time.
+1. A user must connect their web3 wallet to the Dapp. 
+1. They are asked to sign a login message using their private key to prove ownership of the wallet.
+1. The signature is sent to the NextAuth backend for verification.
+1. Once verified, a corresponding JWT (JSON web token) is stored client-side, to be passed in with all subsequent [queries to the backend](../frontend/graphql.md). The token persists across browser sessions, until the user chooses to disconnect their wallet.
 
-Jobs are scheduled via a database table. All job results are logged. Jobs can be automatically scheduled using a cronjob syntax. If a job fails it can be set to automatically retry after a predefined delay.
-
-The worker process has full access to all of your backend resources, including the database. It also loads its configuration from the same [environment variables](../environment-variables.md) as Next.js.
-
-!!!
-Although the worker process is suitable for production use, it's designed to get you up and running quickly with background tasks and should probably be replaced with more established systems once your app hits scale.
-!!!
+If a database record for the user doesn't yet exist then it is created during the backed verification step.

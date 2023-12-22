@@ -8,11 +8,11 @@ The backend logging system is built on [bunyan](https://www.npmjs.com/package/bu
 
 Each log treshold has a corresponding method with the same name available on a logger instance. The possible log thresholds are:
 
-* `trace`
-* `debug`
-* `info`
-* `warn`
-* `error`
+* `trace` - _for very low-level messages that you normally don't need to see._
+* `debug` - _for messages that can help with debugging issues._
+* `info` - _for general messages that you want to see in the logs in production._
+* `warn` - _for minor issues that don't cause problems but may need investigating._
+* `error` - _for problems and errors that need to be investigated and/or fixed._
 
 For example, to create a logger which logs to console:
 

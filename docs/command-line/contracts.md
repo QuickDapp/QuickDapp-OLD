@@ -12,7 +12,7 @@ The `contracts` command is responsible for:
 
 !!!
 This command assumes that the concracts are in the `contracts/` sub-folder and that they are based on the 
-[official contracts](../smart-contracts/index.md) repository.
+[official contracts](https://github.com/quickDapp/contracts) repository.
 !!!
 
 

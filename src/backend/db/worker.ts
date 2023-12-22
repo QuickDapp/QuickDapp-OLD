@@ -71,7 +71,7 @@ const generateJobDates = (due?: Date, removeDelay?: number) => {
   }
 }
 
-export const createJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>) => {
+export const scheduleJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>) => {
   await cancelPendingJobs(db, {
     type: job.type,
     userId: job.userId,
@@ -91,7 +91,7 @@ export const createJob = async <T extends object>(db: PrismaClient, job: WorkerJ
   })  
 }
 
-export const createCronJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>, cronSchedule: string) => {
+export const scheduleCronJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>, cronSchedule: string) => {
   await cancelPendingJobs(db, {
     type: job.type,
     userId: job.userId,

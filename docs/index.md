@@ -19,7 +19,7 @@ Roughly speaking, it integrates the following:
 * [Prisma](https://www.prisma.io/) + [PostgreSQL](https://www.postgresql.org/) for database storage.
 * [React-query](https://tanstack.com/query/latestap) + [GraphQL](https://graphql.org/) for AJAX calls.
 * [RainbowKit](rainbowkit.com) + [Wagmi](https://wagmi.sh/) + [Viem](https://viem.sh/) for web3 interaction.
-* [NextAuth](https://next-auth.js.org/) + [SIWE](https://login.xyz/) for wallet authentication.
+* [NextAuth](https://next-auth.js.org/) + [Sign-in-with-Ethereum](https://login.xyz/) for wallet authentication.
 * Background job scheduling _"worker"_ with support for cron jobs, repeat-on-failure logic, etc.
 * Diamond standard-based upgradeable smart contracts, see [@QuickDapp/contracts](https://github.com/quickDapp/contracts) repository.
 * [Commander](https://www.npmjs.com/package/commander) + [Enquirer](https://www.npmjs.com/package/enquirer) for powerful CLI scripts.

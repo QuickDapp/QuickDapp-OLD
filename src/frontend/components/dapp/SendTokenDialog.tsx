@@ -8,9 +8,9 @@ import { BigVal } from "@/shared/number"
 import { DialogTitle } from "@radix-ui/react-dialog"
 import { FC, PropsWithChildren, useCallback, useMemo, useState } from "react"
 import { TransactionReceipt, isAddress } from "viem"
-import { ContractValue } from "./ContractValue"
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "./Dialog"
-import { ErrorButton } from "./ErrorButton"
+import { ContractValue } from "../ContractValue"
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "../Dialog"
+import { ErrorButton } from "../ErrorButton"
 
 
 const UserBalance: FC<{ userBalance: BigVal, onClick: () => void }> = ({ userBalance, onClick }) => {
@@ -60,7 +60,7 @@ const SendTokenForm: FC<{
         } catch (err) {
           return 'Must be a number'
         }
-      }
+      },
     }),
   ]
 
