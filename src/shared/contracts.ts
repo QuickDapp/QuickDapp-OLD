@@ -1,6 +1,6 @@
 import { Abi } from 'viem'
-import { abi as DiamondProxyAbi } from '@quickdapp/contracts'
 
+import DiamondProxyAbi from '../../contracts/src/generated/abi.json'
 import Erc20Abi from './data/erc20abi.json'
 import { clientConfig } from '@/config/client'
 import Multicall3 from './data/multicall3.json'
@@ -17,7 +17,7 @@ export interface ContractInfo {
 
 const contractAbi: Record<ContractName, Abi> = {
   [ContractName.Erc20]: Erc20Abi as Abi,
-  [ContractName.Proxy]: DiamondProxyAbi,
+  [ContractName.Proxy]: DiamondProxyAbi as Abi,
 }
 
 const deployments: Record<string, Partial<Record<ContractName, string>>> = {
