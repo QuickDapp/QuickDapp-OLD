@@ -10,8 +10,9 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   SESSION_ENCRYPTION_KEY: string
   NEXTAUTH_URL: string
   SERVER_WALLET_PRIVATE_KEY: string
-  MAILER_API_KEY?: string
-  MAILER_FROM_ADDRESS?: string
+  MAILGUN_API_KEY?: string
+  MAILGUN_API_ENDPOINT?: string
+  MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
   DATADOG_API_KEY?: string
   DATADOG_APPLICATION_KEY?: string
@@ -25,8 +26,9 @@ export const serverConfig = (() => {
     WORKER_LOG_LEVEL: process.env.WORKER_LOG_LEVEL,
     SESSION_ENCRYPTION_KEY: process.env.SESSION_ENCRYPTION_KEY,
     SERVER_WALLET_PRIVATE_KEY: process.env.SERVER_WALLET_PRIVATE_KEY,
-    MAILER_API_KEY: process.env.MAILER_API_KEY,
-    MAILER_FROM_ADDRESS: process.env.MAILER_FROM_ADDRESS,
+    MAILGUN_API_KEY: process.env.MAILGUN_API_KEY,
+    MAILGUN_API_ENDPOINT: process.env.MAILGUN_API_ENDPOINT,
+    MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
     DATADOG_API_KEY: process.env.DATADOG_API_KEY,
     DATADOG_APPLICATION_KEY: process.env.DATADOG_APPLICATION_KEY,
@@ -41,8 +43,9 @@ export const serverConfig = (() => {
     SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),
     NEXTAUTH_URL: clientConfig.BASE_URL,
     SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
-    MAILER_API_KEY: env.get('MAILER_API_KEY').default('').asString(),
-    MAILER_FROM_ADDRESS: env.get('MAILER_FROM_ADDRESS').default('').asString(),
+    MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),
+    MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
+    MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
     ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
     DATADOG_API_KEY: env.get('DATADOG_API_KEY').default('').asString(),
     DATADOG_APPLICATION_KEY: env.get('DATADOG_APPLICATION_KEY').default('').asString(),

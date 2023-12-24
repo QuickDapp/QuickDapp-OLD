@@ -1,6 +1,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "../styles/utilities.css";
+@import "../../styles/utilities.css";
 
 @layer components {
   .tokenMeta {

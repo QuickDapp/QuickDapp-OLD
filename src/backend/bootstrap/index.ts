@@ -57,11 +57,12 @@ export const bootstrap = ({ processName }: BootstrapParams): BootstrappedApp => 
   }
 
   let mailer: Mailer | undefined
-  if (serverConfig.MAILER_API_KEY && serverConfig.MAILER_FROM_ADDRESS) {
+  if (serverConfig.MAILGUN_API_KEY && serverConfig.MAILGUN_API_ENDPOINT && serverConfig.MAILGUN_FROM_ADDRESS) {
     mailer = new Mailer({
       log, 
-      apiKey: serverConfig.MAILER_API_KEY, 
-      fromAddress: serverConfig.MAILER_FROM_ADDRESS
+      apiKey: serverConfig.MAILGUN_API_KEY, 
+      endpoint: serverConfig.MAILGUN_API_ENDPOINT,
+      fromAddress: serverConfig.MAILGUN_FROM_ADDRESS
     })
   }
 

@@ -1,10 +1,14 @@
 import get from 'lodash.get'
+import formData from 'form-data'
+import Mailgun from 'mailgun.js'
+import { IMailgunClient } from 'mailgun.js/Interfaces'
+
 import { LogInterface } from "../logging"
 
-const sgMail = require('@sendgrid/mail')
+const mailgun = new Mailgun(formData)
 
 export interface MailerSendParams {
-  to: string, 
+  to: string | string[], 
   replyTo?: string, 
   subject: string, 
   text: string, 
@@ -15,13 +19,20 @@ export interface MailerSendParams {
 export class Mailer {
   private log: LogInterface
   private fromAddress: string
+  private domain: string
+  private mailClient: IMailgunClient
 
-  constructor(params: { log: LogInterface, apiKey: string, fromAddress: string }) {
-    const { log, apiKey, fromAddress } = params
+  constructor(params: { log: LogInterface, apiKey: string, endpoint: string, fromAddress: string }) {
+    const { log, apiKey, endpoint, fromAddress } = params
 
     this.fromAddress = fromAddress
+    this.domain = fromAddress.split('@')[1]
     this.log = log.create('mailer')
-    sgMail.setApiKey(apiKey)
+    this.mailClient = mailgun.client({
+      username: 'api',
+      url: endpoint,
+      key: apiKey,
+    })
   }
 
   async send(params: MailerSendParams) {
@@ -45,7 +56,7 @@ attachments: ${att.map(a => `${a.filename} (${a.type}`).join(', ')}
 
     const attrs: any = {
       from: this.fromAddress,
-      to,
+      to: Array.isArray(to) ? to : [to],
       subject,
       text,
       html: html || text,
@@ -57,7 +68,7 @@ attachments: ${att.map(a => `${a.filename} (${a.type}`).join(', ')}
     }
 
     try {
-      await sgMail.send(attrs)
+      await this.mailClient.messages.create(this.domain, attrs)      
     } catch (err: any) {
       const errors = get(err, 'response.body.errors', [])
       const errorsStr = errors.map((e: any) => `${e.field}: ${e.message}`).join(`\n`)
@@ -68,10 +79,9 @@ attachments: ${att.map(a => `${a.filename} (${a.type}`).join(', ')}
 
   private _prepareAttachments(attachments: MailerSendParams['attachments'] = []) {
     return attachments.map(({ filename, contentType, content }, index) => ({
-      content: Buffer.isBuffer(content) ? content.toString('base64') : content,
       filename: filename || `attachment${index + 1}`,
+      data: Buffer.isBuffer(content) ? content.toString('base64') : content,
       type: contentType,
-      disposition: 'attachment',
     }))
   }
 }
