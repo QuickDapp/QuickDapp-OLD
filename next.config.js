@@ -10,7 +10,7 @@ const nextConfig = {
 
     // see https://github.com/rainbow-me/rainbowkit/blob/main/examples/with-next-app/next.config.js
     config.resolve.fallback = { fs: false, net: false, tls: false, crypto: false }
-    config.externals.push('pino-pretty', 'lokijs', 'encoding')
+    config.externals.push('pino-pretty', 'lokijs', 'encoding', 'bufferutil', 'utf-8-validate')
 
     config.module.rules.push({
       test: /\.svg$/i,

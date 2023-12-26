@@ -265,6 +265,8 @@ At this point we can use the App platform to create an app from this image. Foll
 
 If the App build succeeds (and it should!) your dapp will be up and running at the URL presented by DigitalOcean.
 
+Now, every time you push an updated image to the container registry the App will auto-redeploy.
+
 ## Step 13 - Hurrah!
 
 **Congratulations! your dapp is now available on the web in production mode.**
