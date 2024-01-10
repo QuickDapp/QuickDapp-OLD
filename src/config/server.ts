@@ -35,24 +35,28 @@ export const serverConfig = (() => {
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
   })
 
-  const ret = {
-    ...clientConfig,
-    DATABASE_URL: env.get('DATABASE_URL').required().asString(),
-    LOG_LEVEL: env.get('LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
-    WORKER_LOG_LEVEL: env.get('WORKER_LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
-    SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),
-    NEXTAUTH_URL: clientConfig.BASE_URL,
-    SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
-    MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),
-    MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
-    MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
-    ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
-    DATADOG_API_KEY: env.get('DATADOG_API_KEY').default('').asString(),
-    DATADOG_APPLICATION_KEY: env.get('DATADOG_APPLICATION_KEY').default('').asString(),
-    DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
-  } as ServerConfigInterface
+  try {
+    const ret = {
+      ...clientConfig,
+      DATABASE_URL: env.get('DATABASE_URL').required().asString(),
+      LOG_LEVEL: env.get('LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
+      WORKER_LOG_LEVEL: env.get('WORKER_LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
+      SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),
+      NEXTAUTH_URL: clientConfig.BASE_URL,
+      SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
+      MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),
+      MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
+      MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
+      ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
+      DATADOG_API_KEY: env.get('DATADOG_API_KEY').default('').asString(),
+      DATADOG_APPLICATION_KEY: env.get('DATADOG_APPLICATION_KEY').default('').asString(),
+      DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
+    } as ServerConfigInterface
 
-  console.log(ret)
-
-  return Object.freeze(ret) 
+    return Object.freeze(ret) 
+  } catch (err) {
+    console.error(`Error loading server-side config`)
+    console.error(err)
+    throw err
+  }
 })()

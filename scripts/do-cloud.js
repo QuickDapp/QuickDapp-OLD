@@ -2,7 +2,7 @@
 
 ;(async () => {
   try {
-    const { $$, execCommands } = await require('./shared/bootstrap')()
+    const { $$, execCommands } = await require('./shared/bootstrap')('production')
     const { pushDockerImageToContainerRegistry, createDatabase } = await require('./shared/digitalocean')
 
     await execCommands('do-cloud', {

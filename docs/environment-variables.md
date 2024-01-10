@@ -10,14 +10,33 @@ QuickDapp follows the [Next.js conventions](https://nextjs.org/docs/pages/buildi
 
 The [dotenv](https://www.npmjs.com/package/dotenv) loads environement varibles from various `.env*` files in the project root folder whilst still allowing for overrides specified directly via the shell/terminal environment itself.
 
-Environment variables are loaded in order from the following places, with later places taking precendence over earlier ones:
+Environment variables are loaded in the following order, with later places taking precendence over earlier ones:
 
 1. `.env`
 2. `.env.development` or `.env.production`, depending on the value of the `NODE_ENV` environment variable.
 3. `.env.local`
-4. Shell/terminal environment
 
 What this means is that if the same environment variable is declared in multiple places then its final value during runtime is determined by the above order.
+
+Some key points to note:
+
+* The `.env` file is **required.** This file should contain values suitable for local development as well as any values which are unlikely to change across environments. It gets bundled into production and Docker builds and can be checked into source control.
+* The `.env.development` and `.env.production` files are already _git-ignored_ and should **never** be checked into source control.
+  * The `.env.development` file gets loaded when the app is run in dev server mode.
+  * The `.env.production` file gets loaded when building production version of the app, running the production version and also gets bundled into Docker images.
+* The `.env.local` file is for further customization in all environments, e.g if you are temporarily testing a value different to the default. However, note that it does **not** get bundled into [Docker images](./deployment/docker.md).
+
+The files use the INI file format:
+
+```ini
+# a comment
+SERVER_WALLET_PRIVATE_KEY=0x...
+# quotes are allowed
+APP_NAME="quickest dapp"
+
+# another comment after some space
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
 
 **Example**
 
@@ -32,8 +51,6 @@ When the dev server is run, at runtime the `process.env.APP_NAME` value will equ
 
 If we restore the `.env.local` file but this time run the production server then the runtime value will be `local`. However, if we delete the `.env.local` file again and restart the production server then the runtime value will be `prod`.
 
-If we now set the shell/terminal environment to contain `APP_NAME=shell` and restart the server then the runtime value will be `shell` because the shell/terminal environment value overrides all others.
-
 ## Client-side vs Server-side
 
 There are two types of environment variables: _client-side_ and _server-side_.
@@ -42,38 +59,21 @@ _Client-side_ environment variables are made available client-side in the browse
 
 _Server-side_ environment variables are **only** available server-side and are **never** sent to the browser. Thus these variables can hold sensitive passwords, API keys and other information that browser clients are not meant to see.
 
-!!!
-All client-side environment variables are automatically available to server-side code. Thus, variables that are meant to be accessible in both places should be specified as client-side variables prefixed with `NEXT_PUBLIC_`.
-!!!
+_Note: All client-side environment variables are automatically available to server-side code._
 
-### .env* files
+## Overriding at runtime
 
-The `.env*` files use the INI file format:
+Server-side environment variables can be overridden at runtime by setting them in the shell/environment prior to starting the app. For example:
 
-```ini
-# a comment
-SERVER_WALLET_PRIVATE_KEY=0x...
-# quotes are allowed
-APP_NAME="quickest dapp"
-
-# another comment after some space
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+LOG_LEVEL=warning pnpm prod
 ```
 
+However, client-side environment variables get bundled (i.e. hardcoded) into the frontend application as [part of the build process](https://nextjs.org/docs/app/building-your-application/deploying#environment-variables) and thus **cannot be overridden at runtime**. 
 
-Key points to note:
+## Programmatic access
 
-* The `.env` file is **required.** This file should contain values suitable for local development as well as any values which are unlikely to change across environments. It gets bundled into production and Docker builds and can be checked into source control.
-* The `.env.development` and `.env.production` files are already _git-ignored_ and should **never** be checked into source control.
-  * The `.env.development` file gets loaded when the app is run in dev server mode.
-  * The `.env.production` file gets loaded when building production version of the app, running the production version and it also gets bundled into Docker images.
-* The `.env.local` file is for further customization in all environments, e.g if you are temporarily testing a value different to the default. However, note that it does **not** get bundled into Docker images.
-
-## Accessing variables at runtime
-
-The `src/config/**` modules are responsible for loading, parsing and ensuring the right syntax for the each of various environment variables. It is recommended that your code access environment variables through this rather than accessing `process.env` directly. 
-
-_Note: The [env-var](https://www.npmjs.com/package/env-var) package is used for parsing values and ensuring they adhere to a specified format_.
+The `src/config/**` modules are responsible for loading, parsing and ensuring the right syntax for each of the various environment variables. It is recommended that your code access environment variables through this rather than accessing `process.env` directly. 
 
 ### Client-side
 
@@ -94,6 +94,7 @@ import { serverConfig } from '@/config/server'
 
 console.log(serverConfig.APP_NAME) // quickest dapp
 ```
+
 
 ## Adding your own variables
 

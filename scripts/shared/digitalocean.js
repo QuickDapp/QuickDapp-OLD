@@ -1,3 +1,4 @@
+const get = require('lodash.get')
 const fs = require('fs')
 const path = require('path')
 const { Client } = require('pg')
@@ -38,7 +39,7 @@ const doesRegistryExist = async id => {
 
     console.log(body)
   } catch (err) {
-    if (err.response.statusCode === 409) {
+    if (get(err, 'response.statusCode') === 409) {
       return true
     } else {
       throw err
