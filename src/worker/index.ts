@@ -16,6 +16,7 @@ import {
   rescheduleCronJob,
   rescheduleFailedJob,
 } from '@/backend/db'
+import { serverConfig } from '@/config/server'
 
 const setupDefaultJobs = async (db: any) => {
   // remove old jobs
@@ -99,7 +100,7 @@ const handleJob = async (params: JobParams): Promise<object | undefined> => {
 }
 
 const main = async () => {
-  const app = bootstrap({ processName: 'worker' })
+  const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL })
   const { db, log } = app
 
   await deployMulticall3(app)

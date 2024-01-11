@@ -1,8 +1,7 @@
-import { useMutation } from "wagmi"
 import { request } from "graphql-request"
 import { MyNotifications, PageParam } from "@/shared/graphql/generated/types"
 import { GetMyNotificationsQuery, Notification } from "@/shared/graphql/generated/graphql"
-import { InfiniteData, useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
+import { InfiniteData, useInfiniteQuery, useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { getMyNotificationsQuery, getMyUnreadNotificationsCountQuery } from "@/shared/graphql/queries"
 import { markAllNotificationsAsReadMutation, markNotificationAsReadMutation } from "@/shared/graphql/mutations"
 

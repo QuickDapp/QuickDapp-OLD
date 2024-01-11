@@ -8,7 +8,8 @@ import { User, connectDb, createNotification } from '../db'
 import { createPublicClient, createWalletClient, http } from 'viem'
 
 export interface BootstrapParams {
-  processName: string
+  processName: string,
+  logLevel?: string,
 }
 
 export interface BootstrappedApp {
@@ -21,10 +22,10 @@ export interface BootstrappedApp {
   notifyUser: (id: User, data: object) => Promise<void>
 }
 
-export const bootstrap = ({ processName }: BootstrapParams): BootstrappedApp => {
+export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: BootstrapParams): BootstrappedApp => {
   const log = createLog({
     name: processName,
-    logLevel: serverConfig.WORKER_LOG_LEVEL,
+    logLevel,
   })
 
   let db: ReturnType<typeof connectDb>
