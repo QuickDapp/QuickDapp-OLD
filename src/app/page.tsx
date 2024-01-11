@@ -6,6 +6,7 @@ import { TokenList } from "@/frontend/components/dapp/TokenList"
 const HomePage = async () => {  
   return (
     <div className="p-4">
+      <p className="mb-6">This is the default QuickDapp dapp. It lets you create and transfer ERC-20 tokens.</p>
       <IfWalletConnected>
         <div className="flex flex-row justify-start items-center">
           <NumTokens className="mr-4" />

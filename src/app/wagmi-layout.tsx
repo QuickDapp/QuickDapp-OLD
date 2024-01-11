@@ -17,7 +17,7 @@ import * as wagmiChains from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 
 import { clientConfig } from '@/config/client'
-import { Footer } from '@/frontend/components/Footer'
+import { CookieConsentBanner } from '@/frontend/components/CookieConsentBanner'
 import { Header } from '@/frontend/components/Header'
 import { CookieConsentProvider, GlobalProvider } from '@/frontend/contexts'
 import { initDataDogAnalytics } from '@/frontend/utils/datadog'
@@ -64,7 +64,10 @@ export const WagmiLayout: FC<PropsWithChildren<{}>> = ({ children }) => {
                   <main className="relative m-after_header">
                     {children}
                   </main>
-                  <Footer />
+                  <footer>
+                    <p className="text-xs p-4">Built with <a href="https://quickdapp.xyz">QuickDapp</a></p>
+                  </footer>
+                  <CookieConsentBanner />
                 </div>
               </CookieConsentProvider>
             </GlobalProvider>
