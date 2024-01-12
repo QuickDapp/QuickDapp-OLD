@@ -53,4 +53,4 @@ pnpm showdocs
 
 ## License
 
-All Rights Reserved.
+See [LICENSE.md](LICENSE.md)
