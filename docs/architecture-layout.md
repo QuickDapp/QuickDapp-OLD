@@ -1,8 +1,12 @@
 ---
-order: 98
+order: 99
 ---
 
-# File-system layout
+# Architecture
+
+QuickDapp is built on Next.js. Thus, if you can build Next.js apps then you can build a QuickDapp. In addition to this, it also provides a [background worker](./worker/index.md) Node process as well as various [command-line tools](./command-line/index.md) for running and deploying the dapp and worker servers.
+
+## File-system layout
 
 _Note: This is not intended to be an exhaustive list of all the files in repository, but should give you a good idea of where things are._
 
