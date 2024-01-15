@@ -4,10 +4,6 @@ order: 98
 
 # Getting started
 
-This video show you how to get started. If you'd rather read through them then skip to the text below.
-
-**TODO video embed**
-
 ## Step 0 - Pre-requisites
 
 Ensure you have the following pre-requisites installed and ready:
