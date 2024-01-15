@@ -52,7 +52,11 @@ By default, QuickDapp assumes the existence of a [PostgreSQL](https://www.postgr
 * db: `quickdapp`
 * schema: `public`
 
-If you haven't already, create the `quickdapp` database, ensuring the `postgres` user has full system-level privileged access to it.
+If you haven't already, create the `quickdapp` database, ensuring the `postgres` user has full system-level privileged access to it:
+
+```shell
+psql -U postgres -c 'CREATE DATABASE quickdapp'
+```
 
 Let's get the dev database setup:
 
