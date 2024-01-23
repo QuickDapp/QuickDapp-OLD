@@ -1,11 +1,5 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: QuickDapp community support
+  - name: New features
     url: https://github.com/QuickDapp/QuickDapp/discussions
-    about: Please suggest features here.
-  - name: QuickDapp bugs and feature requests
-    url: https://github.com/QuickDapp/QuickDapp/issues
-    about: Please report bugs here.
-  - name: QuickDapp documentation
-    url: https://quickdapp.xyz/docs
-    about: Please read the documentation here.
+    about: Please suggest new features here.
