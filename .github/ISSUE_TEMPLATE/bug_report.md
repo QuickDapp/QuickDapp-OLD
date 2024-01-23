@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug and help us improve QuickDapp
+about: Report a bug and/or security vulnerability.
 title: "[BUG] "
 labels: bug
 assignees: hiddentao
