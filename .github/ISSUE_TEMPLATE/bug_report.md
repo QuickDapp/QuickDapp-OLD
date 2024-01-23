@@ -4,7 +4,6 @@ about: Report a bug and help us improve QuickDapp
 title: "[BUG] "
 labels: bug
 assignees: hiddentao
-
 ---
 
 **Describe the bug**
