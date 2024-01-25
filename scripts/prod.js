@@ -5,7 +5,7 @@ const path = require('path')
 const projectRoot = path.join(__dirname, '..')
 const buildRoot = path.join(projectRoot, 'build')
 
-const webCommands = [ `node .next/standalone/server.js` ]
+const webCommands = [`node ${projectRoot}/.next/standalone/server.js`]
 const workerCommands = [`node ${buildRoot}/worker-bundle.js`]
 
 require('./shared/env.js')({
