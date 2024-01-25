@@ -173,6 +173,12 @@ Enter this connection string as the `DATABASE_URL` environment variable in the `
 DATABASE_URL="postgres://quickdappuser:password@db.digitalocean.com:25060/quickdapp?schema=public"
 ```
 
+Now setup the production database schema:
+
+```shell
+pnpm prod db deploy
+```
+
 ## Step 9 - Deploy contracts to Sepolia
 
 We will deploy the contracts to the [Sepolia](https://www.alchemy.com/overviews/sepolia-testnet) test network. This means the production dapp will require the user's wallet be connected to Sepolia in order for interactions to work.
