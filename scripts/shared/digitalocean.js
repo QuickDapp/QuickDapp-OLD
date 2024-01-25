@@ -180,10 +180,11 @@ const grantUserFullAccessToDb = async(clusterId, userName, dbName) => {
     throw new Error(`Database ${dbName} does not exist in cluster ${clusterId}`)
   }
 
-  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
   const client = new Client({
     ...cluster.connection,
-    // database: dbName,
+    ssl: {
+      rejectUnauthorized: false,
+    }
   })
   await client.connect()
   await client.query(`ALTER DATABASE ${dbName} OWNER TO ${userName}`)
@@ -193,6 +194,11 @@ const grantUserFullAccessToDb = async(clusterId, userName, dbName) => {
 
 exports.createDatabase = async (dbName, username) => {
   console.log(`Creating database ${dbName}...`)
+
+  if (dbName.includes("-") || username.includes("-")) {
+    console.error('Database name and/or username cannot contain hyphen (-). Use underscore (_) instead.')
+    return
+  }
 
   try {
     const pgClusters = await getPostgresClusters()
