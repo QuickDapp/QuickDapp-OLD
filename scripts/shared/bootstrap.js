@@ -27,7 +27,7 @@ const parseCommands = async (comm, cmds) => {
       parseCommands(c, sub)
     }
 
-    comm.addCommand(c, k === 'default' ? { hidden: true, isDefault: true } : {})
+    comm.addCommand(c, k === '(default)' ? { hidden: false, isDefault: true } : {})
   })
 }
 

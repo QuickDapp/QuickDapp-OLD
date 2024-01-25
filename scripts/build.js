@@ -17,7 +17,7 @@
     }
 
     await execCommands('build', {
-      default: {
+      '(default)': {
         desc: 'Build the web and worker apps',
         action: async () => {
           await Promise.all([_buildWeb(), _buildWorker()])

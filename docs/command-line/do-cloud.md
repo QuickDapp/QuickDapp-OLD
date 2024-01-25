@@ -9,7 +9,7 @@ The `do-cloud` command is responsible for interacting with the [DigitalOcean](ht
 * Provision a managed PostgreSQL database and associated user.
 * Push [Docker](../deployment/docker.md) images to a managed container registry.
 
-All of these commands require the following environment variable to be set in either `.env.production` or `.env.local`:
+All of these commands require the following environment variable to be set in either `.env.local` _(recommended)_ or `.env.production`:
 
 * `DIGITALOCEAN_ACCESS_TOKEN` - set this to a DigitalOcean [personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/).
 

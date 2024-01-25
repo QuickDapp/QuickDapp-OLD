@@ -27,7 +27,7 @@
           push: {
             desc: 'Push docker images to a container registry',
             sub: {
-              default: {
+              '(default)': {
                 desc: 'Push combined web + worker Docker image',
                 opts: [
                   ['-r, --registry <id>', 'Docker container registry name', 'quickdapp'],

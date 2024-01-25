@@ -12,7 +12,7 @@
       build: {
         desc: 'Build docker images',
         sub: {
-          default: {
+          '(default)': {
             desc: 'Build combined web + worker docker image',
             opts: [['-p --prefix <prefix>', 'Docker image name prefix', 'quickdapp']],
             action: async ({ prefix }) => {
@@ -41,7 +41,7 @@
       run: {
         desc: 'Run docker images',
         sub: {
-          default: {
+          '(default)': {
             desc: 'Run combined web + worker docker image',
             opts: [
               ['-p, --port <port>', 'Host port to connect to the exposed container port', '3000'],

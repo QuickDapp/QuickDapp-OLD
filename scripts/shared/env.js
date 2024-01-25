@@ -5,7 +5,7 @@ module.exports = async ({ env, name, webCommands, workerCommands, dbCommands }) 
     const { $$, execCommands, runShellScripts } = await require('./bootstrap')(env)
 
     await execCommands(name, {
-      default: {
+      '(default)': {
         desc: 'Run all servers',
         action: async () => {
           await runShellScripts([...webCommands, ...workerCommands])
