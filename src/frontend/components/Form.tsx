@@ -16,7 +16,7 @@ export const FieldError = ({ error, className }: { error?: string, className?: s
 export const FieldSuffix = ({ field }: { field: FieldApi }) => {
   return (
     <>
-      {field.isValidating ? <Loading className="inline-block ml-2" /> : null}
+      {field.isValidating ? <Loading className="inline-block ml-2" /> : null}
     </>
   )
 }
@@ -25,12 +25,13 @@ export interface FieldLabelProps {
   help?: string
   label: string
   required?: boolean
+  hideTooltip?: boolean
 }
 
 
-export const FieldLabel = ({ children, label, required, help }: FieldLabelProps & { children?: ReactNode }) => {
+export const FieldLabel = ({ children, label, required, help, hideTooltip }: FieldLabelProps & { children?: ReactNode }) => {
   const helpStr = useMemo(() => {
-    return `${required ? 'REQUIRED' : 'OPTIONAL'}. ${help}`
+    return `${required ? 'REQUIRED' : 'OPTIONAL'}.${help ? ` ${help}` : ''}`
   }, [help, required])
 
   const dummyOnClick = useCallback((e: any) => {
@@ -39,14 +40,18 @@ export const FieldLabel = ({ children, label, required, help }: FieldLabelProps 
 
 
   return (
-    <label 
+    <label
       className={cn("flex flex-row justify-between items-end mb-1 text-slate-300")}
       onClick={dummyOnClick}
     >
       <span className="flex flex-row italic">
         {label}
-        <Tooltip className="ml-1 flex flex-row justify-start items-center">{helpStr}</Tooltip>
-        {required ? <span className="text-red-500 font-bold ml-1">*</span> : null}
+        {hideTooltip ? null : (
+          <>
+            <Tooltip className="ml-1 flex flex-row justify-start items-center">{helpStr}</Tooltip>
+            {required ? <span className="text-red-500 font-bold ml-1">*</span> : null}
+          </>
+        )}
       </span>
       {children}
     </label>
@@ -63,6 +68,7 @@ export const FieldCharLimitIndicator = ({ field, charLimit }: { field: FieldApi,
 export interface FieldProps extends FieldLabelProps {
   className?: string
   field: FieldApi
+  hideTooltip?: boolean
 }
 
 
@@ -77,9 +83,9 @@ export interface TextFieldProps extends FieldProps {
 }
 
 
-export const TextInput = (props : TextFieldProps & { extraInputProps?: any }) => {
+export const TextInput = (props: TextFieldProps & { extraInputProps?: any }) => {
   const { field, className, maxChars, showCharCount, placeholder, extraInputProps, labelRight } = props
-  
+
   return (
     <div>
       <div className={className}>
@@ -108,21 +114,21 @@ export const TextInput = (props : TextFieldProps & { extraInputProps?: any }) =>
 }
 
 
-export const NumberInput = (props : TextFieldProps & { min?: number, max?: number, step?: number }) => {
+export const NumberInput = (props: TextFieldProps & { min?: number, max?: number, step?: number }) => {
   const { min, max, step } = props
 
-  return <TextInput {...props} 
+  return <TextInput {...props}
     extraInputProps={{
       type: "number",
       min,
       max,
       step,
     }}
-  /> 
+  />
 }
 
 
-export const TextArea = (props : TextFieldProps & { rows?: number }) => {
+export const TextArea = (props: TextFieldProps & { rows?: number }) => {
   const { field, className, maxChars, showCharCount, placeholder, rows } = props
 
   return (
@@ -151,7 +157,7 @@ export const TextArea = (props : TextFieldProps & { rows?: number }) => {
 
 
 
-export const DropdownInput = (props : FieldProps & { options: { value: any, label: string }[] }) => {
+export const DropdownInput = (props: FieldProps & { options: { value: any, label: string }[] }) => {
   const { field, className, options } = props
 
   return (
