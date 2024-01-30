@@ -1,6 +1,6 @@
 input: .
 output: .retype
-url: localhost:5000
+url: https://docs.quickdapp.xyz
 branding:
   title: QuickDapp
   # label:
