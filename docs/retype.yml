@@ -6,10 +6,11 @@ branding:
   # label:
   logo: static/logo.png
 links:
-- text: quickdapp.xyz
+- text: QuickDapp.xyz
+  icon: home
   link: https://quickdapp.xyz
-- text: "@hiddentao"
-  link: https://twitter.com/hiddentao
+- text: "@QuickDapp"
+  link: https://twitter.com/quickdapp
 favicon: static/favicon.png
 editor:
   enabled: true
