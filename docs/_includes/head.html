@@ -19,7 +19,8 @@
   }
 
   window.onload = () => {
-    document.body.classList.add('dark')
+    localStorage.setItem('doc_theme', 'dark');
+    document.body.classList.add('dark');
     resetUi();
     setupObserver();
   }
