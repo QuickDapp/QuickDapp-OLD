@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.0](https://github.com/QuickDapp/publish-release/compare/v1.1.0...v1.2.0) (2024-01-31)
+
+
+### Features
+
+* allow for field tooltip to be hidden ([647bbef](https://github.com/QuickDapp/publish-release/commit/647bbefe6cc7719b662e6f4b8c228b49d6df26e6))
+
+
+### Bug Fixes
+
+* use of hyphens when setting up do db causes issues ([14aaf23](https://github.com/QuickDapp/publish-release/commit/14aaf23aae5a902854f6c71123dd30905d81ccf2))
+
 ## 1.1.0 (2024-01-23)
 
 

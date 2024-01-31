@@ -1,7 +1,7 @@
 {
   "name": "@quickdapp/quickdapp",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "QuickDapp is a starter kit for building dapps on Ethereum.",
   "main": "index.js",
   "author": "Ramesh Nair <ram@hiddentao.com>",
@@ -14,7 +14,7 @@
     "dev": "./scripts/dev.js",
     "prod": "./scripts/prod.js",
     "docker": "./scripts/docker.js",
-    "do-cloud": "./scripts/do-cloud.js",    
+    "do-cloud": "./scripts/do-cloud.js",
     "publish-docs": "retype build ./docs --output ./build-docs && gh-pages -d ./build-docs -r git@github.com:QuickDapp/docs.git",
     "release": "commit-and-tag-version && git push --follow-tags && npm run publish-docs"
   },
