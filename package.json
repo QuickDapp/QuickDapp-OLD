@@ -14,9 +14,7 @@
     "dev": "./scripts/dev.js",
     "prod": "./scripts/prod.js",
     "docker": "./scripts/docker.js",
-    "do-cloud": "./scripts/do-cloud.js",
-    "publish-docs": "retype build ./docs --output ./build-docs && gh-pages -d ./build-docs -r git@github.com:QuickDapp/docs.git",
-    "release": "commit-and-tag-version && git push --follow-tags && npm run publish-docs"
+    "do-cloud": "./scripts/do-cloud.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",
@@ -36,11 +34,9 @@
     "@types/react": "^18.2.29",
     "@types/react-dom": "^18.2.13",
     "chalk": "^5.3.0",
-    "commit-and-tag-version": "^12.2.0",
     "enquirer": "^2.4.1",
     "eslint": "8.27.0",
     "eslint-config-next": "^14.0.3",
-    "gh-pages": "^6.1.1",
     "got": "^14.0.0",
     "husky": "^8.0.2",
     "nodemon": "^3.0.1",
