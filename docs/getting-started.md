@@ -15,11 +15,7 @@ Ensure you have the following pre-requisites installed and ready:
 
 ## Step 1 - Source code
 
-Goto the [QuickDapp releases](https://github.com/QuickDapp/QuickDapp/releases) page and download and unzip the latest release source code into a local folder.
-
-!!!
-If you're feeling brave then feel free to simply fork from the latest `master` branch code at https://github.com/QuickDapp/QuickDapp/tree/master
-!!!
+Unzip the QuickDapp zip file you received when you purchased a license. If you are pro user then you can visit the repository at https://github.com/QuickDapp/QuickDapp and clone any of the version tags or the `master` branch (if you're feeling brave!).
 
 ## Step 2 - Dependencies
 

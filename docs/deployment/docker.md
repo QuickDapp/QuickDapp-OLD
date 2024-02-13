@@ -22,3 +22,36 @@ One built the images can be [run locally](../command-line/docker.md) and/or depl
 
 At present, QuickDapp provides built-in support for [deploying to DigitalOcean](./digital-ocean.md).
 
+## Bundling NPM packages
+
+Most Node packages will get automatically bundled into the built output by webpack. However, some packages will still require their `node_modules` sub-folders to exist at runtime in order to work properly (e.g [Prisma](https://www.prisma.io/)).
+
+These can be seen inside the `Dockerfile`, e.g:
+
+```
+COPY --from=build_base /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=build_base /app/node_modules/prisma ./node_modules/prisma
+COPY --from=build_base /app/node_modules/@prisma ./node_modules/@prisma
+```
+
+If you are using a package also has the same requirement then simply add a corresponding line for it in all of the sections in the `Dockerfile`. For example, if you you are using the `mailgen` package then you would add a single line for each of the three build image types:
+
+```
+# web
+FROM build_base as build_base_web
+...
+COPY --from=build_base /app/node_modules/mailgen ./node_modules/mailgen
+
+# worker
+FROM build_base as build_base_worker
+...
+COPY --from=build_base /app/node_modules/mailgen ./node_modules/mailgen
+
+# web + worker combined
+FROM base AS all
+...
+COPY --from=build_base /app/node_modules/mailgen ./node_modules/mailgen
+```
+
+
+Some NPM packages need to bundled 
