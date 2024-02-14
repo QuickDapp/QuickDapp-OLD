@@ -1,9 +1,9 @@
-import { ONE_MINUTE } from "@/shared/date"
-import { Resolvers } from "@/shared/graphql/generated/types"
-import { DefaultSession } from "next-auth"
-import { BootstrappedApp } from "../bootstrap"
-import { getNotificationsForUser, getUnreadNotificationsCountForUser, markAllNotificationsAsRead, markNotificationAsRead } from "../db"
 import { getUser } from "../db/users"
+import { DefaultSession } from "next-auth"
+import { ONE_MINUTE } from "@/shared/date"
+import { BootstrappedApp } from "../bootstrap"
+import { Resolvers } from "@/shared/graphql/generated/types"
+import { getNotificationsForUser, getUnreadNotificationsCountForUser, markAllNotificationsAsRead, markNotificationAsRead } from "../db"
 
 interface Context {
   user?: DefaultSession['user']
@@ -53,28 +53,30 @@ export const createResolvers = (app: BootstrappedApp) => {
 
         const user = await getUser(app.db, ctx.user!.name as string)
 
-        if (user && app.ably) {
-          const token = await new Promise((resolve, reject) => {
-            app.ably!.auth.requestToken(
-              {
-                clientId: `${user.id}`,
-                ttl: 60 * ONE_MINUTE,
-              },
-              (err, token) => {
-                if (err) {
-                  reject(err)
-                } else {
-                  resolve(token)
+        if (user) {
+          if (app.ably) {
+            const token = await new Promise((resolve, reject) => {
+              app.ably!.auth.requestToken(
+                {
+                  clientId: `${user.id}`,
+                  ttl: 60 * ONE_MINUTE,
+                },
+                (err, token) => {
+                  if (err) {
+                    reject(err)
+                  } else {
+                    resolve(token)
+                  }
                 }
-              }
-            )
-          })
-
-          return token
-        } else {
-          log.warn(`Ably not configured and/or user not found`)
-          throw undefined
+              )
+            })
+            return token
+          } else {
+            log.warn(`Ably not configured`)
+          }
         }
+
+        return undefined
       },
       markNotificationAsRead: async (_, { id }, ctx: Context) => {
         log.trace(`markNotificationAsRead`)
