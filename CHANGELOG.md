@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.3](https://github.com/QuickDapp/publish-release/compare/v1.2.2...v1.2.3) (2024-02-14)
+
+
+### Bug Fixes
+
+* dtrace provider related build issues in Dockerfile ([326a09b](https://github.com/QuickDapp/publish-release/commit/326a09b0241a6f29a1f00016b02b8804692901fc))
+
 ## [1.2.2](https://github.com/QuickDapp/publish-release/compare/v1.2.1...v1.2.2) (2024-02-13)
 
 ## [1.2.1](https://github.com/QuickDapp/publish-release/compare/v1.2.0...v1.2.1) (2024-01-31)
