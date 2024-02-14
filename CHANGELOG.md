@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.7](https://github.com/QuickDapp/publish-release/compare/v1.2.6...v1.2.7) (2024-02-14)
+
+
+### Bug Fixes
+
+* if an env file was missing the dotenv package was misbehaving ([5808902](https://github.com/QuickDapp/publish-release/commit/5808902e667bf8613516092518194d12e1aebba9))
+
 ## [1.2.6](https://github.com/QuickDapp/publish-release/compare/v1.2.5...v1.2.6) (2024-02-14)
 
 ## [1.2.5](https://github.com/QuickDapp/publish-release/compare/v1.2.4...v1.2.5) (2024-02-14)
