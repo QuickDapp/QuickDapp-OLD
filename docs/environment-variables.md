@@ -8,7 +8,7 @@ Environment variables are the primary means through which to pass configuration 
 
 QuickDapp follows the [Next.js conventions](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables) when it comes to specifying environment variables for your app.
 
-The [dotenv](https://www.npmjs.com/package/dotenv) loads environement varibles from various `.env*` files in the project root folder whilst still allowing for overrides specified directly via the shell/terminal environment itself.
+The [dotenv](https://www.npmjs.com/package/dotenv) loads environment varibles from various `.env*` files in the project root folder whilst still allowing for overrides specified directly via the shell/terminal environment itself.
 
 Environment variables are loaded in the following order, with later places taking precendence over earlier ones:
 
@@ -20,11 +20,15 @@ What this means is that if the same environment variable is declared in multiple
 
 Some key points to note:
 
-* The `.env` file is **required.** This file should contain values suitable for local development as well as any values which are unlikely to change across environments. It gets bundled into production and Docker builds and can be checked into source control.
-* The `.env.development` and `.env.production` files are already _git-ignored_ and should **never** be checked into source control.
+* The `.env` file is **required.** This file should contain any values which are unlikely to change across environments. It gets bundled into production and Docker builds and will be checked into source control. 
+* The `.env.development` and `.env.production` files are already _git-ignored_ and should **never** be checked into source control since they are intended to contain sensitive information (e.g API keys).
   * The `.env.development` file gets loaded when the app is run in dev server mode.
   * The `.env.production` file gets loaded when building production version of the app, running the production version and also gets bundled into Docker images.
-* The `.env.local` file is for further customization in all environments, e.g if you are temporarily testing a value different to the default. However, note that it does **not** get bundled into [Docker images](./deployment/docker.md).
+* The `.env.local` file is for further customization in all environments, e.g if you are temporarily testing a value different to the default. It also does not get checked into version control. However, note that it also does **not** get bundled into [Docker images](./deployment/docker.md).
+
+!!!
+**DO NOT** store sensitive information (e.g API keys) in the `.env` file. Use the environment-specific or `.env.local` files to store such information.
+!!!
 
 The files use the INI file format:
 
