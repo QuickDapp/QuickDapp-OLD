@@ -85,10 +85,13 @@ When you run the above command you will see output which looks like this:
 ```
 Enter the following line into your .env.development or .env.local file:
                                                                                
-NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS="0x5FbDB2315678afecb367f032d93F642f64180aa3"
+NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS="0x79D219573A2b042479604aBA46BE7CECc52A57cd"
 ```
 
-Follow the instructions and place this into either one of those files. Create the file if it doesn't exist.
+This address (usually it's `0x79D219573A2b042479604aBA46BE7CECc52A57cd`) is the address of the Diamond proxy contract that 
+is now deployed to your locally running Anvil node.
+
+Follow the instructions and place this line into either one of those files. Create the file if it doesn't exist.
 
 At this point we have locally running Anvil node with our upgradeable proxy contract deployed to it.
 
