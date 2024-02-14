@@ -53,19 +53,32 @@ module.exports = async (env) => {
   try {
     const path = require('path')
     const { $ } = await import('execa')
-    
+
     const dotenv = require('dotenv')
     const envObj = {}
     env = process.env.NODE_ENV || env
     process.env.NODE_ENV = env
+
+    // .env
     dotenv.configDotenv({ path: path.join(__dirname, '..', '..', `.env`), override: true, processEnv: envObj })
-    dotenv.configDotenv({ path: path.join(__dirname, '..', '..', `.env.${env}`), override: true, processEnv: envObj })
-    dotenv.configDotenv({ path: path.join(__dirname, '..', '..', `.env.local`), override: true, processEnv: envObj })
+
+    // .env.{env}
+    const specificEnvPath = path.join(__dirname, '..', '..', `.env.${env}`)
+    if (fs.existsSync(specificEnvPath)) {
+      dotenv.configDotenv({ path: specificEnvPath, override: true, processEnv: envObj })
+    }
+
+    // .env.local
+    const localEnvPath = path.join(__dirname, '..', '..', `.env.local`)
+    if (fs.existsSync(localEnvPath)) {
+      dotenv.configDotenv({ path: localEnvPath, override: true, processEnv: envObj })
+    }
+
     process.env = { ...envObj, ...process.env }
 
     const rootFolder = path.join(__dirname, '..', '..')
 
-    const get$$ = (folder) => {
+    const get$$ = folder => {
       return $({
         cwd: folder,
         stdio: 'inherit',
@@ -84,7 +97,7 @@ module.exports = async (env) => {
           return $$`${c}`
         })
       )
-    }    
+    }
 
     return { rootFolder, $$, get$$, execCommands, runShellScripts, logInfoBlock }
   } catch (err) {
