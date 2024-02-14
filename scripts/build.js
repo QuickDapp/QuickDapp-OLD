@@ -20,7 +20,8 @@
       '(default)': {
         desc: 'Build the web and worker apps',
         action: async () => {
-          await Promise.all([_buildWeb(), _buildWorker()])
+          await _buildWorker()
+          await _buildWeb()
         },
       },
       web: {
