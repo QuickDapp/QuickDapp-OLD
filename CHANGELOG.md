@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.8](https://github.com/QuickDapp/publish-release/compare/v1.2.7...v1.2.8) (2024-02-14)
+
+
+### Bug Fixes
+
+* ably token generation api was throwing instead of returning ([afe592c](https://github.com/QuickDapp/publish-release/commit/afe592c8414f7c0c0eaa05b3d2c896e1ffbf6fbc))
+
 ## [1.2.7](https://github.com/QuickDapp/publish-release/compare/v1.2.6...v1.2.7) (2024-02-14)
 
 
