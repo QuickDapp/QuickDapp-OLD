@@ -26,7 +26,7 @@
         },
       },
       dev: {
-        desc: 'Start a local anvil node and deploy the contracts to it, monitoring for changes and redeploying as necessary.',
+        desc: 'Build contracts and upgrade the deployed instance on the local Anvil node (this gets auto-called by the dev command)',
         action: async () => {
           await Promise.all([
             contracts$$`pnpm devnet`,
@@ -34,15 +34,16 @@
               await contracts$$`pnpm build`
               await contracts$$`pnpm dep local -n`
               // get proxy contract address from deployments file
-              const { local } = JSON.parse(fs.readFileSync(path.join(contractsFolder, 'gemforge.deployments.json'), 'utf8'))
+              const { local } = JSON.parse(
+                fs.readFileSync(path.join(contractsFolder, 'gemforge.deployments.json'), 'utf8')
+              )
               const { address } = local.contracts.find(a => a.name === 'DiamondProxy').onChain
               await logInfoBlock(`Enter the following line into your .env.development or .env.local file:
 
-NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS="${address}"`
-              )
+NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS="${address}"`)
 
               await $$`pnpm nodemon --on-change-only --watch ./contracts/src/facets ./contracts/src/facades ./contracts/src/init ./contracts/src/interfaces ./contracts/src/libs ./contracts/src/shared --ext sol --exec "./scripts/contracts.js build-and-upgrade"`
-            })()
+            })(),
           ])
         },
       },

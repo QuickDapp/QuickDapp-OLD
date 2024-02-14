@@ -70,8 +70,8 @@ git clone git@github.com:QuickDapp/contracts.git
 
 There should now be a `./contracts` folder. Now let's set it up:
 
-```
-pnpm contracts setup
+```shell
+pnpm contracts bootstrap
 ```
 
 Now let's run the local Anvil node and deploy the Diamond Proxy to it, and watch for changes:
