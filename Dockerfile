@@ -17,8 +17,13 @@ RUN adduser --system --uid 1001 nextjs
 
 # Install dependencies only when needed
 FROM base AS build_base
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+
+# From https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 ENV PYTHONUNBUFFERED=1
+
+# From https://github.com/chrisa/node-dtrace-provider?tab=readme-ov-file#troubleshooting-build-issues
+ENV NODE_DTRACE_PROVIDER_REQUIRE=hard
+
 RUN apk add --update --no-cache libc6-compat python3 make g++ bash git
 RUN ln -sf python3 /usr/bin/python
 
