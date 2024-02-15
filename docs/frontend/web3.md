@@ -25,6 +25,16 @@ The user remains authenticated across browser sessions until and unless the user
 
 _Note: If the user's crypto wallet is connected to a different chain then they will be prompted to switch to the right chain._
 
+### App name
+
+The `src/shared/constants.ts` file contains the app name that will be shown to users during the wallet connection process. Update these values accordingly:
+
+```ts
+export const APP_NAME = 'QuickDapp'
+```
+
+
+
 ## Contracts
 
 _Please refer to the the section on [Smart Contracts](../smart-contracts/index.md) for a general introduction_.

@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { zeroAddress } from "viem"
 import { useGlobalContext } from "../contexts"
-import { BigVal, toNumber, weiToEth } from "@/shared/number"
+import { BigVal, toNumber } from "@/shared/number"
 import { useGetMultipleContractValues } from "./contracts"
 import { ContractName, getContractInfo } from "@/shared/contracts"
 
@@ -25,5 +25,7 @@ export const useErc20TokenInfo = (tokenContractAddress: string) => {
     { contract, functionName: 'symbol' },
     { contract, functionName: 'decimals' },
     { contract, functionName: 'balanceOf', args: [wallet?.address || zeroAddress] },
-  ])
+  ], {
+    refetchInterval: 1000
+  })
 }

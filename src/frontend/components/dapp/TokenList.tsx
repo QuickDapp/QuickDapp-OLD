@@ -78,6 +78,8 @@ export const TokenList: FC<PropsWithClassName> = ({ className }) => {
   const numTokens = useGetContractValue({
     contract: ContractName.Proxy,
     functionName: 'getNumErc20s'
+  }, {
+    refetchInterval: 1000
   })
 
   const tokens = useGetContractPaginatedValues({
@@ -85,6 +87,8 @@ export const TokenList: FC<PropsWithClassName> = ({ className }) => {
     getFaList: getFaListForTokens,
     startIndex: 1,
     perPage: 10,
+  }, {
+    refetchInterval: 1000,
   })
 
   useEffect(() => {

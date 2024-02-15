@@ -11,6 +11,8 @@ export const NumTokens: FC<PropsWithClassName> = ({ className }) => {
   const value = useGetContractValue({ 
     contract: ContractName.Proxy,
     functionName: 'getNumErc20s' 
+  }, {
+    refetchInterval: 1000
   })
 
   return (

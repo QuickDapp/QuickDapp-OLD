@@ -1,7 +1,13 @@
 'use client'
 
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { ConnectButton, DisclaimerComponent } from '@rainbow-me/rainbowkit'
 import { Button } from './Button'
+
+export const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting your wallet, you agree to the terms of service and privacy policy.
+  </Text>
+);
 
 
 export const ConnectWallet = () => {

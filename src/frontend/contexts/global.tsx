@@ -1,21 +1,17 @@
 "use client"
 
 import { generateAblyTokenMutation } from '@/shared/graphql/mutations'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Ably from 'ably'
 import request from 'graphql-request'
 import { useSession } from 'next-auth/react'
 import React, { FC, useContext, useEffect, useMemo } from 'react'
-import { WalletClient, useAccount, useNetwork, useWalletClient } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import { graphqlApiEndpoint } from '../hooks'
 import { truncateStr } from '../utils'
 import { PubSubMessage } from '@/shared/pubsub'
 
-const queryClient = new QueryClient()
-
 export interface Wallet {
   isAuthenticated: boolean
-  client: WalletClient
   address: string
   addressTruncated: string
 }
@@ -23,7 +19,7 @@ export interface Wallet {
 export interface GlobalContextValue {
   wallet?: Wallet
   ably?: Ably.Types.RealtimePromise
-  chain: ReturnType<typeof useNetwork>['chain']
+  chain: ReturnType<typeof useAccount>['chain']
 }
 
 export const GlobalContext = React.createContext({} as GlobalContextValue)
@@ -31,22 +27,21 @@ export const GlobalContext = React.createContext({} as GlobalContextValue)
 export const GlobalProvider: FC<React.PropsWithChildren> = ({ children }) => {
   const [isAblyConnecting, setIsAblyConnecting] = React.useState<boolean>(false)
   const [ably, setAbly] = React.useState<Ably.Types.RealtimePromise>()
-  const { chain } = useNetwork()
-  const account = useAccount()
+  const { chain, address } = useAccount()
   const { data: client } = useWalletClient()
   const session = useSession()
 
   const wallet = useMemo(() => {
-    if (account && account.address && client) {
+    if (address && client) {
       return {
         client,
         isAuthenticated: session.status === 'authenticated',
-        address: account.address as string,
-        addressTruncated: truncateStr(account.address as string, 12),
+        address: address,
+        addressTruncated: truncateStr(address as string, 12),
       }
     }
     return undefined
-  }, [account, client, session.status])
+  }, [address, client, session.status])
 
   useEffect(() => {
     if (wallet?.isAuthenticated) {
@@ -112,9 +107,7 @@ export const GlobalProvider: FC<React.PropsWithChildren> = ({ children }) => {
           chain,
         }}
       >
-        <QueryClientProvider client={queryClient}>
-          {children}
-      </QueryClientProvider>
+        {children}
     </GlobalContext.Provider>
   )
 }

@@ -16,7 +16,7 @@ export interface Props {
 
 const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, children, value, sanitizeValue }) => {
   const content = useMemo(() => {
-    // check if the result of a multical
+    // check if the result of a multicall
     if (Array.isArray(value.data)) {
       const multiErrors: any[] = []
       const multiResults: any[] = []

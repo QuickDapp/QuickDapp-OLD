@@ -1,9 +1,8 @@
+import { useCallback, useMemo } from "react"
+import { useGlobalContext } from "../contexts"
 import { clientConfig } from '@/config/client'
 import { ContractInfo, ContractName, getDeployedContractInfo } from '@/shared/contracts'
-import { SendTransactionResult } from '@wagmi/core'
-import { useCallback, useMemo } from "react"
-import { paginatedIndexesConfig, useContractInfiniteReads, useContractRead, useContractReads, useContractWrite, usePublicClient } from "wagmi"
-import { useGlobalContext } from "../contexts"
+import { useInfiniteReadContracts, useReadContract, useReadContracts, useWriteContract, usePublicClient } from 'wagmi'
 
 export interface FunctionArgs {
   contract: ContractName | ContractInfo
@@ -23,21 +22,20 @@ const getResolvedContractInfo = (contract: ContractName | ContractInfo) => {
   return contract
 }
 
-export const useGetContractValue = (fa: FunctionArgs, overrides?: object) => {
+export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) => {
   const contract = useMemo(() => getResolvedContractInfo(fa.contract), [fa.contract])
 
-  return useContractRead({
+  return useReadContract({
     address: contract.address,
     abi: contract.abi,
     functionName: fa.functionName,
     args: fa.args,
-    watch: true,
-    ...overrides,
+    query: queryOverrides,
   })
 }
 
-export const useGetMultipleContractValues = (faList: FunctionArgs[], overrides?: any) => {
-  const v = useContractReads({
+export const useGetMultipleContractValues = (faList: FunctionArgs[], queryOverrides?: object) => {
+  const v = useReadContracts({
     contracts: faList.map(fa => {
       const contract = getResolvedContractInfo(fa.contract)
 
@@ -48,8 +46,7 @@ export const useGetMultipleContractValues = (faList: FunctionArgs[], overrides?:
         args: fa.args,
       }
     }),
-    watch: true,
-    ...overrides,
+    query: queryOverrides,
   })
 
   return v
@@ -57,20 +54,26 @@ export const useGetMultipleContractValues = (faList: FunctionArgs[], overrides?:
 
 export type GetFunctionArgsForPageIndex = (index: number) => FunctionArgs[]
 
-export const useGetContractPaginatedValues = ({ 
-  getFaList, cacheKey, startIndex = 0, perPage = 10, direction = 'increment'
-}: {
-  getFaList: GetFunctionArgsForPageIndex,
-  cacheKey: string,
-  startIndex?: number,
-  perPage?: number,
-  direction?: 'increment' | 'decrement',
-}, overrides?: object) => {
-  return useContractInfiniteReads({
+export const useGetContractPaginatedValues = (
+  {
+    getFaList,
     cacheKey,
-    ...paginatedIndexesConfig(
-      index => {
-        return getFaList(index as number).map(fa => {
+    startIndex = 0,
+    perPage = 10,
+  }: {
+    getFaList: GetFunctionArgsForPageIndex
+    cacheKey: string
+    startIndex?: number
+    perPage?: number,
+  },
+  queryOverrides?: object,
+) => {
+  return useInfiniteReadContracts({
+    cacheKey,
+    contracts(pageParam) {
+      const faList: any = []
+      ;[...new Array(perPage)].forEach((_, i) => {
+        const _list = getFaList(pageParam + i).map(fa => {
           const contract = getResolvedContractInfo(fa.contract)
 
           return {
@@ -81,11 +84,19 @@ export const useGetContractPaginatedValues = ({
             watch: true,
           }
         })
+
+        faList.push(..._list)
+      })
+
+      return faList
+    },
+    query: {
+      initialPageParam: startIndex,
+      getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
+        return lastPageParam + perPage
       },
-      { start: startIndex, perPage: perPage, direction }
-    ),
-    watch: true,
-    ...overrides,
+      ...queryOverrides,
+    },
   })
 }
 
@@ -97,7 +108,6 @@ export type ExecArgs = {
 }
 
 export interface ChainSetterFunction {
-  data?: SendTransactionResult
   isLoading?: boolean
   isSuccess?: boolean
   isError?: boolean
@@ -114,19 +124,13 @@ export const useSetContractValue = ({
   functionName: string, 
   contract: ContractName | ContractInfo,
 }, overrides?: object): ChainSetterFunction => {
-  const { chain } = useGlobalContext()
-  const publicClient = usePublicClient()
+  const props = useWriteContract()
 
+  const { chain } = useGlobalContext()
+  const publicClient = usePublicClient()!
   const chainId = useMemo(() => chain?.id, [chain?.id])
 
   const resolvedContract = useMemo(() => getResolvedContractInfo(contract), [contract])
-
-  const props = useContractWrite({
-    ...resolvedContract,
-    functionName,
-    chainId,
-    ...overrides,
-  })
 
   const exec = useCallback(
     async (e: ExecArgs) => {
@@ -136,7 +140,11 @@ export const useSetContractValue = ({
 
       const { args, value } = e
 
-      const { hash } = await props.writeAsync({
+      const hash = await props.writeContractAsync({
+        ...resolvedContract,
+        functionName,
+        chainId,
+        ...overrides,
         args,
         ...(value ? { value: BigInt(value) } : {}),
       })
@@ -149,7 +157,7 @@ export const useSetContractValue = ({
 
       return rec
     },
-    [chainId, props, publicClient]
+    [chainId, functionName, overrides, props, publicClient, resolvedContract]
   )
 
   return {

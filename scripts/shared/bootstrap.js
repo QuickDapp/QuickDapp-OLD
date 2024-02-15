@@ -1,4 +1,5 @@
 const { Command } = require('commander')
+const fs = require('fs')
 
 const parseCommands = async (comm, cmds) => {
   Object.keys(cmds).forEach(k => {
