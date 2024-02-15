@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.0](https://github.com/QuickDapp/publish-release/compare/v1.2.8...v1.3.0) (2024-02-15)
+
+
+### Features
+
+* upgrade to rainbowkit v2 ([536251b](https://github.com/QuickDapp/publish-release/commit/536251bc9167a4de65fc9c684423ceabae4a128e))
+
 ## [1.2.8](https://github.com/QuickDapp/publish-release/compare/v1.2.7...v1.2.8) (2024-02-14)
 
 
