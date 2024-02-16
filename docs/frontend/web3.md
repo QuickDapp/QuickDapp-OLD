@@ -33,8 +33,6 @@ The `src/shared/constants.ts` file contains the app name that will be shown to u
 export const APP_NAME = 'QuickDapp'
 ```
 
-
-
 ## Contracts
 
 _Please refer to the the section on [Smart Contracts](../smart-contracts/index.md) for a general introduction_.

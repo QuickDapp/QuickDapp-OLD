@@ -6,6 +6,7 @@
 
     const _buildWeb = async () => {
       console.log('Building Next.js app...')
+      await $$`pnpm graphql-code-generator --config ./src/shared/graphql/codegen.ts`
       await $$`pnpm next build`
       await $$`cp -r public .next/standalone`
       await $$`cp -r .next/static .next/standalone/.next/static`
@@ -13,6 +14,7 @@
 
     const _buildWorker = async () => {
       console.log('Building Worker app...')
+      await $$`./src/worker/codegen.js`
       await $$`pnpm webpack -c src/worker/webpack.config.js`
     }
 
