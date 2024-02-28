@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.1](https://github.com/QuickDapp/publish-release/compare/v1.3.0...v1.3.1) (2024-02-28)
+
+
+### Bug Fixes
+
+* upgrade to Next 14 to fix 304 not modified response ([5b06b66](https://github.com/QuickDapp/publish-release/commit/5b06b660df4d12c9e4c85573c43baee79e87fe20))
+
 ## [1.3.0](https://github.com/QuickDapp/publish-release/compare/v1.2.8...v1.3.0) (2024-02-15)
 
 
