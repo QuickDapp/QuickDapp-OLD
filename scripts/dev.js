@@ -3,6 +3,7 @@
 const webCommands = [
   `pnpm next dev`,
   `pnpm nodemon --watch src/shared/graphql --ext js,ts,json --exec "graphql-code-generator --config ./src/shared/graphql/codegen.ts"`,
+  `pnpm nodemon --watch src/shared/abi --ext js,json --exec "ts-node ./src/shared/abi/codegen.ts"`,
 ]
 
 const workerCommands = [

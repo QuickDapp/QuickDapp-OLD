@@ -13,10 +13,10 @@ export const FieldError = ({ error, className }: { error?: string, className?: s
 }
 
 
-export const FieldSuffix = ({ field }: { field: FieldApi }) => {
+export const FieldSuffix = ({ field, hideValidationIndicator }: { field: FieldApi, hideValidationIndicator?: boolean }) => {
   return (
     <>
-      {field.isValidating ? <Loading className="inline-block ml-2" /> : null}
+      {(field.isValidating && !hideValidationIndicator) ? <Loading className="inline-block ml-2" /> : null}
     </>
   )
 }
@@ -80,11 +80,12 @@ export interface TextFieldProps extends FieldProps {
   showCharCount?: boolean
   placeholder?: string
   labelRight?: ReactNode
+  hideValidationIndicator?: boolean
 }
 
 
 export const TextInput = (props: TextFieldProps & { extraInputProps?: any }) => {
-  const { field, className, maxChars, showCharCount, placeholder, extraInputProps, labelRight } = props
+  const { field, className, maxChars, showCharCount, placeholder, extraInputProps, labelRight, hideValidationIndicator } = props
 
   return (
     <div>
@@ -105,7 +106,7 @@ export const TextInput = (props: TextFieldProps & { extraInputProps?: any }) => 
             {...extraInputProps}
           >
           </input>
-          <FieldSuffix field={field} />
+          <FieldSuffix field={field} hideValidationIndicator={hideValidationIndicator} />
         </div>
       </div>
       <FieldError {...field} />

@@ -1,0 +1,4 @@
+{
+  "Erc20": "../data/erc20abi.json",
+  "DiamondProxy": "../../../contracts/src/generated/abi.json"
+}

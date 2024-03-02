@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
 import pDebounce from 'p-debounce'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export type HandleFieldChangeFunction<T = any> = (v: T) => void
 export type SanitizeFunction<T = any> = (v: T) => T
-export type ValidateFunction<T = any> = (v: T) => string | undefined
-export type ValidateAsyncFunction<T = any> = (v: T) => Promise<string | undefined>
+export type ValidateFunction<T = any> = (v: T, extraArgs?: any) => string | undefined
+export type ValidateAsyncFunction<T = any> = (v: T, extraArgs?: any) => Promise<string | undefined>
 
 export interface FieldApi {
   name: string
@@ -27,6 +27,7 @@ export interface FieldOptions {
   validate?: ValidateFunction
   validateAsync?: ValidateAsyncFunction
   validateAsyncDebounceMs?: number
+  validateExtraArgs?: any
 }
 
 const DUMMY_VALIDATE_ASYNC_FN = async () => ''
@@ -42,12 +43,12 @@ export const useField = (options: FieldOptions): FieldApi => {
 
   const validate = useCallback(
     async (v: any) => {
-      const syncValidationError = options.validate ? options.validate(v) : ''
+      const syncValidationError = options.validate ? options.validate(v, options.validateExtraArgs) : ''
       if (syncValidationError) {
         setError(syncValidationError)
       } else if (options.validateAsync) {
         setIsValidating(true)
-        setError(await debouncedValidateAsync(v))
+        setError(await debouncedValidateAsync(v, options.validateExtraArgs))
         setIsValidating(false)
       } else {
         setError(undefined)
@@ -95,13 +96,18 @@ export interface FormOptions {
   fields: FieldApi[]
   validate?: ValidateFunction
   validateAsync?: ValidateAsyncFunction
+  validateExtraArgs?: any
   validateAsyncDebounceMs?: number
 }
 
 export const useForm = (options: FormOptions): FormApi => {
   const { fields } = options
   const [formError, setFormError] = useState<string | undefined>(undefined)
-  const [isValidating, setIsValidating] = useState<boolean>(false)
+  const [_isValidating, setIsValidating] = useState<boolean>(false)
+
+  const isValidating = useMemo(() => {
+    return _isValidating || fields.some(f => f.isValidating)
+  }, [_isValidating, fields])
 
   const valid = useMemo(() => {
     if (formError) {
@@ -144,13 +150,13 @@ export const useForm = (options: FormOptions): FormApi => {
         return m
       }, {})
 
-      const syncValidationError = options.validate ? options.validate(map) : ''
+      const syncValidationError = options.validate ? options.validate(map, options.validateExtraArgs) : ''
 
       if (syncValidationError) {
         setFormError(syncValidationError)
       } else if (options.validateAsync) {
         setIsValidating(true)
-        setFormError(await debouncedValidateAsync(map))
+        setFormError(await debouncedValidateAsync(map, options.validateExtraArgs))
         setIsValidating(false)
       } else {
         setFormError(undefined)
@@ -167,7 +173,7 @@ export const useForm = (options: FormOptions): FormApi => {
 }
 
 const useAsyncValidator = (
-  validateAsync: (v: any) => Promise<string | undefined> = DUMMY_VALIDATE_ASYNC_FN,
+  validateAsync: (v: any, extraArgs?: any) => Promise<string | undefined> = DUMMY_VALIDATE_ASYNC_FN,
   debounceMs: number = 0
 ) => {
   const debouncedValidateAsync = useMemo(() => {
@@ -175,11 +181,11 @@ const useAsyncValidator = (
   }, [validateAsync, debounceMs])
 
   const validate = useCallback(
-    async (v: any) => {
+    async (v: any, extraArgs?: any) => {
       try {
-        return await debouncedValidateAsync(v)
+        return await debouncedValidateAsync(v, extraArgs)
       } catch (err: any) {
-        console.error(`Error running validator`, err)
+        console.error(`Error running async validator`, err)
         return `${err}`
       }
     },

@@ -39,7 +39,7 @@ const CreateTokenForm: FC<{ onCreated: () => void }> = ({ onCreated }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const create = useSetContractValue({ functionName: 'erc20DeployToken', contract: ContractName.Proxy })
+  const create = useSetContractValue({ functionName: 'erc20DeployToken', contract: ContractName.DiamondProxy })
 
   const canSubmit = useMemo(() => {
     return valid && !isSubmitting && create.canExec

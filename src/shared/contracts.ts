@@ -1,49 +1,30 @@
-import { Abi } from 'viem'
-
-import DiamondProxyAbi from '../../contracts/src/generated/abi.json'
-import Erc20Abi from './data/erc20abi.json'
 import { clientConfig } from '@/config/client'
 import Multicall3 from './data/multicall3.json'
+import { ContractName, getContractAbi } from './abi/generated'
 
-export enum ContractName {
-  Erc20 = 'Erc20',
-  Proxy = 'Proxy',
-}
-
-export interface ContractInfo {
-  address: `0x${string}`
-  abi: Abi
-}
-
-const contractAbi: Record<ContractName, Abi> = {
-  [ContractName.Erc20]: Erc20Abi as Abi,
-  [ContractName.Proxy]: DiamondProxyAbi as Abi,
-}
+export { ContractName }
 
 const deployments: Record<string, Partial<Record<ContractName, string>>> = {
   localhost: {
-    [ContractName.Proxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
+    [ContractName.DiamondProxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
   },
   sepolia: {
-    [ContractName.Proxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
+    [ContractName.DiamondProxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
   },
 }
 
-export const getContractInfo = (contractName: ContractName, address: string): ContractInfo => {
-  const abi = contractAbi[contractName]
-
-  if (!abi) {
-    throw new Error(`No abi found for ${contractName}`)
-  }
+export const getContractInfo = (contractName: ContractName, address: string) => {
+  const abi = getContractAbi(contractName)
 
   return {
     address: address as `0x${string}`,
     abi,
-  }
+  } as const
 }
 
+export type ContractInfo = ReturnType<typeof getContractInfo>
 
-export const getDeployedContractInfo = (contractName: ContractName, target: string): ContractInfo => {
+export const getDeployedContractInfo = (contractName: ContractName, target: string) => {
   if (!deployments[target]) {
     throw new Error(`No deployment target found for ${target}`)
   }
@@ -56,6 +37,7 @@ export const getDeployedContractInfo = (contractName: ContractName, target: stri
 
   return getContractInfo(contractName, contractAddress)
 }
+
 
 
 export const getMulticall3Info = () => {

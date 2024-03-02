@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from "react"
 import { useGlobalContext } from "../contexts"
 import { clientConfig } from '@/config/client'
-import { ContractInfo, ContractName, getDeployedContractInfo } from '@/shared/contracts'
+import { ContractInfo, ContractName, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
 import { useInfiniteReadContracts, useReadContract, useReadContracts, useWriteContract, usePublicClient } from 'wagmi'
+import { Abi } from "viem"
 
 export interface FunctionArgs {
   contract: ContractName | ContractInfo
@@ -24,7 +25,7 @@ const getResolvedContractInfo = (contract: ContractName | ContractInfo) => {
 
 export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) => {
   const contract = useMemo(() => getResolvedContractInfo(fa.contract), [fa.contract])
-
+  
   return useReadContract({
     address: contract.address,
     abi: contract.abi,
@@ -35,17 +36,20 @@ export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) =
 }
 
 export const useGetMultipleContractValues = (faList: FunctionArgs[], queryOverrides?: object) => {
+  const multicall3 = useMemo(() => getMulticall3Info(), [])
+
   const v = useReadContracts({
     contracts: faList.map(fa => {
       const contract = getResolvedContractInfo(fa.contract)
 
       return {
         address: contract.address,
-        abi: contract.abi,
+        abi: contract.abi as Abi,
         functionName: fa.functionName,
         args: fa.args,
       }
     }),
+    multicallAddress: multicall3.contract,
     query: queryOverrides,
   })
 

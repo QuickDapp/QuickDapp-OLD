@@ -4,7 +4,7 @@ import { ChainFilterModule } from '../types'
 import { serverConfig } from '@/config/server'
 import { ContractName, getContractInfo, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
 
-const proxyContract = getDeployedContractInfo(ContractName.Proxy, serverConfig.CHAIN)
+const proxyContract = getDeployedContractInfo(ContractName.DiamondProxy, serverConfig.CHAIN)
 const { contract: multicallAddress } = getMulticall3Info()
 
 export const createFilter: ChainFilterModule['createFilter'] = (chainClient) => {

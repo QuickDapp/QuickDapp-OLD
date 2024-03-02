@@ -67,7 +67,7 @@ const List: FC<{ numTokens: number, tokens: any }> = ({ numTokens, tokens }) => 
 const getFaListForTokens: GetFunctionArgsForPageIndex = (index: number) => {
   return [
     {
-      contract: ContractName.Proxy,
+      contract: ContractName.DiamondProxy,
       functionName: 'getErc20Address',
       args: [index],
     },
@@ -76,7 +76,7 @@ const getFaListForTokens: GetFunctionArgsForPageIndex = (index: number) => {
 
 export const TokenList: FC<PropsWithClassName> = ({ className }) => {
   const numTokens = useGetContractValue({
-    contract: ContractName.Proxy,
+    contract: ContractName.DiamondProxy,
     functionName: 'getNumErc20s'
   }, {
     refetchInterval: 1000

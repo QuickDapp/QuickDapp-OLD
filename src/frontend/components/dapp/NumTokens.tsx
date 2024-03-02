@@ -9,7 +9,7 @@ import { PropsWithClassName } from "../../utils"
 
 export const NumTokens: FC<PropsWithClassName> = ({ className }) => {
   const value = useGetContractValue({ 
-    contract: ContractName.Proxy,
+    contract: ContractName.DiamondProxy,
     functionName: 'getNumErc20s' 
   }, {
     refetchInterval: 1000
