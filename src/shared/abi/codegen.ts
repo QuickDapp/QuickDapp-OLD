@@ -7,7 +7,9 @@ const config = require('./config.json')
 
 const abis = Object.keys(config).reduce((acc, name) => {
   try {
-    const abi = require(path.join(__dirname, config[name]))
+    const abiPath = Array.isArray(config[name]) ? config[name][0] : config[name]
+    const data = require(path.join(__dirname, abiPath))
+    const abi = Array.isArray(config[name]) ? data[config[name][1]] : data
     acc[name] = `const ${name}_ABI = ${JSON.stringify(abi)}`
     return acc
   } catch (err) {
@@ -30,10 +32,14 @@ ${Object.keys(abis)
 
 export const getContractAbi = (name: ContractName) => {
   switch (name) {
-    ${Object.keys(abis).map(name => `
+    ${Object.keys(abis)
+      .map(
+        name => `
       case ContractName.${name}:
         return ${name}_ABI
-    `).join('\n')}
+    `
+      )
+      .join('\n')}
       default:
         throw new Error('Unknown contract name')
   }
