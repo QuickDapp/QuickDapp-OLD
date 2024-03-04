@@ -25,7 +25,8 @@ pnpm dev web
 This internally runs:
 
 * Next.js dev server which watches for changes to your web app and reloads automatically.
-* GraphQL code generator which auto-generates Typescript bindings when your GraphQL schema changes.
+* [GraphQL](../frontend/graphql.md) code generator which auto-generates Typescript bindings when your GraphQL schema changes.
+* [Contract ABI](../smart-contracts/abis-and-addresses.md) code generator which auto-regenerates the JSON ABI for your contracts when ABI config changes.
 
 The website will be accessible at [http://localhost:3000](http://localhost:3000).
 

@@ -35,7 +35,7 @@ export const APP_NAME = 'QuickDapp'
 
 ## Contracts
 
-_Please refer to the the section on [Smart Contracts](../smart-contracts/index.md) for a general introduction_.
+_Please refer to the the section on [Smart Contracts](../smart-contracts/index.md)_.
 
 ### Read/write hooks
 
