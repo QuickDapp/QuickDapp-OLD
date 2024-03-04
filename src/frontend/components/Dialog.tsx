@@ -32,7 +32,7 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const dialogContentVariants = cva(
-  "md:w-full rounded-md",
+  "md:w-full rounded-md max-h-[80%]",
   {
     variants: {
       variant: {
@@ -42,7 +42,7 @@ const dialogContentVariants = cva(
       size: {
         default: "max-w-lg",
         max: "max-w-5xl",
-        med: "max-w-3xl",
+        med: "max-w-2xl",
       },
     },
     defaultVariants: {
@@ -52,18 +52,18 @@ const dialogContentVariants = cva(
   }
 )
 
-interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>, VariantProps<typeof dialogContentVariants> {}
+interface DialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>, VariantProps<typeof dialogContentVariants> { }
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   DialogContentProps
-  >(({ className, children, size, variant, ...props }, ref) => (
+>(({ className, children, size, variant, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       className={cn(
         "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-        "flex flex-column justify-center items-center",
+        "flex flex-column justify-center items-stretch",
         dialogContentVariants({ size, variant })
       )}
       {...props}
