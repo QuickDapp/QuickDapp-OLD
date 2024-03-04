@@ -32,7 +32,7 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const dialogContentVariants = cva(
-  "md:w-full rounded-md max-h-[80%]",
+  "w-[80%] md:w-full rounded-md max-h-[80%]",
   {
     variants: {
       variant: {
