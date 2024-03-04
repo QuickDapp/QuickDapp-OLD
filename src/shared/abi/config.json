@@ -1,4 +1,18 @@
 {
-  "Erc20": "../data/erc20abi.json",
-  "DiamondProxy": "../../../contracts/src/generated/abi.json"
+  "Erc20": [
+    {
+      "glob": "../data/erc20abi.json"
+    }
+  ],
+  "DiamondProxy": [
+    {
+      "glob": "../../../contracts/out/IDiamondProxy.sol/IDiamondProxy.json",
+      "keyPath": "abi"
+    },
+    {
+      "glob": "../../../contracts/out/**/**.json",
+      "keyPath": "abi",
+      "types": ["error", "event"]
+    }
+  ]
 }

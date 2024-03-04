@@ -2,14 +2,50 @@
 const fs = require('node:fs')
 const { glob } = require('glob')
 const path = require('node:path')
+const get = require('lodash.get')
 
-const config = require('./config.json')
+interface AbiConfig {
+  glob: string
+  keyPath?: string
+  types?: string[]
+}
+
+const loadAbi = (cfgs: AbiConfig[]): object => {
+  const ret: any[] = []
+
+  const fragments: Record<string, Record<string, any>> = {}
+
+  cfgs.forEach(cfg => {
+    const files = glob.sync(path.join(__dirname, cfg.glob))
+
+    files.forEach((f: string) => {
+      const j = require(f) as object
+
+      const abi = cfg.keyPath ? get(j, cfg.keyPath) : j
+
+      if (abi && Array.isArray(abi)) {
+        abi.forEach((f: any) => {
+          if (!cfg.types || cfg.types.includes(f.type)) {
+            fragments[f.type] = fragments[f.type] || {}
+            fragments[f.type][f.name] = f
+          }
+        })
+      }
+    })
+  })
+
+  Object.keys(fragments).forEach((type: string) => {
+    ret.push(...Object.values(fragments[type]))
+  })
+
+  return ret
+}
+
+const config = require('./config.json') as Record<string, AbiConfig[]>
 
 const abis = Object.keys(config).reduce((acc, name) => {
   try {
-    const abiPath = Array.isArray(config[name]) ? config[name][0] : config[name]
-    const data = require(path.join(__dirname, abiPath))
-    const abi = Array.isArray(config[name]) ? data[config[name][1]] : data
+    const abi = loadAbi(config[name])
     acc[name] = `const ${name}_ABI = ${JSON.stringify(abi)}`
     return acc
   } catch (err) {
