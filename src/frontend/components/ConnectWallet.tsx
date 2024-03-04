@@ -2,6 +2,8 @@
 
 import { ConnectButton, DisclaimerComponent } from '@rainbow-me/rainbowkit'
 import { Button } from './Button'
+import { PropsWithClassName } from '../utils';
+import { FC } from 'react';
 
 export const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
@@ -10,7 +12,7 @@ export const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
 );
 
 
-export const ConnectWallet = () => {
+export const ConnectWallet: FC<PropsWithClassName> = ({ className }) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -33,13 +35,16 @@ export const ConnectWallet = () => {
             authenticationStatus === 'authenticated');
         return (
           <div
-            {...(!ready && {
+            {...(!ready ? {
               'aria-hidden': true,
+              className,
               'style': {
                 opacity: 0,
                 pointerEvents: 'none',
                 userSelect: 'none',
               },
+            } : {
+              className,
             })}
           >
             {(() => {
