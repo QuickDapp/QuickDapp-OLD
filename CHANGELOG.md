@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.6.1](https://github.com/QuickDapp/publish-release/compare/v1.6.0...v1.6.1) (2024-03-04)
+
 ## [1.6.0](https://github.com/QuickDapp/publish-release/compare/v1.5.0...v1.6.0) (2024-03-04)
 
 
