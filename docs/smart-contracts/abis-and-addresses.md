@@ -8,7 +8,7 @@ The [`src/shared/abi/config.json`](https://github.com/QuickDapp/QuickDapp/tree/m
 based on Solidity compiler output. 
 
 The configuration schema provides for combining multiple compiled output JSONs into a single ABI structure - this is especially useful in situations where events and erros are defined in interfaces and other files 
-separate to the main contract's source code.
+separate to the main contract's source code. Not including such ABI fragments would mean not being able to decode errors and events properly at runtime.
 
 For example, the default `config.json` looks as follows:
 
