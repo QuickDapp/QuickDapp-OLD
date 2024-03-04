@@ -9,12 +9,13 @@ export interface Props {
     data: any
     error: any
     isLoading: boolean
-  }, 
+  },
   sanitizeValue?: (v: any) => any,
-  children: (v: any) => ReactNode, 
+  errorButtonLabel?: string,
+  children: (v: any) => ReactNode,
 }
 
-const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, children, value, sanitizeValue }) => {
+const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, children, value, sanitizeValue, errorButtonLabel }) => {
   const content = useMemo(() => {
     // check if the result of a multicall
     if (Array.isArray(value.data)) {
@@ -31,7 +32,7 @@ const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, chil
 
       if (multiErrors.length) {
         const errStr = multiErrors.map((e) => String(e)).join("\n")
-        return <ErrorButton errorMessage={errStr} />
+        return <ErrorButton errorMessage={errStr} label={errorButtonLabel} />
       } else if (multiResults.length) {
         const v2 = sanitizeValue ? sanitizeValue(multiResults) : multiResults
         return children(v2)
@@ -40,7 +41,7 @@ const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, chil
       }
     } else {
       if (value.error) {
-        return <ErrorButton errorMessage={String(value.error)} />
+        return <ErrorButton errorMessage={String(value.error)} label={errorButtonLabel} />
       } else if (typeof value.data !== 'undefined') {
         const v = sanitizeValue ? sanitizeValue(value.data) : value.data
         return children(v)
@@ -48,7 +49,7 @@ const ContractValueComponent: FC<PropsWithClassName<Props>> = ({ className, chil
         return <Loading className="inline-block" />
       }
     }
-  }, [value, sanitizeValue, children])
+  }, [value.data, value.error, errorButtonLabel, sanitizeValue, children])
 
   return (
     <div className={cn('inline-block', className)}>{content}</div>
