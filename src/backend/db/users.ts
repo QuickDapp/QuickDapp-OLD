@@ -1,20 +1,22 @@
 import { PrismaClient } from "@prisma/client"
 
 export const createUserIfNotExists = async (db: PrismaClient, wallet: string) => {
-  return db.$transaction(async (tx) => {
-    const u = await tx.user.findFirst({
+  return db.$transaction(async tx => {
+    let u = await tx.user.findFirst({
       where: {
         wallet: wallet.toLowerCase(),
       },
     })
 
     if (!u) {
-      await tx.user.create({
+      u = await tx.user.create({
         data: {
           wallet: wallet.toLowerCase(),
         },
       })
     }
+
+    return u
   })
 }
 
