@@ -23,7 +23,7 @@ export const FieldSuffix = ({ field, hideValidationIndicator }: { field: FieldAp
 
 export interface FieldLabelProps {
   help?: string
-  label: string
+  label?: string
   required?: boolean
   hideTooltip?: boolean
 }
@@ -39,7 +39,7 @@ export const FieldLabel = ({ children, label, required, help, hideTooltip }: Fie
   }, [])
 
 
-  return (
+  return label ? (
     <label
       className={cn("flex flex-row justify-between items-end mb-1 text-slate-300")}
       onClick={dummyOnClick}
@@ -55,7 +55,7 @@ export const FieldLabel = ({ children, label, required, help, hideTooltip }: Fie
       </span>
       {children}
     </label>
-  )
+  ) : null
 }
 
 
@@ -69,6 +69,7 @@ export interface FieldProps extends FieldLabelProps {
   className?: string
   field: FieldApi
   hideTooltip?: boolean
+  hideError?: boolean
 }
 
 
@@ -85,31 +86,29 @@ export interface TextFieldProps extends FieldProps {
 
 
 export const TextInput = (props: TextFieldProps & { extraInputProps?: any }) => {
-  const { field, className, maxChars, showCharCount, placeholder, extraInputProps, labelRight, hideValidationIndicator } = props
+  const { field, className, maxChars, hideError, showCharCount, placeholder, extraInputProps, labelRight, hideValidationIndicator } = props
 
   return (
-    <div>
-      <div className={className}>
-        <FieldLabel {...props}>
-          {labelRight || (
-            showCharCount ? <FieldCharLimitIndicator field={field} charLimit={maxChars} /> : null
-          )}
-        </FieldLabel>
-        <div className="flex flex-row justify-start items-center">
-          <input
-            className={standardInputStyle}
-            maxLength={maxChars}
-            name={field.name}
-            value={field.value}
-            onChange={(e) => field.handleChange(e.target.value)}
-            placeholder={placeholder}
-            {...extraInputProps}
-          >
-          </input>
-          <FieldSuffix field={field} hideValidationIndicator={hideValidationIndicator} />
-        </div>
+    <div className={className}>
+      <FieldLabel {...props}>
+        {labelRight || (
+          showCharCount ? <FieldCharLimitIndicator field={field} charLimit={maxChars} /> : null
+        )}
+      </FieldLabel>
+      <div className="flex flex-row justify-start items-center">
+        <input
+          className={standardInputStyle}
+          maxLength={maxChars}
+          name={field.name}
+          value={field.value}
+          onChange={(e) => field.handleChange(e.target.value)}
+          placeholder={placeholder}
+          {...extraInputProps}
+        >
+        </input>
+        <FieldSuffix field={field} hideValidationIndicator={hideValidationIndicator} />
       </div>
-      <FieldError {...field} />
+      {hideError ? null : <FieldError {...field} />}
     </div>
   )
 }
@@ -130,28 +129,26 @@ export const NumberInput = (props: TextFieldProps & { min?: number, max?: number
 
 
 export const TextArea = (props: TextFieldProps & { rows?: number }) => {
-  const { field, className, maxChars, showCharCount, placeholder, rows } = props
+  const { field, className, maxChars, showCharCount, placeholder, rows, hideError } = props
 
   return (
-    <div>
-      <div className={className}>
-        <FieldLabel {...props}>
-          {showCharCount ? <FieldCharLimitIndicator field={field} charLimit={maxChars} /> : null}
-        </FieldLabel>
-        <div className="flex flex-row justify-start items-center">
-          <textarea
-            rows={rows}
-            maxLength={maxChars}
-            className={standardInputStyle}
-            name={field.name}
-            value={field.value}
-            onChange={(e) => field.handleChange(e.target.value)}
-            placeholder={placeholder}
-          />
-          <FieldSuffix field={field} />
-        </div>
+    <div className={className}>
+      <FieldLabel {...props}>
+        {showCharCount ? <FieldCharLimitIndicator field={field} charLimit={maxChars} /> : null}
+      </FieldLabel>
+      <div className="flex flex-row justify-start items-center">
+        <textarea
+          rows={rows}
+          maxLength={maxChars}
+          className={standardInputStyle}
+          name={field.name}
+          value={field.value}
+          onChange={(e) => field.handleChange(e.target.value)}
+          placeholder={placeholder}
+        />
+        <FieldSuffix field={field} />
       </div>
-      <FieldError {...field} />
+      {hideError ? null : <FieldError {...field} />}
     </div>
   )
 }
@@ -159,29 +156,27 @@ export const TextArea = (props: TextFieldProps & { rows?: number }) => {
 
 
 export const DropdownInput = (props: FieldProps & { options: { value: any, label: string }[] }) => {
-  const { field, className, options } = props
+  const { field, className, options, hideError } = props
 
   return (
-    <div>
-      <div className={className}>
-        <FieldLabel {...props}>
-          <FieldCharLimitIndicator field={field} />
-        </FieldLabel>
-        <div className="flex flex-row justify-start items-center">
-          <select
-            className={standardInputStyle}
-            name={field.name}
-            value={field.value}
-            onChange={(e) => field.handleChange(e.target.value)}
-          >
-            {options.map((o, i) => (
-              <option key={i} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-          <FieldSuffix field={field} />
-        </div>
+    <div className={className}>
+      <FieldLabel {...props}>
+        <FieldCharLimitIndicator field={field} />
+      </FieldLabel>
+      <div className="flex flex-row justify-start items-center">
+        <select
+          className={standardInputStyle}
+          name={field.name}
+          value={field.value}
+          onChange={(e) => field.handleChange(e.target.value)}
+        >
+          {options.map((o, i) => (
+            <option key={i} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+        <FieldSuffix field={field} />
       </div>
-      <FieldError {...field} />
+      {hideError ? null : <FieldError {...field} />}
     </div>
   )
 }
