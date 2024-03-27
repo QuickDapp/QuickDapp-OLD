@@ -5,7 +5,7 @@
   "description": "QuickDapp is a starter kit for building dapps on Ethereum.",
   "main": "index.js",
   "author": "Ramesh Nair <ram@hiddentao.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "bootstrap": "husky install",
     "showdocs": "retype start ./docs",
