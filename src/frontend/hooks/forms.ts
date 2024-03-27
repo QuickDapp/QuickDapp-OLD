@@ -17,6 +17,7 @@ export interface FieldApi {
   isSet: boolean
   isValidating: boolean
   handleChange: HandleFieldChangeFunction
+  unset: () => void
 }
 
 export interface FieldOptions {
@@ -47,12 +48,11 @@ export const useField = (options: FieldOptions): FieldApi => {
       if (syncValidationError) {
         setError(syncValidationError)
       } else if (options.validateAsync) {
-        setIsValidating(true)
         setError(await debouncedValidateAsync(v, options.validateExtraArgs))
-        setIsValidating(false)
       } else {
         setError(undefined)
       }
+      setIsValidating(false)
     },
     [debouncedValidateAsync, options]
   )
@@ -63,12 +63,19 @@ export const useField = (options: FieldOptions): FieldApi => {
       setVersion(version + 1)
       setValue(val)
       setIsSet(true)
+      setIsValidating(true)
       setTimeout(() => validate(val))
     },
     [options, validate, version]
   )
 
-  const valid = useMemo(() => !error, [error])
+  const unset = useCallback(() => {
+    setValue('')
+    setIsSet(false)
+    setError(undefined)
+  }, [])
+
+  const valid = useMemo(() => !error && !isValidating, [error, isValidating])
 
   return {
     name: options.name,
@@ -79,6 +86,7 @@ export const useField = (options: FieldOptions): FieldApi => {
     version,
     isValidating,
     handleChange,
+    unset,
   }
 }
 
@@ -137,7 +145,7 @@ export const useForm = (options: FormOptions): FormApi => {
 
   const reset = useCallback(() => {
     fields.forEach(f => {
-      f.handleChange('')
+      f.unset()
     })
   }, [fields])
 
@@ -145,6 +153,8 @@ export const useForm = (options: FormOptions): FormApi => {
 
   const validate = useCallback(
     async (f: FieldApi[]) => {
+      setIsValidating(true)
+
       const map = f.reduce((m: Record<string, any>, f) => {
         m[f.name] = f
         return m
@@ -155,12 +165,12 @@ export const useForm = (options: FormOptions): FormApi => {
       if (syncValidationError) {
         setFormError(syncValidationError)
       } else if (options.validateAsync) {
-        setIsValidating(true)
         setFormError(await debouncedValidateAsync(map, options.validateExtraArgs))
-        setIsValidating(false)
       } else {
         setFormError(undefined)
       }
+
+      setIsValidating(false)
     },
     [debouncedValidateAsync, options]
   )
