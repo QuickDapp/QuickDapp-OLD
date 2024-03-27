@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.7.0](https://github.com/QuickDapp/publish-release/compare/v1.6.1...v1.7.0) (2024-03-27)
+
+
+### Features
+
+* better validation tuning ([a9c6201](https://github.com/QuickDapp/publish-release/commit/a9c6201d0345a2be72f074d2a177a1ff7df3a934))
+* error button custom label prop ([c598b64](https://github.com/QuickDapp/publish-release/commit/c598b642a857c17245d1d3dd57294784044d67e2))
+* mit license ([71cf7da](https://github.com/QuickDapp/publish-release/commit/71cf7da1008a1fcdaf2d472cf5550c76086fd26f))
+* more field view customization ([f71d2a1](https://github.com/QuickDapp/publish-release/commit/f71d2a1e1e83e0f2afdb069cf11d8a2920809536))
+
 ## [1.6.1](https://github.com/QuickDapp/publish-release/compare/v1.6.0...v1.6.1) (2024-03-04)
 
 ## [1.6.0](https://github.com/QuickDapp/publish-release/compare/v1.5.0...v1.6.0) (2024-03-04)
