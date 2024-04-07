@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const webCommands = [
-  `pnpm next dev`,
+  `pnpm next dev --hostname 0.0.0.0`,
   `pnpm nodemon --watch src/shared/graphql --ext js,ts,json --exec "graphql-code-generator --config ./src/shared/graphql/codegen.ts"`,
   `pnpm nodemon --watch src/shared/abi --ext js,json --exec "ts-node ./src/shared/abi/codegen.ts"`,
 ]
