@@ -14,7 +14,7 @@ require('./shared/env.js')({
   webCommands,
   workerCommands,
   dbCommands: {
-    deploy: ['Migrate the database to the latest schema', `pnpm prisma migrate deploy`],
+    migrate: ['Migrate the database to the latest schema', `pnpm prisma migrate deploy`],
     status: ['Check the migration status of the database', `pnpm prisma migrate status`],
   },
 })
