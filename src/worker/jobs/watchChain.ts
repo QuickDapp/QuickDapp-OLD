@@ -12,21 +12,27 @@ const filters: Record<string, FilterModule> = {}
 
 let filtersCreated = false
 
-export const run: JobRunner = async ({ app, log }: JobParams) => {
-  if (!filtersCreated) {
-    log.info(`Creating filters`)
+const recreateFilters = async ({ app, log }: JobParams) => {
+  log.info(`Creating filters`)
 
-    for (const f in chainFilters) {
-      filters[f] = {
-        log: log.create(f),
-        chainFilter: chainFilters[f],
-        filter: await chainFilters[f].createFilter(app.chainClient),
-      }
-      log.debug(`Created filter: ${f}`)
+  for (const f in chainFilters) {
+    filters[f] = {
+      log: log.create(f),
+      chainFilter: chainFilters[f],
+      filter: await chainFilters[f].createFilter(app.chainClient),
     }
+    log.debug(`Created filter: ${f}`)
+  }
 
-    filtersCreated = true
-    log.info(`Created filters`)
+  filtersCreated = true
+  log.info(`Created filters`)
+}
+
+export const run: JobRunner = async (params: JobParams) => {
+  const { app, log } = params
+
+  if (!filtersCreated) {
+    await recreateFilters(params)
   }
 
   const { chainClient } = app
@@ -49,6 +55,9 @@ export const run: JobRunner = async ({ app, log }: JobParams) => {
       }
     } catch (err) {
       fm.log.error(`Error processing filter: ${err}`)
+      // sometimes filter fails because the node cluster has replaced the node
+      fm.log.info(`>>> Recreating filters...`);
+      await recreateFilters(params)
     }
   }))
 }

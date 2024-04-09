@@ -40,7 +40,7 @@ const setupDefaultJobs = async (db: any) => {
       autoRescheduleOnFailure: true,
       autoRescheduleOnFailureDelay: 10 * ONE_SECOND, // give a bit more time before retrying,
     },
-    '*/5 * * * * *' // every 5 seconds
+    '*/3 * * * * *' // every 3 seconds
   )
 }
 
