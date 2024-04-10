@@ -63,7 +63,7 @@ _Client-side_ environment variables are made available client-side in the browse
 
 _Server-side_ environment variables are **only** available server-side and are **never** sent to the browser. Thus these variables can hold sensitive passwords, API keys and other information that browser clients are not meant to see.
 
-_Note: All client-side environment variables are automatically available to server-side code._
+_Note: All client-side environment variables are automatically available  server-side code._
 
 ## Overriding at runtime
 
@@ -84,19 +84,15 @@ The `src/config/**` modules are responsible for loading, parsing and ensuring th
 ```typescript
 import { clientConfig } from '@/config/client'
 
-console.log(clientConfig.BASE_URL) // http://localhost:3000
+console.log(clientConfig.NEXT_PUBLIC_BASE_URL) // http://localhost:3000
 ```
-
-!!!
-Although client-side variables are defined with the `NEXT_PUBLIC_` prefix, at runtime the prefix gets removed to make your code more readable.
-!!!
 
 ### Server-side
 
 ```typescript
 import { serverConfig } from '@/config/server'
 
-console.log(serverConfig.APP_NAME) // quickest dapp
+console.log(serverConfig.NEXT_PUBLIC_APP_NAME) // quickest dapp
 ```
 
 
