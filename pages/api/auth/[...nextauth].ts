@@ -30,7 +30,7 @@ const providers = [
     async authorize(credentials) {
       try {
         const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'))
-        const nextAuthUrl = new URL(serverConfig.BASE_URL)
+        const nextAuthUrl = new URL(serverConfig.NEXT_PUBLIC_BASE_URL)
 
         const result = await siwe.verify({
           signature: credentials?.signature || '',

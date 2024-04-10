@@ -31,14 +31,14 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: `Sign in to ${APP_NAME}`,
 })
 
-const chain = (wagmiChains as any)[clientConfig.CHAIN]
+const chain = (wagmiChains as any)[clientConfig.NEXT_PUBLIC_CHAIN]
 
 const config = getDefaultConfig({
   appName: APP_NAME,
-  projectId: clientConfig.WALLETCONNECT_PROJECT_ID,
+  projectId: clientConfig.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
   chains: [chain],
   transports: {
-    [chain.id]: http(clientConfig.CHAIN_RPC_ENDPOINT),
+    [chain.id]: http(clientConfig.NEXT_PUBLIC_CHAIN_RPC_ENDPOINT),
   },
   ssr: true,
 })

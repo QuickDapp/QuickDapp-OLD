@@ -7,8 +7,8 @@ export const setupDataDogStream = () => {
   if (
     !serverConfig.DATADOG_API_KEY ||
     !serverConfig.DATADOG_APPLICATION_KEY ||
-    !serverConfig.DATADOG_SITE ||
-    !serverConfig.DATADOG_SERVICE
+    !serverConfig.NEXT_PUBLIC_DATADOG_SITE ||
+    !serverConfig.NEXT_PUBLIC_DATADOG_SERVICE
   ) {
     return
   }
@@ -29,7 +29,7 @@ const LEVELS: Record<number, string> = {
 
 
 class DataDogStream extends Writable {
-  private ddtags: string = `env:${serverConfig.APP_MODE},version:${packageJson.version}`
+  private ddtags: string = `env:${serverConfig.NEXT_PUBLIC_APP_MODE},version:${packageJson.version}`
   private apiInstance: v2.LogsApi
   private _logs: any[] = []
 
@@ -47,7 +47,7 @@ class DataDogStream extends Writable {
     })
 
     configuration.setServerVariables({
-      site: serverConfig.DATADOG_SITE!,
+      site: serverConfig.NEXT_PUBLIC_DATADOG_SITE!,
     })
 
     this.apiInstance = new v2.LogsApi(configuration)
@@ -67,7 +67,7 @@ class DataDogStream extends Writable {
             ddsource: l.name,
             ddtags: this.ddtags,
             message: `${l.time} [${LEVELS[l.level]}] ${l.msg}`,
-            service: serverConfig.DATADOG_SERVICE,
+            service: serverConfig.NEXT_PUBLIC_DATADOG_SERVICE,
             hostname: l.hostname,
             additionalProperties: {
               level: LEVELS[l.level],

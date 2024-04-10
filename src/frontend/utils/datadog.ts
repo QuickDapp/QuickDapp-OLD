@@ -5,21 +5,21 @@ import { CookieConsent, getUserCookieConsent } from "../contexts/cookieConsent"
 
 export const initDataDogAnalytics = () => {
   const enabled = 
-    clientConfig.DATADOG_APPLICATION_ID 
-    && clientConfig.DATADOG_CLIENT_TOKEN
-    && clientConfig.DATADOG_SITE
-    && clientConfig.DATADOG_SERVICE
+    clientConfig.NEXT_PUBLIC_DATADOG_APPLICATION_ID 
+    && clientConfig.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
+    && clientConfig.NEXT_PUBLIC_DATADOG_SITE
+    && clientConfig.NEXT_PUBLIC_DATADOG_SERVICE
 
   if (enabled) {
     // ask user for cookie consent
     getUserCookieConsent((consent) => {
       if (consent === CookieConsent.Yes) {
         datadogRum.init({
-          applicationId: clientConfig.DATADOG_APPLICATION_ID!,
-          clientToken: clientConfig.DATADOG_CLIENT_TOKEN!,
-          site: clientConfig.DATADOG_SITE!,
-          service: clientConfig.DATADOG_SERVICE!,
-          env: clientConfig.APP_MODE!,
+          applicationId: clientConfig.NEXT_PUBLIC_DATADOG_APPLICATION_ID!,
+          clientToken: clientConfig.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN!,
+          site: clientConfig.NEXT_PUBLIC_DATADOG_SITE!,
+          service: clientConfig.NEXT_PUBLIC_DATADOG_SERVICE!,
+          env: clientConfig.NEXT_PUBLIC_APP_MODE!,
           version: packageJson.version,
           sessionSampleRate: 100,
           sessionReplaySampleRate: 100,

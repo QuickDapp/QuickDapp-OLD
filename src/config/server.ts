@@ -10,6 +10,7 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   SESSION_ENCRYPTION_KEY: string
   NEXTAUTH_URL: string
   SERVER_WALLET_PRIVATE_KEY: string
+  SERVER_CHAIN_RPC_ENDPOINT: string
   MAILGUN_API_KEY?: string
   MAILGUN_API_ENDPOINT?: string
   MAILGUN_FROM_ADDRESS?: string
@@ -26,6 +27,7 @@ export const serverConfig = (() => {
     WORKER_LOG_LEVEL: process.env.WORKER_LOG_LEVEL,
     SESSION_ENCRYPTION_KEY: process.env.SESSION_ENCRYPTION_KEY,
     SERVER_WALLET_PRIVATE_KEY: process.env.SERVER_WALLET_PRIVATE_KEY,
+    SERVER_CHAIN_RPC_ENDPOINT: process.env.SERVER_CHAIN_RPC_ENDPOINT,
     MAILGUN_API_KEY: process.env.MAILGUN_API_KEY,
     MAILGUN_API_ENDPOINT: process.env.MAILGUN_API_ENDPOINT,
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
@@ -41,9 +43,10 @@ export const serverConfig = (() => {
       DATABASE_URL: env.get('DATABASE_URL').required().asString(),
       LOG_LEVEL: env.get('LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
       WORKER_LOG_LEVEL: env.get('WORKER_LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
-      SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),
-      NEXTAUTH_URL: clientConfig.BASE_URL,
+      SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),      
+      NEXTAUTH_URL: clientConfig.NEXT_PUBLIC_BASE_URL,
       SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
+      SERVER_CHAIN_RPC_ENDPOINT: env.get('SERVER_CHAIN_RPC_ENDPOINT').required().asString(),
       MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),
       MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
       MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),

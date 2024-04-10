@@ -16,7 +16,7 @@ const resolvedContractInfo: Record<string, ContractInfo> = {}
 const getResolvedContractInfo = (contract: ContractName | ContractInfo) => {
   if (typeof contract === 'string') {
     if (!resolvedContractInfo[contract]) {
-      resolvedContractInfo[contract] = getDeployedContractInfo(contract, clientConfig.CHAIN)
+      resolvedContractInfo[contract] = getDeployedContractInfo(contract, clientConfig.NEXT_PUBLIC_CHAIN)
     }
     return resolvedContractInfo[contract]
   }

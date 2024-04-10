@@ -37,11 +37,11 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: Bo
   }
 
   const chainClient = createPublicClient({ 
-    transport: http(serverConfig.CHAIN_RPC_ENDPOINT, { batch: true })
+    transport: http(serverConfig.SERVER_CHAIN_RPC_ENDPOINT, { batch: true })
   })
 
   const serverWallet = createWalletClient({
-    transport: http(serverConfig.CHAIN_RPC_ENDPOINT, { batch: true }),
+    transport: http(serverConfig.SERVER_CHAIN_RPC_ENDPOINT, { batch: true }),
     account: privateKeyToAccount(serverConfig.SERVER_WALLET_PRIVATE_KEY as `0x${string}`),
   })
 

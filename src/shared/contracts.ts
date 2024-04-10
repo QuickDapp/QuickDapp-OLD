@@ -6,10 +6,10 @@ export { ContractName }
 
 const deployments: Record<string, Partial<Record<ContractName, string>>> = {
   localhost: {
-    [ContractName.DiamondProxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
+    [ContractName.DiamondProxy]: clientConfig.NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS,
   },
   sepolia: {
-    [ContractName.DiamondProxy]: clientConfig.DIAMOND_PROXY_ADDRESS,
+    [ContractName.DiamondProxy]: clientConfig.NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS,
   },
 }
 
