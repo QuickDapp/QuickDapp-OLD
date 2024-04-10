@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.8.0](https://github.com/QuickDapp/publish-release/compare/v1.7.0...v1.8.0) (2024-04-10)
+
+
+### Features
+
+* abi codegen should not overwrite in prod build mode ([d17d7f4](https://github.com/QuickDapp/publish-release/commit/d17d7f4182d9cca2201f20d4fde70b0e48ac2d51))
+* dev server can now accept connections from anywhere on lan ([8592fee](https://github.com/QuickDapp/publish-release/commit/8592feee5575c527e304111b346e104c3c00f7cd))
+* more resilient filter chain watcher ([4f27f9e](https://github.com/QuickDapp/publish-release/commit/4f27f9e279a5101f251558a1565271b7563908a5))
+
 ## [1.7.0](https://github.com/QuickDapp/publish-release/compare/v1.6.1...v1.7.0) (2024-03-27)
 
 

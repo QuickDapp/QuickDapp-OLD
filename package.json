@@ -1,7 +1,7 @@
 {
   "name": "@quickdapp/quickdapp",
   "private": true,
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "QuickDapp is a starter kit for building dapps on Ethereum.",
   "main": "index.js",
   "author": "Ramesh Nair <ram@hiddentao.com>",
