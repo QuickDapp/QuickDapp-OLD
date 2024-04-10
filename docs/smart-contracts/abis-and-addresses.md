@@ -47,3 +47,7 @@ file provides the following methods:
 * `getDeployedContractInfo` - returns ABU and address of a contract on a given chain.
 * `getMulticall3Info` - returns address of [Multicall3](https://www.multicall3.com/) contract on the current chain. _(Note: the address should be the same on every chain)_.
 
+!!!
+In production build modes the code generator will only write the `generated.ts` file if it doesn't already exist. This is to make it easy to do CI builds and cloud deployments without needing to checkout and compile your contracts 
+repositories as well.
+!!! 

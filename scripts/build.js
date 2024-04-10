@@ -6,7 +6,7 @@
 
     const _preBuild = async () => {
       console.log('Pre-build steps...')
-      await $$`pnpm ts-node ./src/shared/abi/codegen.ts`
+      await $$`pnpm ts-node ./src/shared/abi/codegen.ts --no-overwrite`
       await $$`pnpm graphql-code-generator --config ./src/shared/graphql/codegen.ts`
       await $$`./src/worker/codegen.js`
     }
