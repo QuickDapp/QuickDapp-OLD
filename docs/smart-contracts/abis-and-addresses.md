@@ -40,14 +40,10 @@ For example, the default `config.json` looks as follows:
 
 The code generator will then generate a Typescript file based on this configuration and - when running [dev](../command-line/dev.md) mode - watch for configuration changes and rebuild accordingly. 
 
-The generated Typescript file is located at `src/shared/abi/generated.ts` and is referenced by the [`src/shared/contracts.ts`](https://github.com/QuickDapp/QuickDapp/tree/master/src/shared/contracts.ts) file. This 
-file provides the following methods:
+The generated Typescript file is located at `src/shared/abi/generated.ts` and is referenced by the [`src/shared/contracts.ts`](https://github.com/QuickDapp/QuickDapp/tree/master/src/shared/contracts.ts) file. This file provides the following methods:
 
 * `getContractInfo` - returns ABI of a contract
 * `getDeployedContractInfo` - returns ABU and address of a contract on a given chain.
 * `getMulticall3Info` - returns address of [Multicall3](https://www.multicall3.com/) contract on the current chain. _(Note: the address should be the same on every chain)_.
 
-!!!
-In production build modes the code generator will only write the `generated.ts` file if it doesn't already exist. This is to make it easy to do CI builds and cloud deployments without needing to checkout and compile your contracts 
-repositories as well.
-!!! 
+This file is checked into version control as it makes it easier to perform CI builds in the cloud if you don't have to checkout and compile your smart contracts each time (especially true if you're using a Rust toolchain such as Foundry). Due to this, in production build modes the code generator will only write the `generated.ts` file if it doesn't already exist.
