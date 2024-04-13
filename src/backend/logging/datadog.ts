@@ -75,9 +75,6 @@ class DataDogStream extends Writable {
             additionalProperties: {
               level: LEVELS[l.level],
               time: l.time,
-              ...(l.level > 40 ? { 
-                'error.message': l.msg,
-              } : {})
             },
           })),
           contentEncoding: 'deflate',
@@ -89,7 +86,6 @@ class DataDogStream extends Writable {
   }
 
   _write(log: any, enc: any, cb: any) {
-    console.log(log)
     this._logs.push(JSON.parse(log))
     if (this._logs.length >= LOG_BUFFER_MAX_SIZE) {
       this.flush()
