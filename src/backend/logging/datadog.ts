@@ -3,7 +3,7 @@ import { serverConfig } from '@/config/server';
 import packageJson from '../../../package.json'
 import { client, v2 } from '@datadog/datadog-api-client'
 
-export const setupDataDogStream = () => {
+export const setupDataDogStream = (name: string) => {
   if (
     !serverConfig.DATADOG_API_KEY ||
     !serverConfig.DATADOG_APPLICATION_KEY ||
@@ -13,7 +13,7 @@ export const setupDataDogStream = () => {
     return
   }
 
-  return new DataDogStream()
+  return new DataDogStream(name)
 }
 
 const LOG_BUFFER_MAX_SIZE = 50
@@ -32,11 +32,14 @@ class DataDogStream extends Writable {
   private ddtags: string = `env:${serverConfig.NEXT_PUBLIC_APP_MODE},version:${packageJson.version}`
   private apiInstance: v2.LogsApi
   private _logs: any[] = []
+  private _name: string
 
-  constructor() {
+  constructor(name: string) {
     super({
       objectMode: true,
     })
+
+    this._name = name
 
     const configuration = client.createConfiguration({
       // debug: true,
@@ -67,11 +70,14 @@ class DataDogStream extends Writable {
             ddsource: l.name,
             ddtags: this.ddtags,
             message: `${l.time} [${LEVELS[l.level]}] ${l.msg}`,
-            service: serverConfig.NEXT_PUBLIC_DATADOG_SERVICE,
-            hostname: l.hostname,
+            service: `${serverConfig.NEXT_PUBLIC_DATADOG_SERVICE}-${this._name}`,
+            hostname: l.hostname,            
             additionalProperties: {
               level: LEVELS[l.level],
               time: l.time,
+              ...(l.level > 40 ? { 
+                'error.message': l.msg,
+              } : {})
             },
           })),
           contentEncoding: 'deflate',
@@ -83,6 +89,7 @@ class DataDogStream extends Writable {
   }
 
   _write(log: any, enc: any, cb: any) {
+    console.log(log)
     this._logs.push(JSON.parse(log))
     if (this._logs.length >= LOG_BUFFER_MAX_SIZE) {
       this.flush()

@@ -10,7 +10,7 @@ const formattedOutput = bformat({
 })
 
 export interface LogConfig {
-  name?: string
+  name: string
   logLevel: string,
 }
 
@@ -72,7 +72,7 @@ export const createLog = (config: LogConfig): LogInterface => {
     },
   )
 
-  const dataDogStream = setupDataDogStream()
+  const dataDogStream = setupDataDogStream(config.name)
   if (dataDogStream) {
     streams.push({
       level: config.logLevel,
