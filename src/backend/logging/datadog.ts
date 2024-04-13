@@ -16,7 +16,7 @@ export const setupDataDogStream = (name: string) => {
   return new DataDogStream(name)
 }
 
-const LOG_BUFFER_MAX_SIZE = 50
+const LOG_BUFFER_MAX_SIZE = 10
 
 const LEVELS: Record<number, string> = {
   10: 'TRACE',
@@ -69,12 +69,14 @@ class DataDogStream extends Writable {
           body: logs.map(l => ({
             ddsource: l.name,
             ddtags: this.ddtags,
-            message: `${l.time} [${LEVELS[l.level]}] ${l.msg}`,
+            message: l.msg,
             service: `${serverConfig.NEXT_PUBLIC_DATADOG_SERVICE}-${this._name}`,
+            status: LEVELS[l.level],
             hostname: l.hostname,            
             additionalProperties: {
               level: LEVELS[l.level],
               time: l.time,
+              ...(l.level > 40 ? { 'error.message': l.msg } : {})
             },
           })),
           contentEncoding: 'deflate',
