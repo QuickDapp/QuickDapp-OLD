@@ -1,5 +1,7 @@
 # QuickDapp
 
+Live demo: https://demo.quickdapp.xyz
+
 QuickDapp is a highly opinionated framework that helps you quickly build _and_ deploy Web3 dapps, batteries included. 
 
 It is designed to save you a massive amount of time and effort, freeing you up to focus on the parts of your dapp that actually matter.
@@ -22,7 +24,7 @@ Roughly speaking, it integrates the following:
 * [Ably](https://ably.com/) integration for real-time push notifications to clients.
 * [Datadog](https://www.datadoghq.com/) integration for cloud logging and browser session capture.
 
-Please visit https://quickdapp.xyz for more information. A live demo of the built-in app is available at https://demo.quickdapp.xyz.
+Please visit https://quickdapp.xyz for more information. 
 
 ## Getting started
 
