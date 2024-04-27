@@ -52,7 +52,7 @@ export const processChanges: ChainFilterModule['processChanges'] = async (app, c
           msg: `Created new token ${tokenStr}`,
         })
 
-        await app.mailer?.send({
+        await app.mailer.send({
           to: serverConfig.MAILGUN_FROM_ADDRESS!,
           subject: `New Token Created: ${tokenStr}`,
           text: `You created a new token: ${tokenStr}`,
