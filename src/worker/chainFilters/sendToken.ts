@@ -1,8 +1,8 @@
 import { getUser } from '@/backend/db'
-import { weiToEth } from '@/shared/number'
-import { ChainFilterModule } from '../types'
 import { serverConfig } from '@/config/server'
 import { ContractName, getContractInfo, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
+import { weiToEth } from '@/shared/number'
+import { ChainFilterModule } from '../types'
 
 const proxyContract = getDeployedContractInfo(ContractName.DiamondProxy, serverConfig.NEXT_PUBLIC_CHAIN)
 const { contract: multicallAddress } = getMulticall3Info()
@@ -10,7 +10,7 @@ const { contract: multicallAddress } = getMulticall3Info()
 export const createFilter: ChainFilterModule['createFilter'] = (chainClient) => {
   return chainClient.createContractEventFilter({
     ...proxyContract,
-    eventName: 'ERC20Transferred',
+    eventName: 'Transfer',
   })
 }
 
