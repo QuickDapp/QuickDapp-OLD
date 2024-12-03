@@ -10,7 +10,7 @@ const { contract: multicallAddress } = getMulticall3Info()
 export const createFilter: ChainFilterModule['createFilter'] = (chainClient) => {
   return chainClient.createContractEventFilter({
     ...proxyContract,
-    eventName: 'Transfer',
+    eventName: 'ERC20Transferred',
   })
 }
 

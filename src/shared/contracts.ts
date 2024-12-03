@@ -1,6 +1,7 @@
 import { clientConfig } from '@/config/client'
-import Multicall3 from './data/multicall3.json'
+import { baseSepolia } from 'viem/chains'
 import { ContractName, getContractAbi } from './abi/generated'
+import Multicall3 from './data/multicall3.json'
 
 export { ContractName }
 
@@ -9,6 +10,9 @@ const deployments: Record<string, Partial<Record<ContractName, string>>> = {
     [ContractName.DiamondProxy]: clientConfig.NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS,
   },
   sepolia: {
+    [ContractName.DiamondProxy]: clientConfig.NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS,
+  },
+  baseSepolia: {
     [ContractName.DiamondProxy]: clientConfig.NEXT_PUBLIC_DIAMOND_PROXY_ADDRESS,
   },
 }
