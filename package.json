@@ -7,7 +7,7 @@
   "author": "Ramesh Nair <ram@hiddentao.com>",
   "license": "MIT",
   "scripts": {
-    "bootstrap": "husky install",
+    "bootstrap": "husky install && npx prisma generate",
     "showdocs": "retype start ./docs",
     "contracts": "./scripts/contracts.js",
     "build": "./scripts/build.js",

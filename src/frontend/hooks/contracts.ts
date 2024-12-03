@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from "react"
-import { useGlobalContext } from "../contexts"
 import { clientConfig } from '@/config/client'
 import { ContractInfo, ContractName, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
-import { useInfiniteReadContracts, useReadContract, useReadContracts, useWriteContract, usePublicClient } from 'wagmi'
+import { useCallback, useMemo } from "react"
 import { Abi } from "viem"
+import { useInfiniteReadContracts, usePublicClient, useReadContract, useReadContracts, useWriteContract } from 'wagmi'
+import { useGlobalContext } from "../contexts"
 
 export interface FunctionArgs {
   contract: ContractName | ContractInfo
@@ -29,8 +29,8 @@ export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) =
   return useReadContract({
     address: contract.address,
     abi: contract.abi,
-    functionName: fa.functionName,
-    args: fa.args,
+    functionName: fa.functionName as any,
+    args: fa.args as any,
     query: queryOverrides,
   })
 }
@@ -45,8 +45,8 @@ export const useGetMultipleContractValues = (faList: FunctionArgs[], queryOverri
       return {
         address: contract.address,
         abi: contract.abi as Abi,
-        functionName: fa.functionName,
-        args: fa.args,
+        functionName: fa.functionName as any,
+        args: fa.args as any,
       }
     }),
     multicallAddress: multicall3.contract,
@@ -83,8 +83,8 @@ export const useGetContractPaginatedValues = (
           return {
             address: contract.address,
             abi: contract.abi,
-            functionName: fa.functionName,
-            args: fa.args,
+            functionName: fa.functionName as any,
+            args: fa.args as any,
             watch: true,
           }
         })
@@ -146,11 +146,11 @@ export const useSetContractValue = ({
 
       const hash = await props.writeContractAsync({
         ...resolvedContract,
-        functionName,
+        functionName: functionName as any,
         chainId,
         ...overrides,
-        args,
-        ...(value ? { value: BigInt(value) } : {}),
+        args: args as any,
+        ...(value ? { value: BigInt(value) as any } : {}),
       })
 
       console.log(`Awaiting transaction confirmation for ${hash}`)
