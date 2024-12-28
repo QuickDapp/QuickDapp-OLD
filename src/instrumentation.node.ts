@@ -1,7 +1,9 @@
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { logs, NodeSDK } from '@opentelemetry/sdk-node'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-node'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
+import { BunyanInstrumentation } from '@opentelemetry/instrumentation-bunyan'
 
 export async function register(projectName?: string) {
   if (projectName) {
@@ -20,8 +22,9 @@ export async function register(projectName?: string) {
         '@opentelemetry/instrumentation-http': {
           enabled: true,
         },    
-      })],
+      }), new BunyanInstrumentation()],
       spanProcessors: [new BatchSpanProcessor(new OTLPTraceExporter())],
+      logRecordProcessor: new logs.SimpleLogRecordProcessor(new OTLPLogExporter()),
     })
   
     process.on('SIGTERM', () =>

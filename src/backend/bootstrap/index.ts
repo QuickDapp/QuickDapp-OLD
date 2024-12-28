@@ -23,6 +23,7 @@ export interface BootstrappedApp {
   serverWallet: ReturnType<typeof createWalletClient>
   notifyUser: (id: User, data: object) => Promise<void>
   startSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
+  startRootSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
 }
 
 export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL, openTelemetryServiceName = serverConfig.OTEL_SERVICE_NAME }: BootstrapParams): BootstrappedApp => {
@@ -94,6 +95,15 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL, open
       } else {
         const span = trace.getTracer(openTelemetryServiceName).startSpan(name)
         return cb().finally(() => span.end())
+      }
+    },
+    startRootSpan<T>(name: string, cb: () => Promise<T>): Promise<T> {
+      if (!openTelemetryServiceName) {
+        return cb()
+      } else {
+        return trace.getTracer(openTelemetryServiceName).startActiveSpan(name, 
+          (span: Span) => cb().finally(() => span.end())
+        )
       }
     }
   }
