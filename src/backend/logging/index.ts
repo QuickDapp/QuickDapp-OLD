@@ -1,8 +1,6 @@
 import bunyan from 'bunyan'
 import bformat from 'bunyan-format'
-
 import type { LoggerMethods } from './types'
-import { setupDataDogStream } from './datadog'
 
 const formattedOutput = bformat({
   outputMode: 'short',
@@ -35,6 +33,10 @@ class Log {
         // an error object should get passed through specially
         obj.err = args.find(a => a.stack && a.message)
         ;(this._log as any)[fn].apply(this._log, [obj, ...args])
+
+        if (fn === 'error') {
+          // Sentry.captureException(`${obj.err || args[0]}`)
+        }
       }
     })
   }
@@ -71,14 +73,6 @@ export const createLog = (config: LogConfig): LogInterface => {
       stream: formattedOutput,
     },
   )
-
-  const dataDogStream = setupDataDogStream(config.name)
-  if (dataDogStream) {
-    streams.push({
-      level: config.logLevel,
-      stream: dataDogStream,
-    })
-  }
 
   return new Log({
     name: config.name || 'root',

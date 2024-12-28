@@ -19,13 +19,10 @@ import { clientConfig } from '@/config/client'
 import { CookieConsentBanner } from '@/frontend/components/CookieConsentBanner'
 import { Header } from '@/frontend/components/Header'
 import { CookieConsentProvider, GlobalProvider } from '@/frontend/contexts'
-import { initDataDogAnalytics } from '@/frontend/utils/datadog'
 import { APP_NAME } from '@/shared/constants'
 import { FC, PropsWithChildren } from 'react'
 import { Disclaimer } from '@/frontend/components/ConnectWallet'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-initDataDogAnalytics()
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: `Sign in to ${APP_NAME}`,

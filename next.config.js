@@ -1,4 +1,3 @@
-const path = require('path')
 const { NormalModuleReplacementPlugin } = require('webpack')
 
 /** @type {import('next').NextConfig} */

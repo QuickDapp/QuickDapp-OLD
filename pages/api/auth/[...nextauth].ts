@@ -28,28 +28,30 @@ const providers = [
       },
     },
     async authorize(credentials) {
-      try {
-        const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'))
-        const nextAuthUrl = new URL(serverConfig.NEXT_PUBLIC_BASE_URL)
-
-        const result = await siwe.verify({
-          signature: credentials?.signature || '',
-          domain: nextAuthUrl.host,
-          nonce: (credentials as any)?.csrfToken || '',
-        })
-
-        if (result.success) {
-          // create a user entry if it doesn't already exist
-          await createUserIfNotExists(app.db, siwe.address)
-
-          return {
-            id: siwe.address,
+      return await app.startSpan('authorize', async () => {
+        try {
+          const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'))
+          const nextAuthUrl = new URL(serverConfig.NEXT_PUBLIC_BASE_URL)
+  
+          const result = await siwe.verify({
+            signature: credentials?.signature || '',
+            domain: nextAuthUrl.host,
+            nonce: (credentials as any)?.csrfToken || '',
+          })
+  
+          if (result.success) {
+            // create a user entry if it doesn't already exist
+            await createUserIfNotExists(app, siwe.address)
+  
+            return {
+              id: siwe.address,
+            }
           }
+          return null
+        } catch (e) {
+          return null
         }
-        return null
-      } catch (e) {
-        return null
-      }
+      })
     },
   }),
 ]

@@ -15,9 +15,12 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   MAILGUN_API_ENDPOINT?: string
   MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
-  DATADOG_API_KEY?: string
-  DATADOG_APPLICATION_KEY?: string
   DIGITALOCEAN_ACCESS_TOKEN?: string
+  OTEL_SERVICE_NAME?: string
+  OTEL_WORKER_SERVICE_NAME?: string
+  OTEL_EXPORTER_OTLP_PROTOCOL?: string
+  OTEL_EXPORTER_OTLP_ENDPOINT?: string
+  OTEL_EXPORTER_OTLP_HEADERS?: string
 }
 
 export const serverConfig = (() => {
@@ -32,9 +35,12 @@ export const serverConfig = (() => {
     MAILGUN_API_ENDPOINT: process.env.MAILGUN_API_ENDPOINT,
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
-    DATADOG_API_KEY: process.env.DATADOG_API_KEY,
-    DATADOG_APPLICATION_KEY: process.env.DATADOG_APPLICATION_KEY,
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
+    OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
+    OTEL_WORKER_SERVICE_NAME: process.env.OTEL_WORKER_SERVICE_NAME,
+    OTEL_EXPORTER_OTLP_PROTOCOL: process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
+    OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
+    OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
   })
 
   try {
@@ -51,9 +57,12 @@ export const serverConfig = (() => {
       MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
       MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
       ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
-      DATADOG_API_KEY: env.get('DATADOG_API_KEY').default('').asString(),
-      DATADOG_APPLICATION_KEY: env.get('DATADOG_APPLICATION_KEY').default('').asString(),
       DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
+      OTEL_SERVICE_NAME: env.get('OTEL_SERVICE_NAME').default('').asString(),
+      OTEL_WORKER_SERVICE_NAME: env.get('OTEL_WORKER_SERVICE_NAME').default('').asString(),
+      OTEL_EXPORTER_OTLP_PROTOCOL: env.get('OTEL_EXPORTER_OTLP_PROTOCOL').default('').asString(),
+      OTEL_EXPORTER_OTLP_ENDPOINT: env.get('OTEL_EXPORTER_OTLP_ENDPOINT').default('').asString(),
+      OTEL_EXPORTER_OTLP_HEADERS: env.get('OTEL_EXPORTER_OTLP_HEADERS').default('').asString(),
     } as ServerConfigInterface
 
     return Object.freeze(ret) 
