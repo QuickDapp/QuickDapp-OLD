@@ -1,3 +1,4 @@
+import { trace, Span } from '@opentelemetry/api'
 import Ably from 'ably'
 import { DummyMailer, Mailer, MailgunMailer } from '../mailer'
 import { createLog } from '../logging'
@@ -20,6 +21,7 @@ export interface BootstrappedApp {
   chainClient: ReturnType<typeof createPublicClient>
   serverWallet: ReturnType<typeof createWalletClient>
   notifyUser: (id: User, data: object) => Promise<void>
+  startSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
 }
 
 export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: BootstrapParams): BootstrappedApp => {
@@ -82,8 +84,16 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: Bo
     ably, 
     mailer,
     notifyUser: async (user: User, data: object) => {
-      await createNotification(db, user.id, data)
+      await createNotification(app, user.id, data)
       ably?.notifyUser(user.wallet, PubSubMessageType.NEW_NOTIFICATIONS)
+    },
+    startSpan<T>(name: string, cb: (span?: Span) => Promise<T>): Promise<T> {
+      if (!serverConfig.OTEL_PROJECT_NAME) {
+        return cb()
+      } else {
+        const span = trace.getTracer(serverConfig.OTEL_PROJECT_NAME).startSpan(name)
+        return cb().finally(() => span.end())
+      }
     }
   }
 

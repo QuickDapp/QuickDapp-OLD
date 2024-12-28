@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client"
-import * as Sentry from '@sentry/nextjs'
+import { BootstrappedApp } from "../bootstrap"
 
-export const createUserIfNotExists = async (db: PrismaClient, wallet: string) => {
-  return await Sentry.startSpan({ name: 'db.createUserIfNotExists' }, async () => {
-    return db.$transaction(async tx => {
+export const createUserIfNotExists = async (app: BootstrappedApp, wallet: string) => {
+  return await app.startSpan('db.createUserIfNotExists', async () => {
+    return app.db.$transaction(async tx => {
       let u = await tx.user.findFirst({
         where: {
           wallet: wallet.toLowerCase(),
@@ -28,9 +28,9 @@ export interface User {
   wallet: string
 }
 
-export const getUser = async (db: PrismaClient, wallet: string): Promise<User | undefined> => {
-  return await Sentry.startSpan({ name: 'db.getUser' }, async () => {
-    const ret = await db.user.findFirst({
+export const getUser = async (app: BootstrappedApp, wallet: string): Promise<User | undefined> => {
+  return await app.startSpan('db.getUser', async () => {
+    const ret = await app.db.user.findFirst({
       where: {
         wallet: wallet.toLowerCase(),
       },

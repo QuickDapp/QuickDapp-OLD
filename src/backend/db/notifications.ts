@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client"
 import { PageParam } from "@/shared/graphql/generated/types"
-import * as Sentry from '@sentry/nextjs'
+import { BootstrappedApp } from "../bootstrap"
 
-export const getUnreadNotificationsCountForUser = async (db: PrismaClient, userId: number) => {
-  return await Sentry.startSpan({ name: 'db.getUnreadNotificationsCountForUser' }, async () => {
-    return db.notification.count({
+export const getUnreadNotificationsCountForUser = async (app: BootstrappedApp, userId: number) => {
+  return await app.startSpan('db.getUnreadNotificationsCountForUser', async () => {
+    return app.db.notification.count({
       where: {
         userId,
         read: false,
@@ -13,10 +13,10 @@ export const getUnreadNotificationsCountForUser = async (db: PrismaClient, userI
   })
 }
 
-export const getNotificationsForUser = async (db: PrismaClient, userId: number, pageParams: PageParam) => {
-  return await Sentry.startSpan({ name: 'db.getNotificationsForUser' }, async () => {
-    return db.$transaction([
-      db.notification.findMany({
+export const getNotificationsForUser = async (app: BootstrappedApp, userId: number, pageParams: PageParam) => {
+  return await app.startSpan('db.getNotificationsForUser', async () => {
+    return app.db.$transaction([
+      app.db.notification.findMany({
         where: {
           userId,
         },
@@ -26,7 +26,7 @@ export const getNotificationsForUser = async (db: PrismaClient, userId: number, 
         skip: pageParams.startIndex,
         take: pageParams.perPage,
       }),
-      db.notification.count({
+      app.db.notification.count({
         where: {
           userId,
         },
@@ -35,9 +35,9 @@ export const getNotificationsForUser = async (db: PrismaClient, userId: number, 
   })
 }
 
-export const createNotification = async (db: PrismaClient, userId: number, data: object) => {
-  return await Sentry.startSpan({ name: 'db.createNotification' }, async () => {
-    return db.notification.create({
+export const createNotification = async (app: BootstrappedApp, userId: number, data: object) => {
+  return await app.startSpan('db.createNotification', async () => {
+    return app.db.notification.create({
       data: {
         userId,
         data,
@@ -46,9 +46,9 @@ export const createNotification = async (db: PrismaClient, userId: number, data:
   })
 }
 
-export const markNotificationAsRead = async (db: PrismaClient, userId: number, id: number) => {
-  return await Sentry.startSpan({ name: 'db.markNotificationAsRead' }, async () => {
-    return db.notification.update({
+export const markNotificationAsRead = async (app: BootstrappedApp, userId: number, id: number) => {
+  return await app.startSpan('db.markNotificationAsRead', async () => {
+    return app.db.notification.update({
       where: {
         id,
         userId,
@@ -60,9 +60,9 @@ export const markNotificationAsRead = async (db: PrismaClient, userId: number, i
   })
 }
 
-export const markAllNotificationsAsRead = async (db: PrismaClient, userId: number) => {
-  return await Sentry.startSpan({ name: 'db.markAllNotificationsAsRead' }, async () => {
-    return db.notification.updateMany({
+export const markAllNotificationsAsRead = async (app: BootstrappedApp, userId: number) => {
+  return await app.startSpan('db.markAllNotificationsAsRead', async () => {
+    return app.db.notification.updateMany({
       where: {
         userId,
       },

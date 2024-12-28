@@ -4,7 +4,6 @@ import { ONE_MINUTE } from "@/shared/date"
 import { BootstrappedApp } from "../bootstrap"
 import { Resolvers } from "@/shared/graphql/generated/types"
 import { getNotificationsForUser, getUnreadNotificationsCountForUser, markAllNotificationsAsRead, markNotificationAsRead } from "../db"
-import * as Sentry from '@sentry/nextjs'
 
 interface Context {
   user?: DefaultSession['user']
@@ -16,23 +15,23 @@ export const createResolvers = (app: BootstrappedApp) => {
   return {
     Query: {
       getMyUnreadNotificationsCount: async (_, __, ctx: Context) => {
-        return await Sentry.startSpan({ name: 'resolver.getMyUnreadNotificationsCount' }, async () => {
+        return await app.startSpan('resolver.getMyUnreadNotificationsCount', async () => {
           log.trace(`getMyUnreadNotificationsCount`)
 
-          const user = await getUser(app.db, ctx.user!.name as string)
+          const user = await getUser(app, ctx.user!.name as string)
 
           if (!user) {
             return 0
           }
 
-          return getUnreadNotificationsCountForUser(app.db, user!.id as number)
+          return getUnreadNotificationsCountForUser(app, user!.id as number)
         })
       },
       getMyNotifications: async (_, { pageParam }, ctx: Context) => {
-        return await Sentry.startSpan({ name: 'resolver.getMyNotifications' }, async () => {
+        return await app.startSpan('resolver.getMyNotifications', async () => {
           log.trace(`getMyNotifications`)
 
-          const user = await getUser(app.db, ctx.user!.name as string)
+          const user = await getUser(app, ctx.user!.name as string)
 
           if (!user) {
             return {
@@ -42,7 +41,7 @@ export const createResolvers = (app: BootstrappedApp) => {
             }
           }
 
-          const [notifications, total] = await getNotificationsForUser(app.db, user!.id as number, pageParam)
+          const [notifications, total] = await getNotificationsForUser(app, user!.id as number, pageParam)
 
           return {
             notifications,
@@ -54,10 +53,10 @@ export const createResolvers = (app: BootstrappedApp) => {
     },
     Mutation: {
       generateAblyToken: async (_, __, ctx: Context) => {
-        return await Sentry.startSpan({ name: 'resolver.generateAblyToken' }, async () => {
+        return await app.startSpan('resolver.generateAblyToken', async () => {
           log.trace(`generateAblyToken`)
 
-          const user = await getUser(app.db, ctx.user!.name as string)
+          const user = await getUser(app, ctx.user!.name as string)
 
           if (user) {
             if (app.ably) {
@@ -86,12 +85,12 @@ export const createResolvers = (app: BootstrappedApp) => {
         })
       },
       markNotificationAsRead: async (_, { id }, ctx: Context) => {
-        return await Sentry.startSpan({ name: 'resolver.markNotificationAsRead' }, async () => {
+        return await app.startSpan('resolver.markNotificationAsRead', async () => {
           log.trace(`markNotificationAsRead`)
 
-          const user = await getUser(app.db, ctx.user!.name as string)
+          const user = await getUser(app, ctx.user!.name as string)
 
-          await markNotificationAsRead(app.db, user!.id as number, id)
+          await markNotificationAsRead(app, user!.id as number, id)
 
           return {
             success: true,
@@ -99,12 +98,12 @@ export const createResolvers = (app: BootstrappedApp) => {
         })
       },
       markAllNotificationsAsRead: async (_: any, __: any, ctx: Context) => {
-        return await Sentry.startSpan({ name: 'resolver.markAllNotificationsAsRead' }, async () => {
+        return await app.startSpan('resolver.markAllNotificationsAsRead', async () => {
           log.trace(`markAllNotificationsAsRead`)
 
-          const user = await getUser(app.db, ctx.user!.name as string)
+          const user = await getUser(app, ctx.user!.name as string)
 
-          await markAllNotificationsAsRead(app.db, user!.id as number)
+          await markAllNotificationsAsRead(app, user!.id as number)
 
           return {
             success: true,

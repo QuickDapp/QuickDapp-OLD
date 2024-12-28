@@ -16,9 +16,7 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
   DIGITALOCEAN_ACCESS_TOKEN?: string
-  SENTRY_ORG?: string
-  SENTRY_PROJECT?: string
-  SENTRY_AUTH_TOKEN?: string
+  OTEL_PROJECT_NAME?: string
 }
 
 export const serverConfig = (() => {
@@ -34,9 +32,7 @@ export const serverConfig = (() => {
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
-    SENTRY_ORG: process.env.SENTRY_ORG,
-    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    OTEL_PROJECT_NAME: process.env.OTEL_PROJECT_NAME,
   })
 
   try {
@@ -53,10 +49,8 @@ export const serverConfig = (() => {
       MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
       MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
       ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
-      SENTRY_ORG: env.get('SENTRY_ORG').default('').asString(),
-      SENTRY_PROJECT: env.get('SENTRY_PROJECT').default('').asString(),
-      SENTRY_AUTH_TOKEN: env.get('SENTRY_AUTH_TOKEN').default('').asString(),
       DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
+      OTEL_PROJECT_NAME: env.get('OTEL_PROJECT_NAME').default('').asString(),
     } as ServerConfigInterface
 
     return Object.freeze(ret) 

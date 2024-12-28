@@ -14,7 +14,7 @@ export const createFilter: ChainFilterModule['createFilter'] = (chainClient) => 
 }
 
 export const processChanges: ChainFilterModule['processChanges'] = async (app, changes) => {
-  const { db, chainClient, log } = app
+  const { chainClient, log } = app
 
   await Promise.all(
     changes.map(async (change: any) => {
@@ -42,7 +42,7 @@ export const processChanges: ChainFilterModule['processChanges'] = async (app, c
           multicallAddress,
         })
 
-        const user = (await getUser(db, transaction.from))!
+        const user = (await getUser(app, transaction.from))!
 
         const tokenStr = `${symbol.result} (${name.result})`
         

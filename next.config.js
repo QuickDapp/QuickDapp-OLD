@@ -1,4 +1,3 @@
-const { withSentryConfig } = require("@sentry/nextjs");
 const { NormalModuleReplacementPlugin } = require('webpack')
 
 /** @type {import('next').NextConfig} */
@@ -28,18 +27,4 @@ const nextConfig = {
   },
 }
 
-const { SENTRY_ORG, SENTRY_PROJECT, SENTRY_AUTH_TOKEN } = process.env
-
-if (SENTRY_ORG && SENTRY_PROJECT && SENTRY_AUTH_TOKEN) {
-  module.exports = withSentryConfig(nextConfig, {
-    org: SENTRY_ORG,
-    project: SENTRY_PROJECT,
-    authToken: SENTRY_AUTH_TOKEN,
-    silent: true,
-    hideSourceMaps: true,
-    tunnelRoute: "/monitoring-tunnel",
-    disableLogger: true,
-  })
-} else {
-  module.exports = nextConfig
-}
+module.exports = nextConfig

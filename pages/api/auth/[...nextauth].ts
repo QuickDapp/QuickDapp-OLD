@@ -1,6 +1,5 @@
 /* Taken from: https://docs.login.xyz/integrations/nextauth.js */
 
-import * as Sentry from '@sentry/nextjs'
 import { SiweMessage } from 'siwe'
 import NextAuth, { AuthOptions } from 'next-auth'
 import { serverConfig } from '../../../src/config/server'
@@ -29,7 +28,7 @@ const providers = [
       },
     },
     async authorize(credentials) {
-      return await Sentry.startSpan({ name: 'authorize' }, async () => {
+      return await app.startSpan('authorize', async () => {
         try {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'))
           const nextAuthUrl = new URL(serverConfig.NEXT_PUBLIC_BASE_URL)
@@ -42,7 +41,7 @@ const providers = [
   
           if (result.success) {
             // create a user entry if it doesn't already exist
-            await createUserIfNotExists(app.db, siwe.address)
+            await createUserIfNotExists(app, siwe.address)
   
             return {
               id: siwe.address,

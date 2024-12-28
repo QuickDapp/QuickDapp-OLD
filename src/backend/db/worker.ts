@@ -2,7 +2,7 @@ import { PrismaClient, WorkerJob } from '@prisma/client'
 import { parseCronExpression } from 'cron-schedule'
 import { ONE_HOUR, dateFrom } from '../../shared/date'
 import { WorkerJobType } from '../../worker/generated/exportedTypes'
-import * as Sentry from '@sentry/nextjs'
+import { BootstrappedApp } from '../bootstrap'
 
 export interface WorkerJobConfig<T extends object> {
   type: WorkerJobType
@@ -43,10 +43,10 @@ export const inProgressOrPendingJobsQueryFilter = (extraCriteria?: any): any => 
   ...extraCriteria,
 })
 
-const cancelPendingJobs = async (db: PrismaClient, filter: any) => {
-  return await Sentry.startSpan({ name: 'db.cancelPendingJobs' }, async () => {
+const cancelPendingJobs = async (app: BootstrappedApp, filter: any) => {
+  return await app.startSpan('db.cancelPendingJobs', async () => {
     // update existing jobs for this user to be cancelled
-    await db.workerJob.updateMany({
+    await app.db.workerJob.updateMany({
       where: pendingJobsQueryFilter(filter),
       data: {
         started: new Date(),
@@ -74,15 +74,15 @@ const generateJobDates = (due?: Date, removeDelay?: number) => {
   }
 }
 
-export const scheduleJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>) => {
-  return await Sentry.startSpan({ name: 'db.scheduleJob' }, async () => {
-    await cancelPendingJobs(db, {
+export const scheduleJob = async <T extends object>(app: BootstrappedApp, job: WorkerJobConfig<T>) => {
+  return await app.startSpan('db.scheduleJob', async () => {
+    await cancelPendingJobs(app, {
       type: job.type,
       userId: job.userId,
     })
 
     // create new job
-    return await db.workerJob.create({
+    return await app.db.workerJob.create({
       data: {
         userId: job.userId,
         ...generateJobDates(job.due, job.removeDelay),
@@ -96,15 +96,15 @@ export const scheduleJob = async <T extends object>(db: PrismaClient, job: Worke
   })
 }
 
-export const scheduleCronJob = async <T extends object>(db: PrismaClient, job: WorkerJobConfig<T>, cronSchedule: string) => {
-  return await Sentry.startSpan({ name: 'db.scheduleCronJob' }, async () => {
-    await cancelPendingJobs(db, {
+export const scheduleCronJob = async <T extends object>(app: BootstrappedApp, job: WorkerJobConfig<T>, cronSchedule: string) => {
+  return await app.startSpan('db.scheduleCronJob', async () => {
+    await cancelPendingJobs(app, {
       type: job.type,
       userId: job.userId,
     })
 
     // create new job
-    return await db.workerJob.create({
+    return await app.db.workerJob.create({
       data: {
         userId: job.userId,
         ...generateJobDates(parseCronExpression(cronSchedule).getNextDate(new Date())),
@@ -119,17 +119,17 @@ export const scheduleCronJob = async <T extends object>(db: PrismaClient, job: W
   })
 }
 
-export const getTotalPendingJobs = async (db: PrismaClient) => {
-  return await Sentry.startSpan({ name: 'db.getTotalPendingJobs' }, async () => {
-    return db.workerJob.count({
+export const getTotalPendingJobs = async (app: BootstrappedApp) => {
+  return await app.startSpan('db.getTotalPendingJobs', async () => {
+    return app.db.workerJob.count({
       where: pendingJobsQueryFilter(),
     })
   })
 }
 
-export const getNextPendingJob = async (db: PrismaClient) => {
-  return await Sentry.startSpan({ name: 'db.getNextPendingJob' }, async () => {
-    return db.workerJob.findFirst({
+export const getNextPendingJob = async (app: BootstrappedApp) => {
+  return await app.startSpan('db.getNextPendingJob', async () => {
+    return app.db.workerJob.findFirst({
       where: pendingJobsQueryFilter(),
       orderBy: {
         due: 'asc',
@@ -138,9 +138,9 @@ export const getNextPendingJob = async (db: PrismaClient) => {
   })
 }
 
-export const gerInProgressOrPendingJobOfTypeForUser = async (db: PrismaClient, userId: number, type: WorkerJobType) => {
-  return await Sentry.startSpan({ name: 'db.gerInProgressOrPendingJobOfTypeForUser' }, async () => {
-    return db.workerJob.findFirst({
+export const gerInProgressOrPendingJobOfTypeForUser = async (app: BootstrappedApp, userId: number, type: WorkerJobType) => {
+  return await app.startSpan('db.gerInProgressOrPendingJobOfTypeForUser', async () => {
+    return app.db.workerJob.findFirst({
       where: inProgressOrPendingJobsQueryFilter({
         type,
         userId,
@@ -152,9 +152,9 @@ export const gerInProgressOrPendingJobOfTypeForUser = async (db: PrismaClient, u
   })
 }
 
-export const markJobAsStarted = async (db: PrismaClient, id: number) => {
-  return await Sentry.startSpan({ name: 'db.markJobAsStarted' }, async () => {
-    return db.workerJob.update({
+export const markJobAsStarted = async (app: BootstrappedApp, id: number) => {
+  return await app.startSpan('db.markJobAsStarted', async () => {
+    return app.db.workerJob.update({
       where: {
         id,
       },
@@ -166,9 +166,9 @@ export const markJobAsStarted = async (db: PrismaClient, id: number) => {
   })
 }
 
-export const markJobAsSucceeded = async (db: PrismaClient, id: number, result?: object) => {
-  return await Sentry.startSpan({ name: 'db.markJobAsSucceeded' }, async () => {
-    return db.workerJob.update({
+export const markJobAsSucceeded = async (app: BootstrappedApp, id: number, result?: object) => {
+  return await app.startSpan('db.markJobAsSucceeded', async () => {
+    return app.db.workerJob.update({
       where: {
         id,
       },
@@ -182,9 +182,9 @@ export const markJobAsSucceeded = async (db: PrismaClient, id: number, result?: 
   })
 }
 
-export const markJobAsFailed = async (db: PrismaClient, id: number, result?: object) => {
-  return await Sentry.startSpan({ name: 'db.markJobAsFailed' }, async () => {
-    await db.workerJob.update({
+export const markJobAsFailed = async (app: BootstrappedApp, id: number, result?: object) => {
+  return await app.startSpan('db.markJobAsFailed', async () => {
+    await app.db.workerJob.update({
       where: {
         id,
       },
@@ -198,14 +198,14 @@ export const markJobAsFailed = async (db: PrismaClient, id: number, result?: obj
   })
 }
 
-export const rescheduleFailedJob = async (db: PrismaClient, job: WorkerJob) => {
-  return await Sentry.startSpan({ name: 'db.rescheduleFailedJob' }, async () => {
-    await cancelPendingJobs(db, {
+export const rescheduleFailedJob = async (app: BootstrappedApp, job: WorkerJob) => {
+  return await app.startSpan('db.rescheduleFailedJob', async () => {
+    await cancelPendingJobs(app, {
       type: job.type,
       userId: job.userId,
     })
 
-    return db.workerJob.create({
+    return app.db.workerJob.create({
       data: {
         ...generateJobDates(dateFrom(Date.now() + job.autoRescheduleOnFailureDelay), job.removeDelay),
         userId: job.userId,
@@ -221,14 +221,14 @@ export const rescheduleFailedJob = async (db: PrismaClient, job: WorkerJob) => {
   })
 }
 
-export const rescheduleCronJob = async (db: PrismaClient, job: WorkerJob) => {
-  return await Sentry.startSpan({ name: 'db.rescheduleCronJob' }, async () => {
-    await cancelPendingJobs(db, {
+export const rescheduleCronJob = async (app: BootstrappedApp, job: WorkerJob) => {
+  return await app.startSpan('db.rescheduleCronJob', async () => {
+    await cancelPendingJobs(app, {
       type: job.type,
       userId: job.userId,
     })
 
-    return db.workerJob.create({
+    return app.db.workerJob.create({
       data: {
         ...generateJobDates(parseCronExpression(job.cronSchedule!).getNextDate(new Date()), job.removeDelay),
         userId: job.userId,
@@ -244,14 +244,15 @@ export const rescheduleCronJob = async (db: PrismaClient, job: WorkerJob) => {
   })
 }
 
-export const removeOldJobs = async (db: PrismaClient) => {
-  return await Sentry.startSpan({ name: 'db.removeOldJobs' }, async () => {
-    await db.workerJob.deleteMany({
+export const removeOldJobs = async (app: BootstrappedApp, { exclude }: { exclude?: number[] }) => {
+  return await app.startSpan('db.removeOldJobs', async () => {
+    await app.db.workerJob.deleteMany({
       where: {
-        finished: { not: null },
-        success: true,
         removeAt: {
           lte: new Date(),
+        },
+        id: {
+          notIn: exclude || [],
         },
       },
     })

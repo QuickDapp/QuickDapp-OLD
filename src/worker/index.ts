@@ -1,5 +1,6 @@
+import { register } from '@/instrumentation.node'
 import { jobs } from './generated/mappings'
-import { extractChain } from 'viem'
+import { Chain } from 'viem'
 import { JobParams } from './types'
 import * as chains from 'viem/chains'
 import { ethToWei } from '@/shared/number'
@@ -17,11 +18,12 @@ import {
   rescheduleFailedJob,
 } from '@/backend/db'
 import { serverConfig } from '@/config/server'
+register(`${serverConfig.OTEL_PROJECT_NAME || 'unknown'}-worker`)
 
-const setupDefaultJobs = async (db: any) => {
+const setupDefaultJobs = async (app: BootstrappedApp) => {
   // remove old jobs
   await scheduleCronJob(
-    db,
+    app,
     {
       type: 'removeOldWorkerJobs',
       userId: 0,
@@ -33,7 +35,7 @@ const setupDefaultJobs = async (db: any) => {
 
   // poll for new blocks
   await scheduleCronJob(
-    db,
+    app,
     {
       type: 'watchChain',
       userId: 0,
@@ -56,11 +58,7 @@ const deployMulticall3 = async ({ chainClient, serverWallet, log }: Bootstrapped
       log.info(`Multicall3 not deployed, deploying now...`)
 
       const chainId = await chainClient.getChainId()
-
-      const chain = extractChain({
-        id: chainId as any,
-        chains: Object.values(chains),
-      })
+      const chain = Object.values(chains).find(c => c.id === chainId) as Chain
 
       const hash = await serverWallet.sendTransaction({
         account: serverWallet.account!,
@@ -92,19 +90,21 @@ const deployMulticall3 = async ({ chainClient, serverWallet, log }: Bootstrapped
 }
 
 const handleJob = async (params: JobParams): Promise<object | undefined> => {
-  if (!jobs[params.job.type]) {
-    throw new Error(`Unknown job type: ${params.job.type}`)
-  } else {
-    return await jobs[params.job.type].run(params)
-  }
+  return await params.app.startSpan(`handleJob[${params.job.id} - ${params.job.type}]`, async () => {
+    if (!jobs[params.job.type]) {
+      throw new Error(`Unknown job type: ${params.job.type}`)
+    } else {
+      return await jobs[params.job.type].run(params)
+    }
+  })
 }
 
 const main = async () => {
   const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL })
-  const { db, log } = app
+  const { log } = app
 
   await deployMulticall3(app)
-  await setupDefaultJobs(db)
+  await setupDefaultJobs(app)
 
   while (true) {
     log.debug('Start next cycle')
@@ -112,14 +112,14 @@ const main = async () => {
     log.debug('Count pending jobs')
 
     // get total pending jobs
-    const pendingJobs = await getTotalPendingJobs(db)
+    const pendingJobs = await getTotalPendingJobs(app)
 
     log.debug(`Pending jobs: ${pendingJobs}`)
 
     if (pendingJobs) {
       log.debug('Fetch next job')
 
-      const job = await getNextPendingJob(db)
+      const job = await getNextPendingJob(app)
 
       if (job) {
         if (dateBefore(job.due, Date.now())) {
@@ -128,19 +128,19 @@ const main = async () => {
           joblog.debug(`Executing for [user ${job.userId}]`)
           joblog.debug(job.data)
 
-          await markJobAsStarted(db, job.id)
+          await markJobAsStarted(app, job.id)
 
           try {
             const result = await handleJob({ app, log: joblog, job })
 
-            await markJobAsSucceeded(db, job.id, result)
+            await markJobAsSucceeded(app, job.id, result)
 
             joblog.debug(`...Finished executing job #${job.id}`)
 
             if (job.cronSchedule) {
               joblog.debug(`Scheduling next cron job`)
 
-              const newJob = await rescheduleCronJob(db, job)
+              const newJob = await rescheduleCronJob(app, job)
 
               joblog.debug(`...rescheduled as job #${newJob.id} due at ${newJob.due}`)
             }
@@ -148,13 +148,13 @@ const main = async () => {
             joblog.error(`...Error executing job`)
             joblog.error(err)
 
-            await markJobAsFailed(db, job.id, { error: err.message })
+            await markJobAsFailed(app, job.id, { error: err.message })
 
             // reschedule?
             if (job.autoRescheduleOnFailure) {
               joblog.debug(`Rescheduling failed job`)
 
-              const newJob = await rescheduleFailedJob(db, job)
+              const newJob = await rescheduleFailedJob(app, job)
 
               joblog.debug(`...rescheduled as job #${newJob.id} due at ${newJob.due}`)
             }
