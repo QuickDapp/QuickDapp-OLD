@@ -87,7 +87,7 @@
     "add": "^2.0.6",
     "autoprefixer": "^10.4.16",
     "bigval": "^1.7.0",
-    "bunyan": "^2.0.5",
+    "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

@@ -103,8 +103,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       bunyan:
-        specifier: ^2.0.5
-        version: 2.0.5
+        specifier: ^1.8.15
+        version: 1.8.15
       bunyan-format:
         specifier: ^0.2.1
         version: 0.2.1
@@ -2453,10 +2453,6 @@ packages:
   '@metamask/providers@16.1.0':
     resolution: {integrity: sha512-znVCvux30+3SaUwcUGaSf+pUckzT5ukPRpcBmy+muBLC0yaWnBcvDqGfcsw6CBIenUdFrVoAFa8B6jsuCY/a+g==}
     engines: {node: ^18.18 || >=20}
-
-  '@metamask/rpc-errors@6.1.0':
-    resolution: {integrity: sha512-JQElKxai26FpDyRKO/yH732wI+BV90i1u6pOuDOpdADSbppB2g1pPh3AGST1zkZqEE9eIKIUw8UdBQ4rp3VTSg==}
-    engines: {node: '>=16.0.0'}
 
   '@metamask/rpc-errors@6.4.0':
     resolution: {integrity: sha512-1ugFO1UoirU2esS3juZanS/Fo8C8XYocCuBpfZI5N7ECtoG+zu0wF+uWZASik6CkO6w9n/Iebt4iI4pT0vptpg==}
@@ -4959,8 +4955,8 @@ packages:
   bunyan-format@0.2.1:
     resolution: {integrity: sha512-xQs2LwWskjQdv7bVkMNwvMi7HnvDQoX4587H90nDGQGPPwHrmxsihBOIYHMVwjLMMOokITKPyFcbFneblvMEjQ==}
 
-  bunyan@2.0.5:
-    resolution: {integrity: sha512-Jvl74TdxCN6rSP9W1I6+UOUtwslTDqsSFkDqZlFb/ilaSvQ+bZAnXT/GT97IZ5L+Vph0joPZPhxUyn6FLNmFAA==}
+  bunyan@1.8.15:
+    resolution: {integrity: sha512-0tECWShh6wUysgucJcBAoYegf3JJoZWibxdqhTm7OHPeT42qdjkZ29QCMcKwbgU1kiH+auSIasNRXMLWXafXig==}
     engines: {'0': node >=0.10.0}
     hasBin: true
 
@@ -6021,10 +6017,6 @@ packages:
   execa@8.0.1:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
-
-  exeunt@1.1.0:
-    resolution: {integrity: sha512-dd++Yn/0Fp+gtJ04YHov7MeAii+LFivJc6KqnJNfplzLVUkUDrfKoQDTLlCgzcW15vY5hKlHasWeIsQJ8agHsw==}
-    engines: {node: '>=0.10'}
 
   express@4.18.2:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
@@ -12902,15 +12894,15 @@ snapshots:
   '@metamask/eth-json-rpc-provider@1.0.1':
     dependencies:
       '@metamask/json-rpc-engine': 7.3.2
-      '@metamask/safe-event-emitter': 3.0.0
+      '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 5.0.2
     transitivePeerDependencies:
       - supports-color
 
   '@metamask/json-rpc-engine@7.3.2':
     dependencies:
-      '@metamask/rpc-errors': 6.1.0
-      '@metamask/safe-event-emitter': 3.0.0
+      '@metamask/rpc-errors': 6.4.0
+      '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 8.3.0
     transitivePeerDependencies:
       - supports-color
@@ -12983,13 +12975,6 @@ snapshots:
       is-stream: 2.0.1
       readable-stream: 3.6.2
       webextension-polyfill: 0.10.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/rpc-errors@6.1.0':
-    dependencies:
-      '@metamask/utils': 8.3.0
-      fast-safe-stringify: 2.1.1
     transitivePeerDependencies:
       - supports-color
 
@@ -15799,7 +15784,7 @@ snapshots:
       '@walletconnect/legacy-types': 2.0.0
       '@walletconnect/legacy-utils': 2.0.0
       copy-to-clipboard: 3.3.3
-      preact: 10.18.1
+      preact: 10.25.4
       qrcode: 1.5.3
 
   '@walletconnect/legacy-provider@2.0.0':
@@ -16945,9 +16930,7 @@ snapshots:
       ansistyles: 0.1.3
       xtend: 2.1.2
 
-  bunyan@2.0.5:
-    dependencies:
-      exeunt: 1.1.0
+  bunyan@1.8.15:
     optionalDependencies:
       dtrace-provider: 0.8.8
       moment: 2.30.1
@@ -18189,7 +18172,7 @@ snapshots:
   eth-block-tracker@7.1.0:
     dependencies:
       '@metamask/eth-json-rpc-provider': 1.0.1
-      '@metamask/safe-event-emitter': 3.0.0
+      '@metamask/safe-event-emitter': 3.1.2
       '@metamask/utils': 5.0.2
       json-rpc-random-id: 1.0.1
       pify: 3.0.0
@@ -18198,7 +18181,7 @@ snapshots:
 
   eth-json-rpc-filters@6.0.1:
     dependencies:
-      '@metamask/safe-event-emitter': 3.0.0
+      '@metamask/safe-event-emitter': 3.1.2
       async-mutex: 0.2.6
       eth-query: 2.1.2
       json-rpc-engine: 6.1.0
@@ -18266,8 +18249,6 @@ snapshots:
       onetime: 6.0.0
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
-
-  exeunt@1.1.0: {}
 
   express@4.18.2:
     dependencies:
