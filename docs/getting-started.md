@@ -74,7 +74,7 @@ There should now be a `./contracts` folder. Now let's set it up:
 pnpm contracts bootstrap
 ```
 
-Now let's run the local Anvil node and deploy the Diamond Proxy to it, and watch for changes:
+Now, in a new terminal let's run the local Anvil node and deploy the Diamond Proxy to it, and watch for changes:
 
 ```shell
 pnpm contracts dev
