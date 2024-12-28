@@ -39,18 +39,12 @@ importers:
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.57.0
         version: 0.57.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/resources':
-        specifier: ^1.30.0
-        version: 1.30.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-node':
         specifier: ^0.57.0
         version: 0.57.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-node':
         specifier: ^1.30.0
         version: 1.30.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions':
-        specifier: ^1.28.0
-        version: 1.28.0
       '@opentelemetry/winston-transport':
         specifier: ^0.10.0
         version: 0.10.0
@@ -11828,7 +11822,7 @@ snapshots:
       eth-json-rpc-filters: 6.0.1
       eventemitter3: 5.0.1
       keccak: 3.0.4
-      preact: 10.18.1
+      preact: 10.25.4
       sha.js: 2.4.11
     transitivePeerDependencies:
       - supports-color
@@ -19910,7 +19904,7 @@ snapshots:
 
   metro-runtime@0.80.6:
     dependencies:
-      '@babel/runtime': 7.23.9
+      '@babel/runtime': 7.26.0
 
   metro-source-map@0.80.6:
     dependencies:

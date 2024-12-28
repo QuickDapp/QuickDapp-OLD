@@ -18,7 +18,7 @@ import {
   rescheduleFailedJob,
 } from '@/backend/db'
 import { serverConfig } from '@/config/server'
-register(`${serverConfig.OTEL_PROJECT_NAME || 'unknown'}-worker`)
+register(serverConfig.OTEL_WORKER_SERVICE_NAME)
 
 const setupDefaultJobs = async (app: BootstrappedApp) => {
   // remove old jobs
@@ -100,7 +100,7 @@ const handleJob = async (params: JobParams): Promise<object | undefined> => {
 }
 
 const main = async () => {
-  const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL })
+  const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL, openTelemetryServiceName: serverConfig.OTEL_WORKER_SERVICE_NAME })
   const { log } = app
 
   await deployMulticall3(app)

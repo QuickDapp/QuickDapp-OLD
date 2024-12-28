@@ -11,6 +11,7 @@ import { createPublicClient, createWalletClient, http } from 'viem'
 export interface BootstrapParams {
   processName: string,
   logLevel?: string,
+  openTelemetryServiceName?: string,
 }
 
 export interface BootstrappedApp {
@@ -24,7 +25,7 @@ export interface BootstrappedApp {
   startSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
 }
 
-export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: BootstrapParams): BootstrappedApp => {
+export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL, openTelemetryServiceName = serverConfig.OTEL_SERVICE_NAME }: BootstrapParams): BootstrappedApp => {
   const log = createLog({
     name: processName,
     logLevel,
@@ -87,11 +88,11 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: Bo
       await createNotification(app, user.id, data)
       ably?.notifyUser(user.wallet, PubSubMessageType.NEW_NOTIFICATIONS)
     },
-    startSpan<T>(name: string, cb: (span?: Span) => Promise<T>): Promise<T> {
-      if (!serverConfig.OTEL_PROJECT_NAME) {
+    startSpan<T>(name: string, cb: () => Promise<T>): Promise<T> {
+      if (!openTelemetryServiceName) {
         return cb()
       } else {
-        const span = trace.getTracer(serverConfig.OTEL_PROJECT_NAME).startSpan(name)
+        const span = trace.getTracer(openTelemetryServiceName).startSpan(name)
         return cb().finally(() => span.end())
       }
     }
