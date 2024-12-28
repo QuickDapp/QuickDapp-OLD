@@ -2,7 +2,6 @@ import bunyan from 'bunyan'
 import bformat from 'bunyan-format'
 
 import type { LoggerMethods } from './types'
-import { setupDataDogStream } from './datadog'
 
 const formattedOutput = bformat({
   outputMode: 'short',
@@ -71,14 +70,6 @@ export const createLog = (config: LogConfig): LogInterface => {
       stream: formattedOutput,
     },
   )
-
-  const dataDogStream = setupDataDogStream(config.name)
-  if (dataDogStream) {
-    streams.push({
-      level: config.logLevel,
-      stream: dataDogStream,
-    })
-  }
 
   return new Log({
     name: config.name || 'root',

@@ -15,9 +15,10 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   MAILGUN_API_ENDPOINT?: string
   MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
-  DATADOG_API_KEY?: string
-  DATADOG_APPLICATION_KEY?: string
   DIGITALOCEAN_ACCESS_TOKEN?: string
+  SENTRY_ORG?: string
+  SENTRY_PROJECT?: string
+  SENTRY_AUTH_TOKEN?: string
 }
 
 export const serverConfig = (() => {
@@ -32,9 +33,10 @@ export const serverConfig = (() => {
     MAILGUN_API_ENDPOINT: process.env.MAILGUN_API_ENDPOINT,
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
-    DATADOG_API_KEY: process.env.DATADOG_API_KEY,
-    DATADOG_APPLICATION_KEY: process.env.DATADOG_APPLICATION_KEY,
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
+    SENTRY_ORG: process.env.SENTRY_ORG,
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   })
 
   try {
@@ -51,8 +53,9 @@ export const serverConfig = (() => {
       MAILGUN_API_ENDPOINT: env.get('MAILGUN_API_ENDPOINT').default('').asString(),
       MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
       ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
-      DATADOG_API_KEY: env.get('DATADOG_API_KEY').default('').asString(),
-      DATADOG_APPLICATION_KEY: env.get('DATADOG_APPLICATION_KEY').default('').asString(),
+      SENTRY_ORG: env.get('SENTRY_ORG').default('').asString(),
+      SENTRY_PROJECT: env.get('SENTRY_PROJECT').default('').asString(),
+      SENTRY_AUTH_TOKEN: env.get('SENTRY_AUTH_TOKEN').default('').asString(),
       DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
     } as ServerConfigInterface
 
