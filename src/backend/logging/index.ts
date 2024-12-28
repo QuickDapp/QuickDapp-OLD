@@ -1,6 +1,6 @@
 import bunyan from 'bunyan'
 import bformat from 'bunyan-format'
-
+import * as Sentry from '@sentry/nextjs'
 import type { LoggerMethods } from './types'
 
 const formattedOutput = bformat({
@@ -34,6 +34,10 @@ class Log {
         // an error object should get passed through specially
         obj.err = args.find(a => a.stack && a.message)
         ;(this._log as any)[fn].apply(this._log, [obj, ...args])
+
+        if (fn === 'error') {
+          Sentry.captureException(`${obj.err || args[0]}`)
+        }
       }
     })
   }
