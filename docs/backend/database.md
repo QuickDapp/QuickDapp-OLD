@@ -27,7 +27,7 @@ A number of [built-in tables](https://github.com/QuickDapp/QuickDapp/tree/master
 
 ## Accessing
 
-All database tables are accessed through purpose-built model code found in `src/backend/db`. This provides for an abstraction layer over the database which hids the raw Prisma commands from other backend code. Each model function excpets a `db` parameter which can be obtained from the [bootstrap object](./bootstrapped.md).
+All database tables are accessed through purpose-built model code found in `src/backend/db`. This provides for an abstraction layer over the database which hids the raw Prisma commands from other backend code. Each model function excpets a `db` parameter which can be obtained from the [bootstrap object](./bootstrap.md).
 
 ## Local development
 

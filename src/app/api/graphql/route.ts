@@ -1,4 +1,3 @@
-import get from 'lodash.get'
 import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 import { ApolloServer, HeaderMap } from '@apollo/server'

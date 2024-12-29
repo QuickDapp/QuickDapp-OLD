@@ -7,7 +7,7 @@ order: 80
 The `build` command is responsible for:
 
 * Building the Next.js production code.
-* Building the [background worker](../background-worker/index.md) production code.
+* Building the [background worker](../worker/index.md) production code.
 
 ## Next.js
 

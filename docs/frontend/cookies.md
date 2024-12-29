@@ -42,4 +42,3 @@ This method can be called from anywhere within the frontend app, as many times a
 
 If the user has already recorded their cookie response (e.g in a previous browser session) then the callbacks will get executed immediately. Otherwise the callbacks will only get executed once the user records a response in the cookie consent banner.
 
-The [analytics](./analytics.md) feature requires cookies and so it relies on this method to activate itself.

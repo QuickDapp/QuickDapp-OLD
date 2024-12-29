@@ -14,6 +14,11 @@ coverage/
 # contracts folder
 contracts/
 
+# retype
+.retype/
+retype.manifest
+
+
 # production
 build/
 build-docs/

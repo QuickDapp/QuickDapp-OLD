@@ -7,7 +7,7 @@ order: 60
 The `docker` command is responsible for:
 
 * Building and running Next.js production Docker images.
-* Building and running [background worker](../background-worker/index.md) production Docker images.
+* Building and running [background worker](../worker/index.md) production Docker images.
 
 All of these commands operate using the **production** environment configuration as defined via the [environment variables](../environment-variables.md).
 

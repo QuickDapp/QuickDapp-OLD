@@ -7,7 +7,7 @@ order: 70
 The `prod` command is responsible for:
 
 * Running the Next.js production server.
-* Running the [background worker](../background-worker/index.md) production server.
+* Running the [background worker](../worker/index.md) production server.
 * Running production database management commands.
 
 All of these commands operate using the **production** environment configuration as defined via the [environment variables](../environment-variables.md).

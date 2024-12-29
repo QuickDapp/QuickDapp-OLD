@@ -10,6 +10,6 @@ All of the following [environment variables](../environment-variables.md) must b
 
 * `ABLY_API_KEY` - the Ably API key.
 
-If enabled then the `ably` property in the [bootstrapped object](./bootstrapped.md) will be set.
+If enabled then the `ably` property in the [bootstrapped object](./bootstrap.md) will be set.
 
 

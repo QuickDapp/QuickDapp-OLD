@@ -7,7 +7,7 @@ order: 100
 The `dev` command is responsible for:
 
 * Running the Next.js dev server.
-* Running the [background worker](../background-worker/index.md) dev server.
+* Running the [background worker](../worker/index.md) dev server.
 * Running development database management commands.
 
 All of these commands operate using the **development** environment configuration as defined via the [environment variables](../environment-variables.md).
