@@ -1,8 +1,7 @@
 import { headers } from 'next/headers'
 import { NextRequest } from 'next/server'
 import { ApolloServer, HeaderMap } from '@apollo/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { auth } from '@/auth'
 import { bootstrap } from '../../../backend/bootstrap'
 import { ErrorCode, throwError } from '../../../shared/errors'
 import { schema } from '../../../shared/graphql/schema'
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
       let ctx: any = {}
 
       // decode logged-in user
-      const session = await getServerSession(authOptions)
+      const session = await auth()
       if (session?.user) {
         ctx = {
           user: session.user,
