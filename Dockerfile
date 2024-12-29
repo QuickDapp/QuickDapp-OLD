@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FROM --platform=linux/amd64 node:20-alpine AS base
+FROM --platform=linux/amd64 node:20-alpine3.21 AS base
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -46,16 +46,16 @@ RUN pnpm bootstrap
 FROM build_base as build_base_web
 WORKDIR /app
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN pnpm build web
 
 FROM base AS web
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
+ENV NEXT_TELEMETRY_DISABLED 1 
 
 RUN yarn global add pnpm
 # for scripts to work
@@ -90,17 +90,16 @@ CMD ["prod", "web"]
 FROM build_base as build_base_worker
 WORKDIR /app
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
+ENV NEXT_TELEMETRY_DISABLED 1 
 RUN pnpm build worker
 
 FROM base AS worker
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
-
+ENV NEXT_TELEMETRY_DISABLED 1 
 RUN yarn global add pnpm
 # for scripts to work
 RUN pnpm add dotenv commander execa
@@ -130,16 +129,16 @@ CMD ["prod", "worker"]
 FROM build_base as build_base_all
 WORKDIR /app
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
+ENV NEXT_TELEMETRY_DISABLED 1 
 RUN pnpm build
 
 FROM base AS all
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV SHELL /bin/bash
+ENV NEXT_TELEMETRY_DISABLED 1 
 
 RUN yarn global add pnpm
 # for scripts to work

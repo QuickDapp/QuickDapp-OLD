@@ -25,9 +25,7 @@ export const authOptions: NextAuthConfig = {
       async authorize(credentials, req) {
         // console.log("credentials", credentials);
         try {
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message as string || "{}")
-          );
+          const siwe = new SiweMessage(credentials?.message as string)
 
           const nextAuthUrl = serverConfig.NEXT_PUBLIC_BASE_URL;
           // console.log("nextAuthUrl", nextAuthUrl);
