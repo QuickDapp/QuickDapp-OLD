@@ -110,6 +110,7 @@ export const NotificationsDialog: FC<PropsWithChildren<{}>> = ({ children }) => 
         </div>
         {notifications.isFetching ? <Loading className="mt-4" /> : null}
         {notifications.error ? <ErrorMessageBox className="mt-4">{`${notifications.error}`}</ErrorMessageBox> : null}
+        {markAllNotificationsAsRead.error ? <ErrorMessageBox className="mt-4">{`${markAllNotificationsAsRead.error}`}</ErrorMessageBox> : null}
         <OnceVisibleInViewport onVisibilityChanged={onReachedBottomOfList} />
       </DialogContent>
     </Dialog>				

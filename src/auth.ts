@@ -3,6 +3,8 @@ import NextAuth, { NextAuthConfig,  } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { cookies } from "next/headers";
 import { SiweMessage } from "siwe";
+import { bootstrap } from "./backend/bootstrap";
+import { createUserIfNotExists } from "./backend/db";
 
 export const authOptions: NextAuthConfig = {
   providers: [
@@ -43,16 +45,25 @@ export const authOptions: NextAuthConfig = {
           // https://github.com/nextauthjs/next-auth/discussions/7256
 
           // console.log('verifying...')
-          await siwe.verify({
+          const result = await siwe.verify({
             signature: credentials?.signature as string || "",
             domain: nextAuthHost,
             nonce: (credentials as any)?.csrfToken || "",
           });
 
-          // console.log("siwe.address", siwe.address);
-          return {
-            id: siwe.address,
-          };
+          // console.log(`result: ${result}`)
+          if (result.success) {
+            const app = bootstrap({ processName: 'auth' })
+
+            // create a user entry if it doesn't already exist
+            await createUserIfNotExists(app, siwe.address)
+  
+            return {
+              id: siwe.address,
+            }
+          } else {
+            return null
+          }        
         } catch (e) {
           return null;
         }
@@ -67,10 +78,9 @@ export const authOptions: NextAuthConfig = {
 
   callbacks: {
     async session({ session, token }: { session: any; token: any }) {
-      session.address = token.sub;
-      session.user = {
-        name: token.sub,
-      };
+      session.address = token.sub
+      session.user.name = token.sub
+      session.user.image = 'https://www.fillmurray.com/128/128'      
       return session;
     },
   },
