@@ -251,6 +251,10 @@ export const removeOldJobs = async (app: BootstrappedApp, { exclude }: { exclude
         removeAt: {
           lte: new Date(),
         },
+        // for safety we do an additional check to make sure the job has been started
+        started: {
+          not: null,
+        },
         id: {
           notIn: exclude || [],
         },

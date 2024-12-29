@@ -1,4 +1,7 @@
+import { serverConfig } from '@/config/server'
 import { register } from '@/instrumentation.node'
+register(serverConfig.OTEL_WORKER_SERVICE_NAME)
+
 import { jobs } from './generated/mappings'
 import { Chain } from 'viem'
 import { JobParams } from './types'
@@ -17,8 +20,6 @@ import {
   rescheduleCronJob,
   rescheduleFailedJob,
 } from '@/backend/db'
-import { serverConfig } from '@/config/server'
-register(serverConfig.OTEL_WORKER_SERVICE_NAME)
 
 const setupDefaultJobs = async (app: BootstrappedApp) => {
   await app.startSpan(`setupDefaultJobs`, async () => {
