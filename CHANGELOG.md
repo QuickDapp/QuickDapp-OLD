@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.0.1](https://github.com/QuickDapp/QuickDapp/compare/v2.0.0...v2.0.1) (2024-12-29)
+
+
+### Bug Fixes
+
+* changelog had old version ([d296c95](https://github.com/QuickDapp/QuickDapp/commit/d296c9517580206cdadc483384fb7e0c02203023))
+* create user if not exists on first auth ([5552fb1](https://github.com/QuickDapp/QuickDapp/commit/5552fb1f3f1e966524c36cf40d3c6f46a3bf540f))
+* instrumentation had stopped working ([84fefc2](https://github.com/QuickDapp/QuickDapp/commit/84fefc21a7ea5fbc7b456bc9a322af70374f07a5))
+
 ## [2.0.0](https://github.com/QuickDapp/QuickDapp/compare/v1.9.0...v2.0.0) (2024-12-29)
 
 
