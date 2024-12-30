@@ -8,7 +8,6 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   WORKER_LOG_LEVEL: string
   DATABASE_URL: string
   SESSION_ENCRYPTION_KEY: string
-  NEXTAUTH_URL: string
   SERVER_WALLET_PRIVATE_KEY: string
   SERVER_CHAIN_RPC_ENDPOINT: string
   MAILGUN_API_KEY?: string
@@ -16,12 +15,9 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
   DIGITALOCEAN_ACCESS_TOKEN?: string
-  OTEL_SERVICE_NAME?: string
-  OTEL_WORKER_SERVICE_NAME?: string
-  OTEL_EXPORTER_OTLP_PROTOCOL?: string
-  OTEL_EXPORTER_OTLP_ENDPOINT?: string
-  OTEL_EXPORTER_OTLP_HEADERS?: string
   NEXTAUTH_URL?: string
+  SENTRY_AUTH_TOKEN?: string
+  SENTRY_WORKER_DSN?: string
 }
 
 export const serverConfig = (() => {
@@ -37,12 +33,9 @@ export const serverConfig = (() => {
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
-    OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
-    OTEL_WORKER_SERVICE_NAME: process.env.OTEL_WORKER_SERVICE_NAME,
-    OTEL_EXPORTER_OTLP_PROTOCOL: process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
-    OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
-    OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    SENTRY_WORKER_DSN: process.env.SENTRY_WORKER_DSN,
   })
 
   try {
@@ -60,11 +53,8 @@ export const serverConfig = (() => {
       MAILGUN_FROM_ADDRESS: env.get('MAILGUN_FROM_ADDRESS').default('').asString(),
       ABLY_API_KEY: env.get('ABLY_API_KEY').default('').asString(),
       DIGITALOCEAN_ACCESS_TOKEN: env.get('DIGITALOCEAN_ACCESS_TOKEN').default('').asString(),
-      OTEL_SERVICE_NAME: env.get('OTEL_SERVICE_NAME').default('').asString(),
-      OTEL_WORKER_SERVICE_NAME: env.get('OTEL_WORKER_SERVICE_NAME').default('').asString(),
-      OTEL_EXPORTER_OTLP_PROTOCOL: env.get('OTEL_EXPORTER_OTLP_PROTOCOL').default('').asString(),
-      OTEL_EXPORTER_OTLP_ENDPOINT: env.get('OTEL_EXPORTER_OTLP_ENDPOINT').default('').asString(),
-      OTEL_EXPORTER_OTLP_HEADERS: env.get('OTEL_EXPORTER_OTLP_HEADERS').default('').asString(),
+      SENTRY_AUTH_TOKEN: env.get('SENTRY_AUTH_TOKEN').default('').asString(),
+      SENTRY_WORKER_DSN: env.get('SENTRY_WORKER_DSN').default('').asString(),
     } as ServerConfigInterface
 
     return Object.freeze(ret) 
