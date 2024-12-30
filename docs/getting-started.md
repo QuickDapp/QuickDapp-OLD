@@ -276,7 +276,6 @@ Now, every time you push an updated image to the container registry the App will
 
 **Congratulations! your dapp is now available on the web in production mode.**
 
-If you wish to gain more insight into what your dapp is doing a good starting point is to enable [cloud logging](./backend/logging-and-tracing.md).
 
 
 
