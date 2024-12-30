@@ -1,7 +1,6 @@
-  import { serverConfig } from "@/config/server";
+import { serverConfig } from "@/config/server";
 import NextAuth, { NextAuthConfig,  } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { cookies } from "next/headers";
 import { SiweMessage } from "siwe";
 import { bootstrap } from "./backend/bootstrap";
 import { createUserIfNotExists } from "./backend/db";
@@ -54,10 +53,10 @@ export const authOptions: NextAuthConfig = {
             const app = bootstrap({ processName: 'auth' })
 
             // create a user entry if it doesn't already exist
-            await createUserIfNotExists(app, siwe.address)
+            const u = await createUserIfNotExists(app, siwe.address)
   
             return {
-              id: siwe.address,
+              id: u.wallet
             }
           } else {
             return null
@@ -78,7 +77,7 @@ export const authOptions: NextAuthConfig = {
     async session({ session, token }: { session: any; token: any }) {
       session.address = token.sub
       session.user.name = token.sub
-      session.user.image = 'https://www.fillmurray.com/128/128'      
+      session.user.image = 'https://www.fillmurray.com/128/128'
       return session;
     },
   },

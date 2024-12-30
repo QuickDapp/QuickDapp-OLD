@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+import { type Span } from "@sentry/nextjs";
 import Ably from 'ably'
 import { DummyMailer, Mailer, MailgunMailer } from '../mailer'
 import { createLog } from '../logging'
@@ -21,7 +22,7 @@ export interface BootstrappedApp {
   chainClient: ReturnType<typeof createPublicClient>
   serverWallet: ReturnType<typeof createWalletClient>
   notifyUser: (id: User, data: object) => Promise<void>
-  startSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
+  startSpan<T>(name: string, cb: (span: Span) => Promise<T>): Promise<T>
 }
 
 export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: BootstrapParams): BootstrappedApp => {
@@ -87,7 +88,7 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: Bo
       await createNotification(app, user.id, data)
       ably?.notifyUser(user.wallet, PubSubMessageType.NEW_NOTIFICATIONS)
     },
-    startSpan<T>(name: string, cb: () => Promise<T>): Promise<T> {
+    startSpan<T>(name: string, cb: (span: Span) => Promise<T>): Promise<T> {
       return Sentry.startSpan({ name }, cb)
     },
   }
