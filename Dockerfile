@@ -75,8 +75,8 @@ RUN mkdir -p ./.next
 COPY --from=build_base_web --chown=nextjs:nodejs /app/.next/standalone ./.next/standalone
 
 USER nextjs
-EXPOSE 80
-ENV PORT 80
+EXPOSE 8080
+ENV PORT 8080
 ENV HOSTNAME "0.0.0.0"
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod", "web"]
@@ -159,8 +159,8 @@ COPY --from=build_base_all --chown=nextjs:nodejs /app/.next/standalone ./.next/s
 COPY --from=build_base_all --chown=nextjs:nodejs /app/build ./build
 
 USER nextjs
-EXPOSE 80
-ENV PORT 80
+EXPOSE 8080
+ENV PORT 8080
 ENV HOSTNAME "0.0.0.0"
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod"]

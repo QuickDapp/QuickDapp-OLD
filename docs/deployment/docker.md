@@ -22,6 +22,10 @@ One built the images can be [run locally](../command-line/docker.md) and/or depl
 
 At present, QuickDapp provides built-in support for [deploying to DigitalOcean](./digital-ocean.md).
 
+!!!
+The `Dockerfile` sets the web app port to 8080 by default and exposes this port to the host machine.
+!!!
+
 ## Bundling NPM packages
 
 Most Node packages will get automatically bundled into the built output by webpack. However, some packages will still require their `node_modules` sub-folders to exist at runtime in order to work properly (e.g [Prisma](https://www.prisma.io/)).

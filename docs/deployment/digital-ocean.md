@@ -13,3 +13,7 @@ This way, every time a new version of the Docker image is pushed to the registry
 ## Database setup
 
 You can also use the `do-cloud` command to setup a PostgreSQL database in DigitalOcean for your live app to use. For maximum communication efficiency ensure that both the App and database are located in the same regional datacenter.
+
+## Port
+
+The `Dockerfile` sets the web app port to 8080 by default and exposes this port to the host machine. If using the DigitalOcean app platform ensure you set the app spec to expose this port on the container.
