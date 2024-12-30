@@ -14,7 +14,7 @@ A GraphQL API layer allows for the frontend (and indeed, any third-party client)
 
 Configuration parameters are supplied via server-side-only [environment variables](../environment-variables.md).
 
-A hierarchical [logging system](./logging-and-tracing.md) allows for categorised logging output with differing log level thresholds.
+A hierarchical [logging system](./logging.md) allows for categorised logging output with differing log level thresholds.
 
 
 

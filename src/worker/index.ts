@@ -1,6 +1,5 @@
 import { serverConfig } from '@/config/server'
-import { register } from '@/instrumentation.node'
-register(serverConfig.OTEL_WORKER_SERVICE_NAME)
+import './instrumentation'
 
 import { jobs } from './generated/mappings'
 import { Chain } from 'viem'
@@ -105,10 +104,10 @@ const handleJob = async (params: JobParams): Promise<object | undefined> => {
 }
 
 const main = async () => {
-  const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL, openTelemetryServiceName: serverConfig.OTEL_WORKER_SERVICE_NAME })
+  const app = bootstrap({ processName: 'worker', logLevel: serverConfig.WORKER_LOG_LEVEL })
   const { log } = app
 
-  await app.startRootSpan(`setup`, async () => { 
+  await app.startSpan(`setup`, async () => { 
     await deployMulticall3(app)
     await setupDefaultJobs(app)
   })
@@ -130,7 +129,7 @@ const main = async () => {
 
       if (job) {
         if (dateBefore(job.due, Date.now())) {
-          await app.startRootSpan(`job[${job.id} - ${job.type}]`, async () => {
+          await app.startSpan(`job[${job.id} - ${job.type}]`, async () => {
             const joblog = log.create(`job[${job.id} - ${job.type}]${job.cronSchedule ? ' (cron)' : ''}`)
 
             joblog.debug(`Executing for [user ${job.userId}]`)

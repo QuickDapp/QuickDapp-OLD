@@ -28,7 +28,7 @@ Roughly speaking, it integrates the following:
 * [DigitalOcean](https://www.digitalocean.com/) for production deployments.
 * [Sendgrid](https://www.sendgrid.com/) integration for email sending.
 * [Ably](https://ably.com/) integration for real-time push notifications to clients.
-* [OpenTelemetry](https://opentelemetry.io/) integration for cloud logging and tracing.
+* [Sentry](https://sentry.io/) integration for metrics and tracing.
 
 As you can see above, QuickDapp does a lot for you out of the box. 
 

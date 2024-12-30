@@ -1,4 +1,5 @@
-import { trace, Span } from '@opentelemetry/api'
+import * as Sentry from "@sentry/nextjs";
+import { type Span } from "@sentry/nextjs";
 import Ably from 'ably'
 import { DummyMailer, Mailer, MailgunMailer } from '../mailer'
 import { createLog } from '../logging'
@@ -11,7 +12,6 @@ import { createPublicClient, createWalletClient, http } from 'viem'
 export interface BootstrapParams {
   processName: string,
   logLevel?: string,
-  openTelemetryServiceName?: string,
 }
 
 export interface BootstrappedApp {
@@ -22,11 +22,10 @@ export interface BootstrappedApp {
   chainClient: ReturnType<typeof createPublicClient>
   serverWallet: ReturnType<typeof createWalletClient>
   notifyUser: (id: User, data: object) => Promise<void>
-  startSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
-  startRootSpan<T>(name: string, cb: () => Promise<T>): Promise<T>
+  startSpan<T>(name: string, cb: (span: Span) => Promise<T>): Promise<T>
 }
 
-export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL, openTelemetryServiceName = serverConfig.OTEL_SERVICE_NAME }: BootstrapParams): BootstrappedApp => {
+export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL }: BootstrapParams): BootstrappedApp => {
   const log = createLog({
     name: processName,
     logLevel,
@@ -89,23 +88,9 @@ export const bootstrap = ({ processName, logLevel = serverConfig.LOG_LEVEL, open
       await createNotification(app, user.id, data)
       ably?.notifyUser(user.wallet, PubSubMessageType.NEW_NOTIFICATIONS)
     },
-    startSpan<T>(name: string, cb: () => Promise<T>): Promise<T> {
-      if (!openTelemetryServiceName) {
-        return cb()
-      } else {
-        const span = trace.getTracer(openTelemetryServiceName).startSpan(name)
-        return cb().finally(() => span.end())
-      }
+    startSpan<T>(name: string, cb: (span: Span) => Promise<T>): Promise<T> {
+      return Sentry.startSpan({ name }, cb)
     },
-    startRootSpan<T>(name: string, cb: () => Promise<T>): Promise<T> {
-      if (!openTelemetryServiceName) {
-        return cb()
-      } else {
-        return trace.getTracer(openTelemetryServiceName).startActiveSpan(name, 
-          (span: Span) => cb().finally(() => span.end())
-        )
-      }
-    }
   }
 
   return app

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import bunyan from 'bunyan'
 import bformat from 'bunyan-format'
 import type { LoggerMethods } from './types'
@@ -34,8 +35,8 @@ class Log {
         obj.err = args.find(a => a.stack && a.message)
         ;(this._log as any)[fn].apply(this._log, [obj, ...args])
 
-        if (fn === 'error') {
-          // Sentry.captureException(`${obj.err || args[0]}`)
+        if (fn === 'error' && obj.err) {
+          Sentry.captureException(obj.err);
         }
       }
     })
