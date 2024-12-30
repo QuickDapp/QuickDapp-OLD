@@ -45,8 +45,6 @@ export async function POST(request: NextRequest) {
             id: session.user.id,
             username: session.user.name!,
           })
-
-          span.setAttribute('username', session.user.name!)
   
           ctx = {
             user: session.user,

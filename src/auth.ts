@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { serverConfig } from "@/config/server";
 import NextAuth, { NextAuthConfig,  } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -55,6 +56,12 @@ export const authOptions: NextAuthConfig = {
             // create a user entry if it doesn't already exist
             const u = await createUserIfNotExists(app, siwe.address)
   
+            // set on tracing
+            Sentry.setUser({
+              id: u.id,
+              username: u.wallet,
+            })
+
             return {
               id: u.wallet
             }
