@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.0](https://github.com/QuickDapp/QuickDapp/compare/v2.0.2...v2.1.0) (2024-12-30)
+
+
+### Features
+
+* replace opentel with sentry ([#3](https://github.com/QuickDapp/QuickDapp/issues/3)) ([b55e7b5](https://github.com/QuickDapp/QuickDapp/commit/b55e7b5830733b9b836af7a91b86ae70e4f5da2f))
+
+
+### Bug Fixes
+
+* nextauth_url for docker builds ([8ad5204](https://github.com/QuickDapp/QuickDapp/commit/8ad5204ef0d194b51299df0a636d390f3b0f4348))
+* update dockerfile nextauth_url ([7c20354](https://github.com/QuickDapp/QuickDapp/commit/7c203544e7ff55308e6d3fb0874d4f858c46308c))
+
 ## [2.0.2](https://github.com/QuickDapp/QuickDapp/compare/v2.0.1...v2.0.2) (2024-12-29)
 
 
