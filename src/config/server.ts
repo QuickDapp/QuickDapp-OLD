@@ -21,6 +21,7 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   OTEL_EXPORTER_OTLP_PROTOCOL?: string
   OTEL_EXPORTER_OTLP_ENDPOINT?: string
   OTEL_EXPORTER_OTLP_HEADERS?: string
+  NEXTAUTH_URL?: string
 }
 
 export const serverConfig = (() => {
@@ -41,6 +42,7 @@ export const serverConfig = (() => {
     OTEL_EXPORTER_OTLP_PROTOCOL: process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
     OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
     OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   })
 
   try {
@@ -50,7 +52,7 @@ export const serverConfig = (() => {
       LOG_LEVEL: env.get('LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
       WORKER_LOG_LEVEL: env.get('WORKER_LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
       SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),      
-      NEXTAUTH_URL: clientConfig.NEXT_PUBLIC_BASE_URL,
+      NEXTAUTH_URL: env.get('NEXTAUTH_URL').default('').asString(),
       SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
       SERVER_CHAIN_RPC_ENDPOINT: env.get('SERVER_CHAIN_RPC_ENDPOINT').required().asString(),
       MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),

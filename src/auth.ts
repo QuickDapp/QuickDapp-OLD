@@ -27,7 +27,7 @@ export const authOptions: NextAuthConfig = {
         try {
           const siwe = new SiweMessage(credentials?.message as string)
 
-          const nextAuthUrl = serverConfig.NEXT_PUBLIC_BASE_URL;
+          const nextAuthUrl = serverConfig.NEXTAUTH_URL || serverConfig.NEXT_PUBLIC_BASE_URL;
           // console.log("nextAuthUrl", nextAuthUrl);
           if (!nextAuthUrl) {
             return null;
