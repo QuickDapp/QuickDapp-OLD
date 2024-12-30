@@ -78,7 +78,7 @@ USER nextjs
 EXPOSE 8080
 ENV PORT 8080
 ENV HOSTNAME "0.0.0.0"
-ENV NEXTAUTH_URL "http://localhost:8080"
+ENV NEXTAUTH_URL "http://0.0.0.0:8080"
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod", "web"]
 
@@ -163,6 +163,6 @@ USER nextjs
 EXPOSE 8080
 ENV PORT 8080
 ENV HOSTNAME "0.0.0.0"
-ENV NEXTAUTH_URL "http://localhost:8080"
+ENV NEXTAUTH_URL "http://0.0.0.0:8080"
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod"]
