@@ -9,8 +9,8 @@ links:
 - text: QuickDapp.xyz
   icon: home
   link: https://quickdapp.xyz
-- text: "@QuickDapp"
-  link: https://twitter.com/quickdapp
+- text: "@TaoOfDev"
+  link: https://twitter.com/taoofdev
 favicon: static/favicon.png
 editor:
   enabled: true
