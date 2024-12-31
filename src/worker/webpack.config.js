@@ -19,7 +19,7 @@ module.exports = {
     warnings: false,
   },
   // see https://github.com/trentm/node-bunyan#webpack
-  externals: ['dtrace-provider', 'fs', 'mv', 'os', 'source-map-support'],
+  externals: ['dtrace-provider'],
   resolve: {
     extensions: ['.ts', '.js', '.json'],
     extensionAlias: {

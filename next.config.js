@@ -11,7 +11,7 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false, crypto: false }
     config.externals.push('pino-pretty', 'lokijs', 'encoding', 'bufferutil', 'utf-8-validate')
     // see https://github.com/trentm/node-bunyan#webpack
-    config.externals.push('dtrace-provider', 'fs', 'mv', 'os', 'source-map-support')
+    config.externals.push('dtrace-provider')
 
     config.module.rules.push({
       test: /\.svg$/i,
