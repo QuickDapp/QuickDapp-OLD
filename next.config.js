@@ -10,6 +10,8 @@ const nextConfig = {
     // see https://github.com/rainbow-me/rainbowkit/blob/main/examples/with-next-app/next.config.js
     config.resolve.fallback = { fs: false, net: false, tls: false, crypto: false }
     config.externals.push('pino-pretty', 'lokijs', 'encoding', 'bufferutil', 'utf-8-validate')
+    // see https://github.com/trentm/node-bunyan#webpack
+    config.externals.push('dtrace-provider', 'fs', 'mv', 'os', 'source-map-support')
 
     config.module.rules.push({
       test: /\.svg$/i,
@@ -51,8 +53,10 @@ module.exports = withSentryConfig(nextConfig, {
   // side errors will fail.
   tunnelRoute: '/monitoring',
 
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
+  // don't bunde
+  sourcemaps: {
+    deleteSourcemapsAfterUpload: true,
+  },
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
@@ -62,4 +66,5 @@ module.exports = withSentryConfig(nextConfig, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
+
 })

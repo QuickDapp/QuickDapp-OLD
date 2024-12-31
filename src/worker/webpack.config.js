@@ -18,6 +18,8 @@ module.exports = {
   stats: {
     warnings: false,
   },
+  // see https://github.com/trentm/node-bunyan#webpack
+  externals: ['dtrace-provider', 'fs', 'mv', 'os', 'source-map-support'],
   resolve: {
     extensions: ['.ts', '.js', '.json'],
     extensionAlias: {
@@ -30,16 +32,22 @@ module.exports = {
     ],
   },
   module: {
-    rules: [{ 
-      test: /\.([cm]?ts|ts)$/, 
-      use: [
-        {
-          loader: 'ts-loader',
-          options: {
-            configFile: typeScriptConfigFilePath,
+    rules: [
+      { 
+        test: /\.([cm]?ts|ts)$/, 
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: typeScriptConfigFilePath,
+            }
           }
-        }
-      ]
-    }],
+        ]
+      },
+      {
+        test: /\.node$/,
+        loader: "node-loader",
+      }
+    ],
   },
 }
