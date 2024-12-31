@@ -43,19 +43,19 @@ RUN pnpm bootstrap
 #
 ################################################################################
 
-FROM build_base as build_base_web
+FROM build_base AS build_base_web
 WORKDIR /app
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build web
 
 FROM base AS web
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1 
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN yarn global add pnpm
 # for scripts to work
@@ -76,9 +76,9 @@ COPY --from=build_base_web --chown=nextjs:nodejs /app/.next/standalone ./.next/s
 
 USER nextjs
 EXPOSE 8080
-ENV PORT 8080
-ENV HOSTNAME "0.0.0.0"
-ENV NEXTAUTH_URL "http://0.0.0.0:8080"
+ENV PORT=8080
+ENV HOSTNAME=0.0.0.0
+ENV NEXTAUTH_URL=http://0.0.0.0:8080
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod", "web"]
 
@@ -88,19 +88,19 @@ CMD ["prod", "web"]
 #
 ################################################################################
 
-FROM build_base as build_base_worker
+FROM build_base AS build_base_worker
 WORKDIR /app
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1 
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build worker
 
 FROM base AS worker
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1 
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN yarn global add pnpm
 # for scripts to work
 RUN pnpm add dotenv commander execa
@@ -127,19 +127,19 @@ CMD ["prod", "worker"]
 #
 ################################################################################
 
-FROM build_base as build_base_all
+FROM build_base AS build_base_all
 WORKDIR /app
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1 
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 
 FROM base AS all
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV SHELL /bin/bash
-ENV NEXT_TELEMETRY_DISABLED 1 
+ENV NODE_ENV=production
+ENV SHELL=/bin/bash
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN yarn global add pnpm
 # for scripts to work
@@ -161,8 +161,8 @@ COPY --from=build_base_all --chown=nextjs:nodejs /app/build ./build
 
 USER nextjs
 EXPOSE 8080
-ENV PORT 8080
-ENV HOSTNAME "0.0.0.0"
-ENV NEXTAUTH_URL "http://0.0.0.0:8080"
+ENV PORT=8080
+ENV HOSTNAME=0.0.0.0
+ENV NEXTAUTH_URL=http://0.0.0.0:8080
 ENTRYPOINT [ "/usr/local/bin/pnpm" ]
 CMD ["prod"]
