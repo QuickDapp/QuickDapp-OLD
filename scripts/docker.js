@@ -50,7 +50,7 @@
             ],
             action: async ({ prefix, port, term }) => {
               prefix = prefix.toLowerCase()
-              await $$`docker run ${term ? '-it --entrypoint /bin/sh': ''} -p ${port}:80 --rm --name ${prefix}-all ${prefix}-all`
+              await $$`docker run ${term ? '-it --entrypoint /bin/sh': ''} -p ${port}:8080 --rm --name ${prefix}-all ${prefix}-all`
             },
           },
           web: {
@@ -62,7 +62,7 @@
             ],
             action: async ({ prefix, port, term }) => {
               prefix = prefix.toLowerCase()
-              await $$`docker run ${term ? '-it --entrypoint /bin/sh' : ''} -p ${port}:80 --rm --name ${prefix}-web ${prefix}-web`
+              await $$`docker run ${term ? '-it --entrypoint /bin/sh' : ''} -p ${port}:8080 --rm --name ${prefix}-web ${prefix}-web`
             },
           },
           worker: {
