@@ -15,7 +15,6 @@ export interface ServerConfigInterface extends ClientConfigInterface {
   MAILGUN_FROM_ADDRESS?: string
   ABLY_API_KEY?: string
   DIGITALOCEAN_ACCESS_TOKEN?: string
-  NEXTAUTH_URL?: string
   SENTRY_AUTH_TOKEN?: string
   SENTRY_WORKER_DSN?: string
 }
@@ -33,7 +32,6 @@ export const serverConfig = (() => {
     MAILGUN_FROM_ADDRESS: process.env.MAILGUN_FROM_ADDRESS,
     ABLY_API_KEY: process.env.ABLY_API_KEY,
     DIGITALOCEAN_ACCESS_TOKEN: process.env.DIGITALOCEAN_ACCESS_TOKEN,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     SENTRY_WORKER_DSN: process.env.SENTRY_WORKER_DSN,
   })
@@ -45,7 +43,6 @@ export const serverConfig = (() => {
       LOG_LEVEL: env.get('LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
       WORKER_LOG_LEVEL: env.get('WORKER_LOG_LEVEL').default('debug').asEnum(LOG_LEVELS),
       SESSION_ENCRYPTION_KEY: env.get('SESSION_ENCRYPTION_KEY').required().asString(),      
-      NEXTAUTH_URL: env.get('NEXTAUTH_URL').default('').asString(),
       SERVER_WALLET_PRIVATE_KEY: env.get('SERVER_WALLET_PRIVATE_KEY').required().asString(),
       SERVER_CHAIN_RPC_ENDPOINT: env.get('SERVER_CHAIN_RPC_ENDPOINT').required().asString(),
       MAILGUN_API_KEY: env.get('MAILGUN_API_KEY').default('').asString(),
