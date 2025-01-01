@@ -1,10 +1,12 @@
 ---
-order: 90
+icon: container
+order: 81
+expanded: true
 ---
 
 # Logging
 
-The backend logging system is built on [bunyan](https://www.npmjs.com/package/bunyan) and is designed for categorised, hierarchical logging with log thresholds.
+The QuickDapp backend has built-in console logging via [bunyan](https://www.npmjs.com/package/bunyan) and is designed for categorised, hierarchical logging with log thresholds.
 
 Each log treshold has a corresponding method with the same name available on a logger instance. The possible log thresholds are:
 
@@ -41,6 +43,6 @@ child.debug('test2')
 ```
 
 !!!
-There is always an instantiated `log` property in the [bootstrapped object](./bootstrap.md).
+There is always an instantiated `log` property in the [bootstrapped object](../backend/bootstrap.md).
 !!!
 

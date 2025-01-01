@@ -15,6 +15,7 @@ export interface BootstrappedApp {
   chainClient: ...
   serverWallet: ...
   notifyUser: (...) => Promise<void>
+  startSpan<T>(name: string, cb: (span: Span) => Promise<T>): Promise<T>
 }
 ```
 

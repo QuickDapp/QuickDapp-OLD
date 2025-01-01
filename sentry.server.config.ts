@@ -16,4 +16,12 @@ if (serverConfig.NEXT_PUBLIC_SENTRY_DSN) {
     // Setting this option to true will print useful information to the console while you're setting up Sentry.
     debug: false,
   })
+
+  process.on('unhandledRejection', (error) => {
+    Sentry.captureException(error);
+  });
+  
+  process.on('uncaughtException', (error) => {
+    Sentry.captureException(error);
+  });
 }

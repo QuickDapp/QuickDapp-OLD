@@ -14,4 +14,12 @@ if (serverConfig.SENTRY_WORKER_DSN) {
     // Tracing
     tracesSampleRate: 1.0, //  Capture 100% of the transactions
   });
+
+  process.on('unhandledRejection', (error) => {
+    Sentry.captureException(error);
+  });
+
+  process.on('uncaughtException', (error) => {
+    Sentry.captureException(error);
+  });
 }
