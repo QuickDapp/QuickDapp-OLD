@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.1.2](https://github.com/QuickDapp/QuickDapp/compare/v2.1.1...v2.1.2) (2024-12-31)
+
+
+### Bug Fixes
+
+* removed too many modules in webpack for worker ([3f6af06](https://github.com/QuickDapp/QuickDapp/commit/3f6af065b0b3f780ac74f22ba4b0889c97903609))
+
 ## [2.1.1](https://github.com/QuickDapp/QuickDapp/compare/v2.1.0...v2.1.1) (2024-12-31)
 
 ## [2.1.0](https://github.com/QuickDapp/QuickDapp/compare/v2.0.2...v2.1.0) (2024-12-30)
