@@ -51,3 +51,9 @@ You can of course use the Wagmi React hooks to access contract methods if you wi
 !!!
 The default QuickDapp dapp (the built-in ERC-20 demo) utilises all of these hooks, providing you with working code examples.
 !!!
+
+### Contract write simulation
+
+The `useSetContractValue` internally simulates the transaction prior to executing it. It doesn't use Wagmi's default `useWriteContract` hook, instead opting to manually use the wallet client instance to make the calls. This allows us for better error management.
+
+Of course, you can choose to not use this and use `useWriteContract` hook instead. Or create your own wrapper around the wallet client. It's upto you!
