@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.2.3](https://github.com/QuickDapp/QuickDapp/compare/v2.2.2...v2.2.3) (2025-01-09)
+
+
+### Bug Fixes
+
+* whitespace pre needed for PRE in error button ([6f1c720](https://github.com/QuickDapp/QuickDapp/commit/6f1c7203f4ee89eae32f33abf49dec1dc72324d8))
+
 ## [2.2.2](https://github.com/QuickDapp/QuickDapp/compare/v2.2.1...v2.2.2) (2025-01-09)
 
 ## [2.2.1](https://github.com/QuickDapp/QuickDapp/compare/v2.2.0...v2.2.1) (2025-01-09)
