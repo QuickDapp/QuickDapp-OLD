@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [2.2.0](https://github.com/QuickDapp/QuickDapp/compare/v2.1.3...v2.2.0) (2025-01-09)
+
+
+### Features
+
+* improved contract write hook, added success/error toasts ([2d3c74e](https://github.com/QuickDapp/QuickDapp/commit/2d3c74e25085923ca84837d6eddbeec64b788404))
+
 ## [2.1.3](https://github.com/QuickDapp/QuickDapp/compare/v2.1.2...v2.1.3) (2025-01-01)
 
 ## [2.1.2](https://github.com/QuickDapp/QuickDapp/compare/v2.1.1...v2.1.2) (2024-12-31)
