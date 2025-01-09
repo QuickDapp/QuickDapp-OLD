@@ -15,7 +15,7 @@ export const ErrorButton: FC<PropsWithClassName<{ label?: string, errorMessage: 
         </Button>
       </DialogTrigger>
       <DialogContent variant='error' size='max'>
-        <pre className="whitespace-normal">{errorMessage}</pre>
+        <pre className="whitespace-pre">{errorMessage}</pre>
       </DialogContent>
     </Dialog>					
   )
