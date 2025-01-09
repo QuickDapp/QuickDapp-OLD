@@ -9,8 +9,10 @@ import { useAccount, useWalletClient } from 'wagmi'
 import { graphqlApiEndpoint } from '../hooks'
 import { truncateStr } from '../utils'
 import { PubSubMessage } from '@/shared/pubsub'
+import { WalletClient } from 'viem'
 
 export interface Wallet {
+  client: WalletClient
   isAuthenticated: boolean
   address: string
   addressTruncated: string

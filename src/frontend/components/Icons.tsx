@@ -5,4 +5,5 @@ export {
   Info,
   Maximize2,
   Bell,
+  X,
 } from 'lucide-react'

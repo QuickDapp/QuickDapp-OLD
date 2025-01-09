@@ -5,6 +5,7 @@ import './globals.css'
 import { Metadata } from 'next'
 import { APP_NAME } from '@/shared/constants'
 import { WagmiLayout } from './wagmi-layout'
+import { Toaster } from '@/frontend/components/Toaster'
 
 const ComfortaaFont = Comfortaa({
   subsets: ['latin'],
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className='font-body min-h-screen'>
         <WagmiLayout>
           {children}
+          <Toaster />
         </WagmiLayout>
       </body>
     </html>

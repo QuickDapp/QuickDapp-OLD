@@ -59,7 +59,7 @@ const CreateTokenForm: FC<{ onCreated: () => void }> = ({ onCreated }) => {
       }).toMinScale().toString()
 
       await create.exec({
-        notifyMsg: `Created token: ${name.value} (${symbol.value})}`,
+        successToastMsg: `Created token: ${name.value} (${symbol.value})`,
         args: [{
           name: name.value,
           symbol: symbol.value,

@@ -1,9 +1,10 @@
 import { clientConfig } from '@/config/client'
 import { ContractInfo, ContractName, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
-import { useCallback, useMemo } from "react"
-import { Abi } from "viem"
-import { useInfiniteReadContracts, usePublicClient, useReadContract, useReadContracts, useWriteContract } from 'wagmi'
+import { useCallback, useMemo, useState } from "react"
+import { Abi, WalletClient } from "viem"
+import { useInfiniteReadContracts, usePublicClient, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
 import { useGlobalContext } from "../contexts"
+import { useToast } from './toast'
 
 export interface FunctionArgs {
   contract: ContractName | ContractInfo
@@ -108,13 +109,14 @@ export type ExecArgs = {
   args: any[]
   value?: string 
   meta?: object
-  notifyMsg?: string
+  successToastMsg?: string
+  hideSuccessToast?: boolean
+  hideErrorToast?: boolean
 }
 
 export interface ChainSetterFunction {
   isLoading?: boolean
   isSuccess?: boolean
-  isError?: boolean
   error: Error | null
   reset: () => void
   exec: (e: ExecArgs) => Promise<any>
@@ -128,45 +130,103 @@ export const useSetContractValue = ({
   functionName: string, 
   contract: ContractName | ContractInfo,
 }, overrides?: object): ChainSetterFunction => {
-  const props = useWriteContract()
-
   const { chain } = useGlobalContext()
+  const { wallet } = useGlobalContext()
   const publicClient = usePublicClient()!
+  const [error, setError] = useState<Error | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const chainId = useMemo(() => chain?.id, [chain?.id])
+  const canExec = useMemo(() => !!chainId, [chainId])
+  const { toast } = useToast()
+
+  const reset = useCallback(() => {
+    setIsLoading(false)
+    setIsSuccess(false)
+    setError(null)
+  }, [])
 
   const resolvedContract = useMemo(() => getResolvedContractInfo(contract), [contract])
 
   const exec = useCallback(
-    async (e: ExecArgs) => {
-      if (!chainId) {
-        throw new Error('No chain selected')
+    async (execArgs: ExecArgs) => {
+      let preparedRequest: any
+      try {
+        setIsLoading(true)
+        setIsSuccess(false)
+        setError(null)
+
+        if (!canExec) {
+          throw new Error('No chain selected')
+        }
+  
+        const { args, value } = execArgs
+
+        preparedRequest = await publicClient.simulateContract({
+          ...resolvedContract,
+          account: wallet!.client.account,
+          functionName: functionName as any,
+          args: args as any,
+          ...(value ? { value: BigInt(value) as any } : {}),
+        }) 
+      } catch (e) {
+        setError(e as Error)
+
+        if (!execArgs.hideErrorToast) {
+          toast({
+            title: 'Transaction simulation failed',
+            variant: 'destructive',
+          })  
+        }
+
+        throw e
       }
 
-      const { args, value } = e
+      try {
+        const hash = await wallet!.client.writeContract(preparedRequest.request)
+  
+        console.log(`Awaiting transaction confirmation for ${hash}`)
+  
+        const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-      const hash = await props.writeContractAsync({
-        ...resolvedContract,
-        functionName: functionName as any,
-        chainId,
-        ...overrides,
-        args: args as any,
-        ...(value ? { value: BigInt(value) as any } : {}),
-      })
+        if (receipt.status !== 'success') {
+          throw new Error('Transaction failed')
+        }
+  
+        console.log(`Transaction confirmed in block ${receipt.blockNumber}`)
+        console.log(receipt)
+  
+        setIsSuccess(true)
 
-      console.log(`Awaiting transaction confirmation for ${hash}`)
+        if (!execArgs.hideSuccessToast) {
+          toast({
+            title: execArgs.successToastMsg || 'Transaction confirmed',
+          })
+        }
 
-      const rec = await publicClient.waitForTransactionReceipt({ hash })
-
-      console.log(`Transaction confirmed in block ${rec.blockNumber}`)
-
-      return rec
+        return receipt
+      } catch (e) {
+        setError(e as Error)
+        if (!execArgs.hideErrorToast) {
+          toast({
+            title: 'Transaction failed',
+            variant: 'destructive',
+          })  
+        }
+        throw e
+      } finally {
+        setIsLoading(false)
+      }
     },
-    [chainId, functionName, overrides, props, publicClient, resolvedContract]
+    [chainId, functionName, overrides, publicClient, resolvedContract]
   )
 
   return {
-    ...props,
     exec,
+    reset,
+    isLoading,
+    isSuccess,
+    error,
     canExec: !!chainId,
   }
 }
