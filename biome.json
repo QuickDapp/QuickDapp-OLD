@@ -1,15 +1,3 @@
-import _ from 'lodash'
-import { ErrorCode } from "../errors"
-
-export const createErrorResponse = (message: string, code = ErrorCode.INTERNAL) => {
-  return {
-    error: {
-      __typename: 'ErrorDetails',
-      code,
-      message,
-    },
-  }
-}
 {
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "files": {
@@ -19,7 +7,8 @@ export const createErrorResponse = (message: string, code = ErrorCode.INTERNAL) 
       "**/dist",
       "**/dist-bin",
       "**/public",
-      "**/*.generated.ts"
+      "**/scripts",
+      "**/generated/**"
     ]
   },
   "formatter": {
@@ -42,7 +31,7 @@ export const createErrorResponse = (message: string, code = ErrorCode.INTERNAL) 
         "noUselessCatch": "error",
         "noUselessThisAlias": "error",
         "noUselessTypeConstraint": "error",
-        "noWith": "error"        
+        "noWith": "error"
       },
       "correctness": {
         "noConstAssign": "error",
@@ -111,52 +100,4 @@ export const createErrorResponse = (message: string, code = ErrorCode.INTERNAL) 
       "allowComments": true
     }
   }
-}
-
-
-export const resolveErrorFromResponse = (result: any) => {
-  if (result instanceof Error) {
-    return result.message
-  }
-
-  const { data, errors } = result
-  if (errors?.length) {
-    return stringifyError(errors)
-  }
-  const dataError = _.get(data, `${Object.keys(data || {})[0]}.error`)
-  if (dataError) {
-    return `${dataError.code}: ${dataError.message}`
-  }
-
-  return "Unknown error"
-}
-
-
-
-/**
- * Stringify given GraphQL request error.
- *
- * @param  {*} errInput Error(s) from GraphQL call.
- * @return {String}
- */
-export const stringifyError = (errInput: any) => {
-  const err = Array.isArray(errInput) ? errInput[0] : errInput
-
-  const code = err.code || _.get(err, 'extensions.code')
-
-  const str = [
-    code ? `${err.message} (code: ${code})` : err.message
-  ]
-
-  const stackTrace = _.get(err, 'extensions.exception.stacktrace')
-  if (stackTrace) {
-    str.push(stackTrace[0])
-  }
-
-  const networkErrors = _.get(err, 'networkError.result.errors', [])
-  for (const e of networkErrors) {
-    str.push(stringifyError(e))
-  }
-
-  return str.join('\n')
 }

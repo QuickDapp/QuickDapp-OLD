@@ -17,5 +17,10 @@
     }
   },
   "include": ["../../**/*.d.ts", "../../**/*.ts"],
-  "exclude": ["node_modules", "../../src/frontend/**", "../../src/app/**"]
+  "exclude": [
+    "node_modules",
+    "../../src/frontend/**",
+    "../../src/app/**",
+    "../../contracts/**"
+  ]
 }
