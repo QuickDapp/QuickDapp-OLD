@@ -1,15 +1,20 @@
 "use client"
 
-import { generateAblyTokenMutation } from '@/shared/graphql/mutations'
-import Ably from 'ably'
-import request from 'graphql-request'
-import { useSession } from 'next-auth/react'
-import React, { FC, useContext, useEffect, useMemo } from 'react'
-import { useAccount, useWalletClient } from 'wagmi'
-import { graphqlApiEndpoint } from '../hooks'
-import { truncateStr } from '../utils'
-import { PubSubMessage } from '@/shared/pubsub'
-import { WalletClient } from 'viem'
+import { generateAblyTokenMutation } from "@/shared/graphql/mutations"
+import { PubSubMessage } from "@/shared/pubsub"
+import Ably from "ably"
+import request from "graphql-request"
+import { useSession } from "next-auth/react"
+import React, { FC, useContext, useEffect, useMemo } from "react"
+import { WalletClient } from "viem"
+import {
+  UsePublicClientReturnType,
+  useAccount,
+  usePublicClient,
+  useWalletClient,
+} from "wagmi"
+import { graphqlApiEndpoint } from "../hooks"
+import { truncateStr } from "../utils"
 
 export interface Wallet {
   client: WalletClient
@@ -20,8 +25,9 @@ export interface Wallet {
 
 export interface GlobalContextValue {
   wallet?: Wallet
+  publicClient?: UsePublicClientReturnType
   ably?: Ably.Types.RealtimePromise
-  chain: ReturnType<typeof useAccount>['chain']
+  chain: ReturnType<typeof useAccount>["chain"]
 }
 
 export const GlobalContext = React.createContext({} as GlobalContextValue)
@@ -32,12 +38,13 @@ export const GlobalProvider: FC<React.PropsWithChildren> = ({ children }) => {
   const { chain, address } = useAccount()
   const { data: client } = useWalletClient()
   const session = useSession()
+  const publicClient = usePublicClient()
 
   const wallet = useMemo(() => {
     if (address && client) {
       return {
         client,
-        isAuthenticated: session.status === 'authenticated',
+        isAuthenticated: session.status === "authenticated",
         address: address,
         addressTruncated: truncateStr(address as string, 12),
       }
@@ -48,41 +55,43 @@ export const GlobalProvider: FC<React.PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (wallet?.isAuthenticated) {
       if (!ably && !isAblyConnecting) {
-        (async () => {
+        ;(async () => {
           try {
             setIsAblyConnecting(true)
 
             const a = new Ably.Realtime.Promise({
               authCallback: (_ignore, cb) => {
                 request(graphqlApiEndpoint, generateAblyTokenMutation)
-                  .then(data => {
+                  .then((data) => {
                     if (data?.result) {
                       cb(null, data.result)
                     } else {
-                      console.warn('No ably token returned')
+                      console.warn("No ably token returned")
                     }
                   })
-                  .catch(err => {
+                  .catch((err) => {
                     console.error(err)
                     cb(err, null)
                   })
-              }
+              },
             })
 
-            a.connection.on('disconnected', () => {
-              console.warn('Ably disconnected')
+            a.connection.on("disconnected", () => {
+              console.warn("Ably disconnected")
             })
 
-            a.connection.on('failed', () => {
-              console.warn('Ably failed')
+            a.connection.on("failed", () => {
+              console.warn("Ably failed")
             })
 
-            await a.connection.once('connected')
-            console.log('Ably connected')
+            await a.connection.once("connected")
+            console.log("Ably connected")
 
-            a.channels.get(wallet.address.toLowerCase()).subscribe('msg', ({ data } : { data: PubSubMessage }) => {
-              window.postMessage(data, '*')
-            })
+            a.channels
+              .get(wallet.address.toLowerCase())
+              .subscribe("msg", ({ data }: { data: PubSubMessage }) => {
+                window.postMessage(data, "*")
+              })
 
             setAbly(a)
           } catch (e) {
@@ -103,13 +112,14 @@ export const GlobalProvider: FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <GlobalContext.Provider
-        value={{
-          wallet,
-          ably,
-          chain,
-        }}
-      >
-        {children}
+      value={{
+        wallet,
+        publicClient,
+        ably,
+        chain,
+      }}
+    >
+      {children}
     </GlobalContext.Provider>
   )
 }
