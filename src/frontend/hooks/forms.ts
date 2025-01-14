@@ -1,16 +1,22 @@
-'use client'
+"use client"
 
-import pDebounce from 'p-debounce'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import pDebounce from "p-debounce"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 export type HandleFieldChangeFunction<T = any> = (v: T) => void
 export type SanitizeFunction<T = any> = (v: T) => T
-export type ValidateFunction<T = any> = (v: T, extraArgs?: any) => string | undefined
-export type ValidateAsyncFunction<T = any> = (v: T, extraArgs?: any) => Promise<string | undefined>
+export type ValidateFunction<T = any> = (
+  v: T,
+  extraArgs?: any,
+) => string | undefined
+export type ValidateAsyncFunction<T = any> = (
+  v: T,
+  extraArgs?: any,
+) => Promise<string | undefined>
 
-export interface FieldApi {
+export interface FieldApi<T> {
   name: string
-  value: any
+  value: T | undefined
   valid: boolean
   error?: string
   version: number
@@ -20,9 +26,9 @@ export interface FieldApi {
   unset: () => void
 }
 
-export interface FieldOptions {
+export interface FieldOptions<T> {
   name: string
-  initialValue?: any
+  initialValue?: T
   optional?: boolean
   sanitize?: SanitizeFunction
   validate?: ValidateFunction
@@ -31,20 +37,27 @@ export interface FieldOptions {
   validateExtraArgs?: any
 }
 
-const DUMMY_VALIDATE_ASYNC_FN = async () => ''
+const DUMMY_VALIDATE_ASYNC_FN = async () => ""
 
-export const useField = (options: FieldOptions): FieldApi => {
+export const useField = <T = any>(options: FieldOptions<T>): FieldApi<T> => {
   const [version, setVersion] = useState<number>(0)
-  const [value, setValue] = useState<any>(options.initialValue)
+  const [value, setValue] = useState<T | undefined>(options.initialValue)
   const [error, setError] = useState<string | undefined>(undefined)
-  const [isSet, setIsSet] = useState<boolean>(options.optional ? true : !!options.initialValue)
+  const [isSet, setIsSet] = useState<boolean>(
+    options.optional ? true : !!options.initialValue,
+  )
   const [isValidating, setIsValidating] = useState<boolean>(false)
 
-  const debouncedValidateAsync = useAsyncValidator(options.validateAsync, options.validateAsyncDebounceMs)
+  const debouncedValidateAsync = useAsyncValidator(
+    options.validateAsync,
+    options.validateAsyncDebounceMs,
+  )
 
   const validate = useCallback(
-    async (v: any) => {
-      const syncValidationError = options.validate ? options.validate(v, options.validateExtraArgs) : ''
+    async (v: T) => {
+      const syncValidationError = options.validate
+        ? options.validate(v, options.validateExtraArgs)
+        : ""
       if (syncValidationError) {
         setError(syncValidationError)
       } else if (options.validateAsync) {
@@ -54,7 +67,7 @@ export const useField = (options: FieldOptions): FieldApi => {
       }
       setIsValidating(false)
     },
-    [debouncedValidateAsync, options]
+    [debouncedValidateAsync, options],
   )
 
   const handleChange: HandleFieldChangeFunction = useCallback(
@@ -66,14 +79,14 @@ export const useField = (options: FieldOptions): FieldApi => {
       setIsValidating(true)
       setTimeout(() => validate(val))
     },
-    [options, validate, version]
+    [options, validate, version],
   )
 
   const unset = useCallback(() => {
-    setValue('')
+    setValue(options.initialValue)
     setIsSet(false)
     setError(undefined)
-  }, [])
+  }, [options.initialValue])
 
   const valid = useMemo(() => !error && !isValidating, [error, isValidating])
 
@@ -101,7 +114,7 @@ export interface FormApi {
 }
 
 export interface FormOptions {
-  fields: FieldApi[]
+  fields: FieldApi<any>[]
   validate?: ValidateFunction
   validateAsync?: ValidateAsyncFunction
   validateExtraArgs?: any
@@ -114,7 +127,7 @@ export const useForm = (options: FormOptions): FormApi => {
   const [_isValidating, setIsValidating] = useState<boolean>(false)
 
   const isValidating = useMemo(() => {
-    return _isValidating || fields.some(f => f.isValidating)
+    return _isValidating || fields.some((f) => f.isValidating)
   }, [_isValidating, fields])
 
   const valid = useMemo(() => {
@@ -125,7 +138,10 @@ export const useForm = (options: FormOptions): FormApi => {
   }, [fields, formError])
 
   const errors = useMemo(() => {
-    const fieldErrors = fields.reduce((m: string[], f) => (f.error ? m.concat(f.error) : m), [])
+    const fieldErrors = fields.reduce(
+      (m: string[], f) => (f.error ? m.concat(f.error) : m),
+      [],
+    )
     if (formError) {
       fieldErrors.push(formError)
     }
@@ -144,15 +160,18 @@ export const useForm = (options: FormOptions): FormApi => {
   }, [fields])
 
   const reset = useCallback(() => {
-    fields.forEach(f => {
+    fields.forEach((f) => {
       f.unset()
     })
   }, [fields])
 
-  const debouncedValidateAsync = useAsyncValidator(options.validateAsync, options.validateAsyncDebounceMs)
+  const debouncedValidateAsync = useAsyncValidator(
+    options.validateAsync,
+    options.validateAsyncDebounceMs,
+  )
 
   const validate = useCallback(
-    async (f: FieldApi[]) => {
+    async (f: FieldApi<any>[]) => {
       setIsValidating(true)
 
       const map = f.reduce((m: Record<string, any>, f) => {
@@ -160,31 +179,43 @@ export const useForm = (options: FormOptions): FormApi => {
         return m
       }, {})
 
-      const syncValidationError = options.validate ? options.validate(map, options.validateExtraArgs) : ''
+      const syncValidationError = options.validate
+        ? options.validate(map, options.validateExtraArgs)
+        : ""
 
       if (syncValidationError) {
         setFormError(syncValidationError)
       } else if (options.validateAsync) {
-        setFormError(await debouncedValidateAsync(map, options.validateExtraArgs))
+        setFormError(
+          await debouncedValidateAsync(map, options.validateExtraArgs),
+        )
       } else {
         setFormError(undefined)
       }
 
       setIsValidating(false)
     },
-    [debouncedValidateAsync, options]
+    [debouncedValidateAsync, options],
   )
 
+  // biome-ignore lint: version
   useEffect(() => {
     validate(fields)
-  }, [fields, validate, version /* when version changes re-do the validation */])
+  }, [
+    fields,
+    validate,
+    version /* when version changes re-do the validation */,
+  ])
 
   return { valid, version, errors, formError, reset, values, isValidating }
 }
 
 const useAsyncValidator = (
-  validateAsync: (v: any, extraArgs?: any) => Promise<string | undefined> = DUMMY_VALIDATE_ASYNC_FN,
-  debounceMs: number = 0
+  validateAsync: (
+    v: any,
+    extraArgs?: any,
+  ) => Promise<string | undefined> = DUMMY_VALIDATE_ASYNC_FN,
+  debounceMs: number = 0,
 ) => {
   const debouncedValidateAsync = useMemo(() => {
     return pDebounce(validateAsync, debounceMs)
@@ -199,7 +230,7 @@ const useAsyncValidator = (
         return `${err}`
       }
     },
-    [debouncedValidateAsync]
+    [debouncedValidateAsync],
   )
 
   return validate
