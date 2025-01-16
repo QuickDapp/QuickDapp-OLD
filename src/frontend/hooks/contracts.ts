@@ -1,10 +1,25 @@
-import { clientConfig } from '@/config/client'
-import { ContractInfo, ContractName, getDeployedContractInfo, getMulticall3Info } from '@/shared/contracts'
+"use client"
+import { clientConfig } from "@/config/client"
+import {
+  ContractInfo,
+  ContractName,
+  getDeployedContractInfo,
+  getMulticall3Info,
+} from "@/shared/contracts"
+import { BigVal } from "@/shared/number"
+import { toNumber } from "@/shared/number"
+import _ from "lodash"
 import { useCallback, useMemo, useState } from "react"
-import { Abi, WalletClient } from "viem"
-import { useInfiniteReadContracts, usePublicClient, useReadContract, useReadContracts, useWalletClient } from 'wagmi'
+import { Abi } from "viem"
+import {
+  useBalance,
+  useInfiniteReadContracts,
+  usePublicClient,
+  useReadContract,
+  useReadContracts,
+} from "wagmi"
 import { useGlobalContext } from "../contexts"
-import { useToast } from './toast'
+import { useToast } from "./toast"
 
 export interface FunctionArgs {
   contract: ContractName | ContractInfo
@@ -15,18 +30,34 @@ export interface FunctionArgs {
 const resolvedContractInfo: Record<string, ContractInfo> = {}
 
 const getResolvedContractInfo = (contract: ContractName | ContractInfo) => {
-  if (typeof contract === 'string') {
+  if (typeof contract === "string") {
     if (!resolvedContractInfo[contract]) {
-      resolvedContractInfo[contract] = getDeployedContractInfo(contract, clientConfig.NEXT_PUBLIC_CHAIN)
+      resolvedContractInfo[contract] = getDeployedContractInfo(
+        contract,
+        clientConfig.NEXT_PUBLIC_CHAIN,
+      )
     }
     return resolvedContractInfo[contract]
   }
   return contract
 }
 
-export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) => {
-  const contract = useMemo(() => getResolvedContractInfo(fa.contract), [fa.contract])
-  
+export const useAddressBalance = (addr: string, queryOverrides?: object) => {
+  return useBalance({
+    address: addr as `0x${string}`,
+    query: queryOverrides,
+  })
+}
+
+export const useGetContractValue = (
+  fa: FunctionArgs,
+  queryOverrides?: object,
+) => {
+  const contract = useMemo(
+    () => getResolvedContractInfo(fa.contract),
+    [fa.contract],
+  )
+
   return useReadContract({
     address: contract.address,
     abi: contract.abi,
@@ -36,11 +67,14 @@ export const useGetContractValue = (fa: FunctionArgs, queryOverrides?: object) =
   })
 }
 
-export const useGetMultipleContractValues = (faList: FunctionArgs[], queryOverrides?: object) => {
+export const useGetMultipleContractValues = (
+  faList: FunctionArgs[],
+  queryOverrides?: object,
+) => {
   const multicall3 = useMemo(() => getMulticall3Info(), [])
 
   const v = useReadContracts({
-    contracts: faList.map(fa => {
+    contracts: faList.map((fa) => {
       const contract = getResolvedContractInfo(fa.contract)
 
       return {
@@ -69,7 +103,7 @@ export const useGetContractPaginatedValues = (
     getFaList: GetFunctionArgsForPageIndex
     cacheKey: string
     startIndex?: number
-    perPage?: number,
+    perPage?: number
   },
   queryOverrides?: object,
 ) => {
@@ -78,7 +112,7 @@ export const useGetContractPaginatedValues = (
     contracts(pageParam) {
       const faList: any = []
       ;[...new Array(perPage)].forEach((_, i) => {
-        const _list = getFaList(pageParam + i).map(fa => {
+        const _list = getFaList(pageParam + i).map((fa) => {
           const contract = getResolvedContractInfo(fa.contract)
 
           return {
@@ -105,9 +139,9 @@ export const useGetContractPaginatedValues = (
   })
 }
 
-export type ExecArgs = { 
+export type ExecArgs = {
   args: any[]
-  value?: string 
+  value?: string
   meta?: object
   successToastMsg?: string
   hideSuccessToast?: boolean
@@ -123,13 +157,16 @@ export interface ChainSetterFunction {
   canExec: boolean
 }
 
-export const useSetContractValue = ({ 
-  functionName,
-  contract, 
-}: { 
-  functionName: string, 
-  contract: ContractName | ContractInfo,
-}, overrides?: object): ChainSetterFunction => {
+export const useSetContractValue = (
+  {
+    functionName,
+    contract,
+  }: {
+    functionName: string
+    contract: ContractName | ContractInfo
+  },
+  overrides?: object,
+): ChainSetterFunction => {
   const { chain } = useGlobalContext()
   const { wallet } = useGlobalContext()
   const publicClient = usePublicClient()!
@@ -146,7 +183,10 @@ export const useSetContractValue = ({
     setError(null)
   }, [])
 
-  const resolvedContract = useMemo(() => getResolvedContractInfo(contract), [contract])
+  const resolvedContract = useMemo(
+    () => getResolvedContractInfo(contract),
+    [contract],
+  )
 
   const exec = useCallback(
     async (execArgs: ExecArgs) => {
@@ -157,9 +197,9 @@ export const useSetContractValue = ({
         setError(null)
 
         if (!canExec) {
-          throw new Error('No chain selected')
+          throw new Error("No chain selected")
         }
-  
+
         const { args, value } = execArgs
 
         preparedRequest = await publicClient.simulateContract({
@@ -168,15 +208,16 @@ export const useSetContractValue = ({
           functionName: functionName as any,
           args: args as any,
           ...(value ? { value: BigInt(value) as any } : {}),
-        }) 
+          ...overrides,
+        })
       } catch (e) {
         setError(e as Error)
 
         if (!execArgs.hideErrorToast) {
           toast({
-            title: 'Transaction simulation failed',
-            variant: 'destructive',
-          })  
+            title: "Transaction simulation failed",
+            variant: "destructive",
+          })
         }
 
         throw e
@@ -184,23 +225,23 @@ export const useSetContractValue = ({
 
       try {
         const hash = await wallet!.client.writeContract(preparedRequest.request)
-  
+
         console.log(`Awaiting transaction confirmation for ${hash}`)
-  
+
         const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-        if (receipt.status !== 'success') {
-          throw new Error('Transaction failed')
+        if (receipt.status !== "success") {
+          throw new Error("Transaction failed")
         }
-  
+
         console.log(`Transaction confirmed in block ${receipt.blockNumber}`)
         console.log(receipt)
-  
+
         setIsSuccess(true)
 
         if (!execArgs.hideSuccessToast) {
           toast({
-            title: execArgs.successToastMsg || 'Transaction confirmed',
+            title: execArgs.successToastMsg || "Transaction confirmed",
           })
         }
 
@@ -209,16 +250,24 @@ export const useSetContractValue = ({
         setError(e as Error)
         if (!execArgs.hideErrorToast) {
           toast({
-            title: 'Transaction failed',
-            variant: 'destructive',
-          })  
+            title: "Transaction failed",
+            variant: "destructive",
+          })
         }
         throw e
       } finally {
         setIsLoading(false)
       }
     },
-    [chainId, functionName, overrides, publicClient, resolvedContract]
+    [
+      functionName,
+      publicClient,
+      resolvedContract,
+      wallet,
+      toast,
+      canExec,
+      overrides,
+    ],
   )
 
   return {
@@ -229,4 +278,92 @@ export const useSetContractValue = ({
     error,
     canExec: !!chainId,
   }
+}
+
+export interface FetchedOneOfMultipleContractValues<T> {
+  isLoading?: boolean
+  error?: any
+  result?: T
+}
+
+export interface FetchedMultipleContractValues {
+  isLoading?: boolean
+  error?: any
+  data: FetchedOneOfMultipleContractValues<any>[]
+}
+
+export interface FetchedContractValue<T> {
+  isLoading?: boolean
+  error?: any
+  data?: T
+}
+
+// ------------------------------------------------------------------------------------------------
+// Helper methods for parsing contract values returned from useGetMultipleContractValues()
+// ------------------------------------------------------------------------------------------------
+
+const parseNumber = (num: any) => {
+  return !num.error && typeof num.result !== "undefined"
+    ? toNumber(num.result)
+    : undefined
+}
+
+const parseBigVal = (num: any) => {
+  return !num.error && typeof num.result !== "undefined"
+    ? new BigVal(num.result, "min").toCoinScale()
+    : undefined
+}
+
+export type ContractValueParserType = "number" | "bigval"
+export type ContractValueParser = (v: any) => any
+export type ContractValueParserDefinition =
+  | ContractValueParserType
+  | ContractValueParser
+
+const getDefaultParseMethod = (parserDef: ContractValueParserDefinition) => {
+  if (typeof parserDef === "string") {
+    switch (parserDef) {
+      case "number":
+        return parseNumber
+      case "bigval":
+        return parseBigVal
+    }
+  }
+
+  return parserDef
+}
+
+const FALLBACK_RESULT = { error: undefined, result: undefined }
+
+export const parseMultipleContractValues = ({
+  values,
+  mapping,
+}: {
+  values: ReturnType<typeof useGetMultipleContractValues>
+  mapping: ContractValueParserDefinition[]
+}) => {
+  const ret: FetchedOneOfMultipleContractValues<any>[] = []
+
+  if (values.isLoading) {
+    for (const _ of mapping) {
+      ret.push({ isLoading: true })
+    }
+  } else if (values.error) {
+    for (const _ of mapping) {
+      ret.push({ error: values.error })
+    }
+  } else {
+    for (const idx in mapping) {
+      const raw = _.get(values, `data.${idx}`, FALLBACK_RESULT)
+
+      const parse = getDefaultParseMethod(mapping[idx])
+
+      ret.push({
+        error: raw.error,
+        result: parse(raw),
+      })
+    }
+  }
+
+  return ret
 }
