@@ -1,3 +1,7 @@
+***
+**THIS IS THE OLD VERSION OF QUICKDAPP AND IS NO LONGER SUPPORTED! PLEASE CHECK OUT THE LATEST VERSION AT https://github.com/QuickDapp/QuickDapp**
+***
+
 # QuickDapp
 
 Live demo: https://demo.quickdapp.xyz
